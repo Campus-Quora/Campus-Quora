@@ -1,6 +1,0 @@
-framework module Pods_TheCampusApp {
-  umbrella header "Pods-TheCampusApp-umbrella.h"
-
-  export *
-  module * { export * }
-}
