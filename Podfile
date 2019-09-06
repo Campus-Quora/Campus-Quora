@@ -14,15 +14,4 @@ target 'TheCampusApp' do
 	pod 'Firebase/Auth'
 	pod 'Firebase/Database'
 
-
-  target 'TheCampusAppTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-  target 'TheCampusAppUITests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
 end
