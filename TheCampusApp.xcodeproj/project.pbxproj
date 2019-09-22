@@ -3,10 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00EBA7FD2337BA5A00539A31 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA7FC2337BA5A00539A31 /* LoginViewController.swift */; };
+		00EBA7FF2337BA7400539A31 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA7FE2337BA7400539A31 /* SignupViewController.swift */; };
+		00EBA8032337CBC700539A31 /* Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8022337CBC700539A31 /* Constraints.swift */; };
 		1FAC1B282322C01300304173 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAC1B272322C01300304173 /* AppDelegate.swift */; };
 		1FAC1B2A2322C01300304173 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAC1B292322C01300304173 /* ViewController.swift */; };
 		1FAC1B2D2322C01300304173 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FAC1B2B2322C01300304173 /* Main.storyboard */; };
@@ -15,7 +18,7 @@
 		1FAC1B3D2322C01600304173 /* TheCampusAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAC1B3C2322C01600304173 /* TheCampusAppTests.swift */; };
 		1FAC1B482322C01600304173 /* TheCampusAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAC1B472322C01600304173 /* TheCampusAppUITests.swift */; };
 		1FAC1B582322DB7600304173 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1FAC1B572322DB7600304173 /* GoogleService-Info.plist */; };
-		C327F07D2D2FE01D523EA5F8 /* Pods_TheCampusApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87C40645A60F05100B35E807 /* Pods_TheCampusApp.framework */; };
+		9D271F48D82A9C027674A2D1 /* Pods_TheCampusApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70E953C4A1AC51430DE174A7 /* Pods_TheCampusApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +39,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		00EBA7FC2337BA5A00539A31 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		00EBA7FE2337BA7400539A31 /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
+		00EBA8022337CBC700539A31 /* Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraints.swift; sourceTree = "<group>"; };
 		1FAC1B242322C01300304173 /* TheCampusApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TheCampusApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FAC1B272322C01300304173 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1FAC1B292322C01300304173 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -50,9 +56,9 @@
 		1FAC1B472322C01600304173 /* TheCampusAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheCampusAppUITests.swift; sourceTree = "<group>"; };
 		1FAC1B492322C01600304173 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1FAC1B572322DB7600304173 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
-		5A80ADC34E8A84D1E3346E0E /* Pods-TheCampusApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TheCampusApp.debug.xcconfig"; path = "Target Support Files/Pods-TheCampusApp/Pods-TheCampusApp.debug.xcconfig"; sourceTree = "<group>"; };
-		7BD2A73CBDFB84E607E74343 /* Pods-TheCampusApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TheCampusApp.release.xcconfig"; path = "Target Support Files/Pods-TheCampusApp/Pods-TheCampusApp.release.xcconfig"; sourceTree = "<group>"; };
-		87C40645A60F05100B35E807 /* Pods_TheCampusApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TheCampusApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		417F5CAC574B5DCE663D4006 /* Pods-TheCampusApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TheCampusApp.debug.xcconfig"; path = "Target Support Files/Pods-TheCampusApp/Pods-TheCampusApp.debug.xcconfig"; sourceTree = "<group>"; };
+		70E953C4A1AC51430DE174A7 /* Pods_TheCampusApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TheCampusApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB17A7C889B19A12BE30D3EB /* Pods-TheCampusApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TheCampusApp.release.xcconfig"; path = "Target Support Files/Pods-TheCampusApp/Pods-TheCampusApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C327F07D2D2FE01D523EA5F8 /* Pods_TheCampusApp.framework in Frameworks */,
+				9D271F48D82A9C027674A2D1 /* Pods_TheCampusApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +87,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		00EBA7FB2337BA2D00539A31 /* Login + Signup */ = {
+			isa = PBXGroup;
+			children = (
+				00EBA7FC2337BA5A00539A31 /* LoginViewController.swift */,
+				00EBA7FE2337BA7400539A31 /* SignupViewController.swift */,
+			);
+			path = "Login + Signup";
+			sourceTree = "<group>";
+		};
+		00EBA8012337CBAD00539A31 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				00EBA8022337CBC700539A31 /* Constraints.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		1FAC1B1B2322C01300304173 = {
 			isa = PBXGroup;
 			children = (
@@ -89,7 +112,7 @@
 				1FAC1B462322C01600304173 /* TheCampusAppUITests */,
 				1FAC1B252322C01300304173 /* Products */,
 				4D716E400474BCD6DAA72BE2 /* Pods */,
-				877F503D894FBDDC1FBA8859 /* Frameworks */,
+				BC689F0D985935B302AE9522 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -106,6 +129,8 @@
 		1FAC1B262322C01300304173 /* TheCampusApp */ = {
 			isa = PBXGroup;
 			children = (
+				00EBA8012337CBAD00539A31 /* Extensions */,
+				00EBA7FB2337BA2D00539A31 /* Login + Signup */,
 				1FAC1B272322C01300304173 /* AppDelegate.swift */,
 				1FAC1B292322C01300304173 /* ViewController.swift */,
 				1FAC1B2B2322C01300304173 /* Main.storyboard */,
@@ -138,16 +163,16 @@
 		4D716E400474BCD6DAA72BE2 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5A80ADC34E8A84D1E3346E0E /* Pods-TheCampusApp.debug.xcconfig */,
-				7BD2A73CBDFB84E607E74343 /* Pods-TheCampusApp.release.xcconfig */,
+				417F5CAC574B5DCE663D4006 /* Pods-TheCampusApp.debug.xcconfig */,
+				BB17A7C889B19A12BE30D3EB /* Pods-TheCampusApp.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		877F503D894FBDDC1FBA8859 /* Frameworks */ = {
+		BC689F0D985935B302AE9522 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				87C40645A60F05100B35E807 /* Pods_TheCampusApp.framework */,
+				70E953C4A1AC51430DE174A7 /* Pods_TheCampusApp.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -159,11 +184,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1FAC1B4C2322C01600304173 /* Build configuration list for PBXNativeTarget "TheCampusApp" */;
 			buildPhases = (
-				5308A6A6F8B2EC2D737A6729 /* [CP] Check Pods Manifest.lock */,
+				A766571287C1D047A9F308BC /* [CP] Check Pods Manifest.lock */,
 				1FAC1B202322C01300304173 /* Sources */,
 				1FAC1B212322C01300304173 /* Frameworks */,
 				1FAC1B222322C01300304173 /* Resources */,
-				6A858AA99759C35BA80D206C /* [CP] Embed Pods Frameworks */,
+				3E090BE0C40DF9DA84EA3B0C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -282,7 +307,43 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		5308A6A6F8B2EC2D737A6729 /* [CP] Check Pods Manifest.lock */ = {
+		3E090BE0C40DF9DA84EA3B0C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TheCampusApp/Pods-TheCampusApp-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TheCampusApp/Pods-TheCampusApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A766571287C1D047A9F308BC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -304,23 +365,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6A858AA99759C35BA80D206C /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TheCampusApp/Pods-TheCampusApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TheCampusApp/Pods-TheCampusApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TheCampusApp/Pods-TheCampusApp-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -328,7 +372,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00EBA7FD2337BA5A00539A31 /* LoginViewController.swift in Sources */,
 				1FAC1B2A2322C01300304173 /* ViewController.swift in Sources */,
+				00EBA8032337CBC700539A31 /* Constraints.swift in Sources */,
+				00EBA7FF2337BA7400539A31 /* SignupViewController.swift in Sources */,
 				1FAC1B282322C01300304173 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -502,7 +549,7 @@
 		};
 		1FAC1B4D2322C01600304173 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5A80ADC34E8A84D1E3346E0E /* Pods-TheCampusApp.debug.xcconfig */;
+			baseConfigurationReference = 417F5CAC574B5DCE663D4006 /* Pods-TheCampusApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -514,14 +561,14 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = HM.TheCampusApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		1FAC1B4E2322C01600304173 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7BD2A73CBDFB84E607E74343 /* Pods-TheCampusApp.release.xcconfig */;
+			baseConfigurationReference = BB17A7C889B19A12BE30D3EB /* Pods-TheCampusApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -533,7 +580,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = HM.TheCampusApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
