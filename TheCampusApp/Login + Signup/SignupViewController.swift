@@ -68,7 +68,7 @@ class SignupViewController: UIViewController{
     
     let signupButton : UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Signup", for: .normal)
+        button.setTitle("Sign Up", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18, weight: .bold)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor(red: 149/255, green: 204/255, blue: 244/255, alpha: 1)
@@ -159,11 +159,12 @@ class SignupViewController: UIViewController{
     // MARK:- Triggering Methods
     @objc func changeToLogInController(){
         print("Log In")
+        navigationController?.popViewController(animated: true)
     }
     
     @objc func handleSignup(){
         guard let name = nameTextField.text             else {return}
-        guard let username = nameTextField.text         else {return}
+        guard let username = usernameTextField.text     else {return}
         guard let password = passwordTextField.text     else {return}
         
         Auth.auth().createUser(withEmail: username, password: password) { (user, error) in
