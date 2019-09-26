@@ -9,21 +9,26 @@
 import UIKit
 import Firebase
 
+let blueColorDark = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
+let blueColorFaint = UIColor(red: 149/255, green: 204/255, blue: 244/255, alpha: 1)
+
 class SignupViewController: UIViewController{
-    let db = Firestore.firestore()
+    // MARK:- Constants
     
     let inputPadding: CGFloat = 20
     let inputHeight: CGFloat = 40
     var stackHeight: CGFloat = 0
     var inputWidth: CGFloat = 0
     var topPadding: CGFloat = 0
+    let db = Firestore.firestore()
+    
+    // MARK:- UI Elements
     
     let header : UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 24, weight: .bold)
         label.text = "Welcome To App"
         label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -72,6 +77,15 @@ class SignupViewController: UIViewController{
         return button
     }()
     
+    let alreadyHaveAccountButton : UIButton = {
+        let button = UIButton()
+        let attributedText = NSMutableAttributedString(string: "Already have an account  ", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18), NSAttributedString.Key.foregroundColor : UIColor(white: 0, alpha: 0.7)])
+        attributedText.append(NSAttributedString(string: "Log In", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18, weight: .medium), NSAttributedString.Key.foregroundColor : blueColorDark]))
+        button.setAttributedTitle(attributedText, for: .normal)
+        return button;
+    }()
+    
+    // MARK:- Overriden Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -85,64 +99,66 @@ class SignupViewController: UIViewController{
         usernameTextField.delegate = self
         passwordTextField.delegate = self
         
+        // UI
         view.backgroundColor = .white
         setupUI()
         
+        // Handle Keyboard Events
         self.hideKeyboardWhenTappedAround()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
+    // MARK:- Setup UI Methods
     func setupUI(){
-        setupSignupButton()
-        setupTitle()
+        setupHeader()
         setupStack()
+        setupFooter()
     }
     
-    func setupStack(){
-        let stack = UIStackView(arrangedSubviews: [nameTextField, usernameTextField, passwordTextField, signupButton])
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.axis = .vertical
-        stack.distribution = .fillEqually
-        stack.spacing = inputPadding
-        
-        view.addSubview(stack)
-        NSLayoutConstraint.activate([
-            stack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stack.heightAnchor.constraint(equalToConstant: stackHeight),
-            stack.widthAnchor.constraint(equalToConstant: inputWidth),
-            stack.topAnchor.constraint(equalTo: view.topAnchor, constant: topPadding)
-        ])
-    }
-    
-    func setupTitle(){
+    func setupHeader(){
         let height : CGFloat = view.frame.height * 0.10;
         let topPadding: CGFloat = view.frame.height * 0.10;
         let sidePadding : CGFloat = 20
         
         view.addSubview(header)
-        header.heightAnchor.constraint(equalToConstant: height).isActive = true
         
         if #available(iOS 11.0, *) {
             let layoutGuide = view.safeAreaLayoutGuide
-            NSLayoutConstraint.activate([
-                header.topAnchor.constraint(equalTo: layoutGuide.topAnchor, constant: topPadding),
-                header.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor, constant: sidePadding),
-                header.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor, constant: -sidePadding)
-            ])
+            header.anchor(top: layoutGuide.topAnchor, left: layoutGuide.leadingAnchor, right: layoutGuide.trailingAnchor, paddingTop: topPadding, paddingLeft: sidePadding, paddingRight: sidePadding, height: height)
         } else {
-            NSLayoutConstraint.activate([
-                header.topAnchor.constraint(equalTo: view.topAnchor, constant: topPadding),
-                header.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: sidePadding),
-                header.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -sidePadding)
-            ])
+            header.anchor(top: view.topAnchor, left: view.leadingAnchor, right: view.trailingAnchor, paddingTop: topPadding, paddingLeft: sidePadding, paddingRight: sidePadding, height: height)
         }
         
     }
     
-    
-    func setupSignupButton(){
+    func setupStack(){
+        let stack = UIStackView(arrangedSubviews: [nameTextField, usernameTextField, passwordTextField, signupButton])
         signupButton.addTarget(self, action: #selector(handleSignup), for: .touchUpInside)
+        stack.axis = .vertical
+        stack.distribution = .fillEqually
+        stack.spacing = inputPadding
+        
+        view.addSubview(stack)
+        stack.anchor(top: view.topAnchor, paddingTop: topPadding, height: stackHeight, width: inputWidth)
+        stack.centerX(view.centerXAnchor)
+    }
+    
+    func setupFooter(){
+        view.addSubview(alreadyHaveAccountButton)
+        if #available(iOS 11.0, *) {
+            let layoutGuide = view.safeAreaLayoutGuide
+            alreadyHaveAccountButton.anchor(bottom: layoutGuide.bottomAnchor, left: layoutGuide.leadingAnchor, right: layoutGuide.trailingAnchor, paddingBottom: 5, paddingLeft: 10, paddingRight: 10, height: 50)
+        } else {
+            alreadyHaveAccountButton.anchor(bottom: view.bottomAnchor, left: view.leadingAnchor, right: view.trailingAnchor, paddingBottom: 5, paddingLeft: 10, paddingRight: 10, height: 50)
+        }
+        alreadyHaveAccountButton.addTarget(self, action: #selector(changeToLogInController), for: .touchUpInside)
+    }
+
+    
+    // MARK:- Triggering Methods
+    @objc func changeToLogInController(){
+        print("Log In")
     }
     
     @objc func handleSignup(){
@@ -151,18 +167,23 @@ class SignupViewController: UIViewController{
         guard let password = passwordTextField.text     else {return}
         
         Auth.auth().createUser(withEmail: username, password: password) { (user, error) in
-            
             if let error = error{
-                print("ERROR #1 : \n\n", error)
+                print("Signup ERROR #1 : \n\n", error)
                 return;
             }
             
-            let userData = ["name" : name]
+            guard let user = user?.user else{
+                print("Signup Error #2 : \n\n")
+                return;
+            }
+            
+            let userData = ["userid" : user.uid,
+                            "name" : name]
             
             self.db.collection("userInfo").addDocument(data: userData){ error in
                 
                 if let error = error{
-                    print("ERROR #2 : \n\n", error)
+                    print("Signup ERROR #3 : \n\n", error)
                     return;
                 }
             }
@@ -193,18 +214,20 @@ class SignupViewController: UIViewController{
         let passwordLength = passwordTextField.text?.count ?? 0
         let isValidPassword = (passwordLength > 6) && (passwordLength < 16)
         if isValidName && isValidUsername && isValidPassword{
-            signupButton.backgroundColor = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
+            signupButton.backgroundColor = blueColorDark
             signupButton.isEnabled = true
         }
         else{
-            signupButton.backgroundColor = UIColor(red: 149/255, green: 204/255, blue: 244/255, alpha: 1)
+            signupButton.backgroundColor = blueColorFaint
             signupButton.isEnabled = false
         }
     }
 }
 
-// Move to next Text Field on pressing return key
+// MARK:- Extension #1
 extension SignupViewController : UITextFieldDelegate{
+    
+    // Move to next Text Field on pressing return key
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // Try to find next responder
         if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
