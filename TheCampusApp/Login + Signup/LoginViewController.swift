@@ -28,7 +28,7 @@ class LoginViewController: UIViewController{
         return label
     }()
     
-    let usernameTextField : UITextField = {
+    let emailTextField : UITextField = {
         let textField = UITextField()
         textField.placeholder = "UserName"
         textField.backgroundColor = UIColor(white: 0, alpha: 0.05)
@@ -56,7 +56,7 @@ class LoginViewController: UIViewController{
         button.setTitle("Log In", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18, weight: .bold)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor(red: 149/255, green: 204/255, blue: 244/255, alpha: 1)
+        button.backgroundColor = blueColorFaint
         button.layer.cornerRadius = 5
         button.isEnabled = false
         return button
@@ -80,7 +80,7 @@ class LoginViewController: UIViewController{
         topPadding = view.frame.height * 0.4
         
         // Setup Delegates
-        usernameTextField.delegate = self
+        emailTextField.delegate = self
         passwordTextField.delegate = self
         
         // UI
@@ -119,7 +119,7 @@ class LoginViewController: UIViewController{
     }
     
     func setupStack(){
-        let stack = UIStackView(arrangedSubviews: [usernameTextField, passwordTextField, loginButton])
+        let stack = UIStackView(arrangedSubviews: [emailTextField, passwordTextField, loginButton])
         loginButton.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
         stack.axis = .vertical
         stack.distribution = .fillEqually
@@ -150,10 +150,10 @@ class LoginViewController: UIViewController{
     }
     
     @objc func handleLogin(){
-        guard let username = usernameTextField.text     else {return}
+        guard let email = emailTextField.text     else {return}
         guard let password = passwordTextField.text     else {return}
-        
-        Auth.auth().signIn(withEmail: username, password: password) { (user, error) in
+        print("Trying To Log In")
+        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             if let error = error{
                 print("Login ERROR #1 : \n\n", error)
                 return;
@@ -165,6 +165,14 @@ class LoginViewController: UIViewController{
             }
             
             UserData.shared.setData(user)
+            
+            // Go to Main Tab Bar Controller
+            DispatchQueue.main.async {
+                if let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController{
+                    mainTabBarController.setupViewControllers()
+                    self.dismiss(animated: true, completion: nil)
+                }
+            }
         }
         
     }
@@ -187,10 +195,10 @@ class LoginViewController: UIViewController{
     
     // This functions check if input text field in valid
     @objc func checkValidInput(){
-        let isValidUsername = usernameTextField.text?.count ?? 0 > 0
+        let isValidEmail = emailTextField.text?.count ?? 0 > 0
         let passwordLength = passwordTextField.text?.count ?? 0
         let isValidPassword = (passwordLength > 6) && (passwordLength < 16)
-        if isValidUsername && isValidPassword{
+        if isValidEmail && isValidPassword{
             loginButton.backgroundColor = blueColorDark
             loginButton.isEnabled = true
         }
@@ -212,31 +220,8 @@ extension LoginViewController : UITextFieldDelegate{
         } else {
             // Not found, so remove keyboard and perform signup
             textField.resignFirstResponder()
+            handleLogin()
         }
         return false
-    }
-}
-
-class UserData: NSObject{
-    // Properties
-    var uid: String?
-    var name: String?
-    var username: String?
-    var profilePicURL: String?
-    
-    // Shared Instance
-    static var shared = UserData()
-    
-    override init(){}
-    
-    init(_ user: User){
-        super.init()
-        self.setData(user)
-    }
-    
-    func setData(_ user: User){
-        self.uid = user.uid
-        self.username = user.email
-        self.name = user.displayName
     }
 }

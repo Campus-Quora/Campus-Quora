@@ -38,17 +38,19 @@ class SignupViewController: UIViewController{
         textField.backgroundColor = UIColor(white: 0, alpha: 0.05)
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
+        textField.autocapitalizationType = .none
         textField.tag = 0
         textField.addTarget(self, action: #selector(checkValidInput), for: .editingChanged)
         return textField
     }()
     
-    let usernameTextField : UITextField = {
+    let emailTextField : UITextField = {
         let textField = UITextField()
         textField.placeholder = "UserName"
         textField.backgroundColor = UIColor(white: 0, alpha: 0.05)
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
+        textField.autocapitalizationType = .none
         textField.tag = 1
         textField.addTarget(self, action: #selector(checkValidInput), for: .editingChanged)
         return textField
@@ -71,7 +73,7 @@ class SignupViewController: UIViewController{
         button.setTitle("Sign Up", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18, weight: .bold)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor(red: 149/255, green: 204/255, blue: 244/255, alpha: 1)
+        button.backgroundColor = blueColorFaint
         button.layer.cornerRadius = 5
         button.isEnabled = false
         return button
@@ -96,7 +98,7 @@ class SignupViewController: UIViewController{
         
         // Setup Delegates
         nameTextField.delegate = self
-        usernameTextField.delegate = self
+        emailTextField.delegate = self
         passwordTextField.delegate = self
         
         // UI
@@ -133,7 +135,7 @@ class SignupViewController: UIViewController{
     }
     
     func setupStack(){
-        let stack = UIStackView(arrangedSubviews: [nameTextField, usernameTextField, passwordTextField, signupButton])
+        let stack = UIStackView(arrangedSubviews: [nameTextField, emailTextField, passwordTextField, signupButton])
         signupButton.addTarget(self, action: #selector(handleSignup), for: .touchUpInside)
         stack.axis = .vertical
         stack.distribution = .fillEqually
@@ -164,10 +166,10 @@ class SignupViewController: UIViewController{
     
     @objc func handleSignup(){
         guard let name = nameTextField.text             else {return}
-        guard let username = usernameTextField.text     else {return}
+        guard let email = emailTextField.text           else {return}
         guard let password = passwordTextField.text     else {return}
-        
-        Auth.auth().createUser(withEmail: username, password: password) { (user, error) in
+        print("Trying To Sign Up")
+        Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
             if let error = error{
                 print("Signup ERROR #1 : \n\n", error)
                 return;
@@ -182,10 +184,19 @@ class SignupViewController: UIViewController{
                             "name" : name]
             
             self.db.collection("userInfo").addDocument(data: userData){ error in
-                
+                print("Saving UserInfo")
                 if let error = error{
                     print("Signup ERROR #3 : \n\n", error)
                     return;
+                }
+                
+                UserData.shared.setData(user)
+                // Go to Main Tab Bar Controller
+                DispatchQueue.main.async {
+                    if let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController{
+                        mainTabBarController.setupViewControllers()
+                        self.dismiss(animated: true, completion: nil)
+                    }
                 }
             }
         }
@@ -211,10 +222,10 @@ class SignupViewController: UIViewController{
     // This functions check if input text field in valid
     @objc func checkValidInput(){
         let isValidName = nameTextField.text?.count ?? 0 > 0
-        let isValidUsername = usernameTextField.text?.count ?? 0 > 0
+        let isValidEmail = emailTextField.text?.count ?? 0 > 0
         let passwordLength = passwordTextField.text?.count ?? 0
-        let isValidPassword = (passwordLength > 6) && (passwordLength < 16)
-        if isValidName && isValidUsername && isValidPassword{
+        let isValidPassword = (passwordLength > 5) && (passwordLength < 17)
+        if isValidName && isValidEmail && isValidPassword{
             signupButton.backgroundColor = blueColorDark
             signupButton.isEnabled = true
         }
@@ -236,6 +247,7 @@ extension SignupViewController : UITextFieldDelegate{
         } else {
             // Not found, so remove keyboard and perform signup
             textField.resignFirstResponder()
+            handleSignup()
         }
         return false
     }
