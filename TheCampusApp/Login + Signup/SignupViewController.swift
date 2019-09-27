@@ -46,7 +46,7 @@ class SignupViewController: UIViewController{
     
     let emailTextField : UITextField = {
         let textField = UITextField()
-        textField.placeholder = "UserName"
+        textField.placeholder = "Email"
         textField.backgroundColor = UIColor(white: 0, alpha: 0.05)
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
@@ -224,7 +224,7 @@ class SignupViewController: UIViewController{
         let isValidName = nameTextField.text?.count ?? 0 > 0
         let isValidEmail = emailTextField.text?.count ?? 0 > 0
         let passwordLength = passwordTextField.text?.count ?? 0
-        let isValidPassword = (passwordLength > 5) && (passwordLength < 17)
+        let isValidPassword = (passwordLength >= 6) && (passwordLength <= 16)
         if isValidName && isValidEmail && isValidPassword{
             signupButton.backgroundColor = blueColorDark
             signupButton.isEnabled = true

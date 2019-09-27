@@ -30,11 +30,12 @@ class LoginViewController: UIViewController{
     
     let emailTextField : UITextField = {
         let textField = UITextField()
-        textField.placeholder = "UserName"
+        textField.placeholder = "Email"
         textField.backgroundColor = UIColor(white: 0, alpha: 0.05)
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
         textField.tag = 1
+        textField.autocapitalizationType = .none
         textField.addTarget(self, action: #selector(checkValidInput), for: .editingChanged)
         return textField
     }()
@@ -155,6 +156,8 @@ class LoginViewController: UIViewController{
         print("Trying To Log In")
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             if let error = error{
+                // This occurs when username or password is wrong
+                // TODO:- Add UI to alert user
                 print("Login ERROR #1 : \n\n", error)
                 return;
             }
@@ -197,7 +200,7 @@ class LoginViewController: UIViewController{
     @objc func checkValidInput(){
         let isValidEmail = emailTextField.text?.count ?? 0 > 0
         let passwordLength = passwordTextField.text?.count ?? 0
-        let isValidPassword = (passwordLength > 6) && (passwordLength < 16)
+        let isValidPassword = (passwordLength >= 6) && (passwordLength <= 16)
         if isValidEmail && isValidPassword{
             loginButton.backgroundColor = blueColorDark
             loginButton.isEnabled = true

@@ -10,12 +10,12 @@ import UIKit
 import Firebase
 
 class MainTabBarController: UITabBarController{
-    let selectedColor = UIColor.white
-    let unselectedColor = UIColor.black
+    let selectedColor : UIColor = .black
+    let unselectedColor : UIColor = .gray
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        delegate = self
         if Auth.auth().currentUser == nil {
             DispatchQueue.main.async {
                 let navigationController = UINavigationController(rootViewController: LoginViewController())
@@ -29,21 +29,21 @@ class MainTabBarController: UITabBarController{
     
     func setupViewControllers(){
         // List Of Component View Controlllers
-        let homeVC = HomeViewController()
-        let postVC = PostViewController()
-        let profileVC = ProfileViewController()
+        let homeVC = UINavigationController(rootViewController: HomeViewController())
+        let postVC = UINavigationController(rootViewController: PostViewController())
+        let profileCVC = ProfileViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        let profileVC = UINavigationController(rootViewController: profileCVC)
         viewControllers = [homeVC, postVC, profileVC]
         
         // MARK:- Setting Image for tabBarItem
-        let imageNames = []
+        let imageNames = ["Home", "Plus", "Profile"]
         let imageSize = CGSize(width: 30, height: 30)
         var image: UIImage!
         var i: Int = 0
         
         for vc in viewControllers!{
             image = UIImage(named: imageNames[i])?.resizeImage(size: imageSize)
-            vc.tabBarItem.selectedImage = image
-            vc.tabBarItem.tag = i
+            vc.tabBarItem = UITabBarItem(title: nil, image: image, tag: i)
             i += 1
         }
         
@@ -51,19 +51,25 @@ class MainTabBarController: UITabBarController{
         // Color of selected tab
         tabBar.tintColor = selectedColor
         
+        guard let tabBarItems = tabBar.items else{return}
+        
         // Color of unselected tab
         if #available(iOS 10.0, *) {
             tabBar.unselectedItemTintColor = unselectedColor
         }
         else{
-            for item in self.tabBar.items! {
-                item.image = item.selectedImage!.with(color: unselectedColor).withRenderingMode(.alwaysOriginal)
-            }
+//            for item in tabBarItems {
+//                item.image = item.selectedImage!.with(color: unselectedColor).withRenderingMode(.alwaysOriginal)
+//            }
+        }
+        
+        for item in tabBarItems{
+            item.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
         }
         
         // Transparent Tab Bar
-        tabBar.backgroundImage = UIImage()
-        tabBar.shadowImage = UIImage()
+         tabBar.backgroundImage = UIImage()
+         tabBar.shadowImage = UIImage()
     }
 }
 

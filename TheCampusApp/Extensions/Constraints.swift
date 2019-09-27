@@ -33,10 +33,12 @@ extension UIView{
     }
     
     func centerX(_ centerAnchor: NSLayoutXAxisAnchor, shiftBy: CGFloat = 0){
+        self.translatesAutoresizingMaskIntoConstraints = false
         self.centerXAnchor.constraint(equalTo: centerAnchor, constant: shiftBy).isActive = true
     }
     
     func centerY(_ centerAnchor: NSLayoutYAxisAnchor, shiftBy: CGFloat = 0){
+        self.translatesAutoresizingMaskIntoConstraints = false
         self.centerYAnchor.constraint(equalTo: centerAnchor, constant: shiftBy).isActive = true
     }
 }
