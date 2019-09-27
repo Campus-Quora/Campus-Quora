@@ -16,6 +16,11 @@ class UserData: NSObject{
     var email: String?
     var username: String?
     var profilePicURL: String?
+    var followerCount: Int?
+    var followingCount: Int?
+    var likesCount: Int?
+    var questionsCount: Int?
+    var answersCount: Int?
     
     // Shared Instance
     static var shared = UserData()
@@ -33,6 +38,19 @@ class UserData: NSObject{
         self.uid = user.uid
         self.email = user.email
         self.name = user.displayName
+    }
+    
+    func setStats(_ stats: Any){
+        guard let stats = stats as? [String: Int] else{
+            print("Stats Typecasting Error")
+            return
+        }
+        
+        self.followerCount = stats["followerCount"]
+        self.followingCount = stats["followingCount"]
+        self.likesCount = stats["likesCount"]
+        self.questionsCount = stats["questionsCount"]
+        self.answersCount = stats["answersCount"]
     }
 }
 

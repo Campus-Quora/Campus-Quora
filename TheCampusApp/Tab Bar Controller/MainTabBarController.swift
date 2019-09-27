@@ -31,9 +31,16 @@ class MainTabBarController: UITabBarController{
         // List Of Component View Controlllers
         let homeVC = UINavigationController(rootViewController: HomeViewController())
         let postVC = UINavigationController(rootViewController: PostViewController())
-        let profileCVC = ProfileViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        
+        let profileVCFlowLayout = UICollectionViewFlowLayout()
+//        profileVCFlowLayout.sectionHeadersPinToVisibleBounds = true
+        let headerHeight: CGFloat = (UIScreen.main.nativeBounds.height/UIScreen.main.nativeScale) * 0.2
+        profileVCFlowLayout.headerReferenceSize = CGSize(width: view.frame.width, height: headerHeight)
+        let profileCVC = ProfileViewController(collectionViewLayout: profileVCFlowLayout)
         let profileVC = UINavigationController(rootViewController: profileCVC)
-        viewControllers = [homeVC, postVC, profileVC]
+        
+//        viewControllers = [homeVC, postVC, profileVC]
+        viewControllers = [profileVC, homeVC, postVC]
         
         // MARK:- Setting Image for tabBarItem
         let imageNames = ["Home", "Plus", "Profile"]
@@ -67,9 +74,10 @@ class MainTabBarController: UITabBarController{
             item.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
         }
         
-        // Transparent Tab Bar
-         tabBar.backgroundImage = UIImage()
-         tabBar.shadowImage = UIImage()
+        // Color of TabBar
+        tabBar.shadowImage = UIImage()
+        tabBar.isTranslucent = false
+        tabBar.barTintColor = primaryColor
     }
 }
 

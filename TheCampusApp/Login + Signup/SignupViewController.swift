@@ -9,9 +9,6 @@
 import UIKit
 import Firebase
 
-let blueColorDark = UIColor(red: 17/255, green: 154/255, blue: 237/255, alpha: 1)
-let blueColorFaint = UIColor(red: 149/255, green: 204/255, blue: 244/255, alpha: 1)
-
 class SignupViewController: UIViewController{
     // MARK:- Constants
     
