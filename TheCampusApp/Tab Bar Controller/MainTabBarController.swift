@@ -34,7 +34,6 @@ class MainTabBarController: UITabBarController{
         
         let profileVCFlowLayout = UICollectionViewFlowLayout()
         profileVCFlowLayout.sectionInset = UIEdgeInsets(top: postSectionVerticalPadding, left: postCellSidePadding, bottom: postSectionVerticalPadding, right: postCellSidePadding)
-        
         let profileCVC = ProfileViewController(collectionViewLayout: profileVCFlowLayout)
         let profileVC = UINavigationController(rootViewController: profileCVC)
         

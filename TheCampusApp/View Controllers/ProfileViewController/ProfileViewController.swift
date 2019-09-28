@@ -15,13 +15,17 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     let cellID = "cellID"
     var headerHeight: CGFloat = 0
     
+    var maxAnswerSize: CGSize!
+    var maxQuestionSize: CGSize!
+    var estimatedWidth: CGFloat!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupData()
         estimateSize()
         setupUI()
         
-        // This is used to force collectionView to stick to safe layout (useful in landscape)
+        // This is used to force collectionView to stick to safe layout
         if #available(iOS 11.0, *) {
             collectionView?.contentInsetAdjustmentBehavior = .always
         }
@@ -36,6 +40,22 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupNavigationBar()
+    }
+    
+    func setupNavigationBar(){
+        navigationItem.title = "Profile"
+        guard let navBar = navigationController?.navigationBar else {return}
+        if #available(iOS 11.0, *) {
+            navBar.prefersLargeTitles = true
+            navigationItem.largeTitleDisplayMode = .automatic
+        }
+        navBar.shadowImage = UIImage()
+        headerView.backgroundColor = .brown
+        navBar.isTranslucent = false
+    }
+    
+    func setupUI(){
+        collectionView.backgroundColor = .white
     }
     
     var postsData: [PostData] = []
@@ -69,37 +89,17 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
         postsData.append(postData3)
         postsData.append(postData4)
     }
-    
-    func setupNavigationBar(){
-        navigationItem.title = "Profile"
-        guard let navBar = navigationController?.navigationBar else {return}
-        if #available(iOS 11.0, *) {
-            navBar.prefersLargeTitles = true
-            navigationItem.largeTitleDisplayMode = .automatic
-        }
-        navBar.shadowImage = UIImage()
-        navBar.tintColor = primaryColor
-        navBar.isTranslucent = false
-    }
-    
-    func setupUI(){
-        collectionView.backgroundColor = .white
-    }
-    
-    var maxAnswerSize: CGSize!
-    var maxQuestionSize: CGSize!
-    var estimatedWidth: CGFloat!
 }
 
 // MARK:- Extension #2
 // This is for collectionViewHeader
 extension ProfileViewController{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        
+
         let width = collectionView.frame.width
         return CGSize(width: width, height: headerHeight)
     }
-    
+
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID, for: indexPath)
         return header
@@ -152,16 +152,4 @@ extension ProfileViewController{
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
 //        return 0
 //    }
-}
-
-extension String{
-    func findHeight(size: CGSize, attributes: [NSAttributedString.Key: Any])->CGFloat{
-        let rect = NSString(string: self).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-        return rect.height
-    }
-    
-    static func findSingleLineHeight(width: CGFloat, attributes: [NSAttributedString.Key: Any])->CGFloat{
-        let rect = NSString(string: " ").boundingRect(with: CGSize(width: width, height: 1000), options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-        return rect.height
-    }
 }
