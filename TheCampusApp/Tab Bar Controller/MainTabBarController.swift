@@ -33,9 +33,8 @@ class MainTabBarController: UITabBarController{
         let postVC = UINavigationController(rootViewController: PostViewController())
         
         let profileVCFlowLayout = UICollectionViewFlowLayout()
-//        profileVCFlowLayout.sectionHeadersPinToVisibleBounds = true
-        let headerHeight: CGFloat = (UIScreen.main.nativeBounds.height/UIScreen.main.nativeScale) * 0.2
-        profileVCFlowLayout.headerReferenceSize = CGSize(width: view.frame.width, height: headerHeight)
+        profileVCFlowLayout.sectionInset = UIEdgeInsets(top: postSectionVerticalPadding, left: postCellSidePadding, bottom: postSectionVerticalPadding, right: postCellSidePadding)
+        
         let profileCVC = ProfileViewController(collectionViewLayout: profileVCFlowLayout)
         let profileVC = UINavigationController(rootViewController: profileCVC)
         
@@ -65,9 +64,9 @@ class MainTabBarController: UITabBarController{
             tabBar.unselectedItemTintColor = unselectedColor
         }
         else{
-//            for item in tabBarItems {
-//                item.image = item.selectedImage!.with(color: unselectedColor).withRenderingMode(.alwaysOriginal)
-//            }
+            for item in tabBarItems {
+                item.image = item.selectedImage!.with(color: unselectedColor).withRenderingMode(.alwaysOriginal)
+            }
         }
         
         for item in tabBarItems{

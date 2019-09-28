@@ -15,7 +15,6 @@ class ProfileHeader: UICollectionViewCell{
     // UI Elements
     let profilePic: RoundImageView = {
         let imageView = RoundImageView()
-        imageView.clipsToBounds = true
         imageView.image = UIImage(named: "Avatar")
         return imageView
     }()
@@ -116,14 +115,15 @@ class ProfileHeader: UICollectionViewCell{
         setupNameLabel()
         setupStats()
         setupEditProfileButton()
+        addSeperator()
     }
     
     func setupProfilePic(){
-        let imagePadding = frame.height * 0.1
+        let imagePadding = frame.height * 0.08
         addSubview(profilePic)
         profilePic.anchor(top: topAnchor, left: leadingAnchor, paddingTop: imagePadding, paddingLeft: imagePadding)
-        profilePic.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.65).isActive = true
-        profilePic.widthAnchor.constraint(equalTo: heightAnchor, multiplier: 0.65).isActive = true
+        profilePic.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.60).isActive = true
+        profilePic.widthAnchor.constraint(equalTo: profilePic.heightAnchor, multiplier: 1).isActive = true
     }
     
     func setupNameLabel(){
@@ -133,26 +133,34 @@ class ProfileHeader: UICollectionViewCell{
     }
     
     func setupStats(){
-        let stackPadding = frame.height * 0.1
+        let padding: CGFloat = 10
         
         // StatStack1
         statStack1 = UIStackView(arrangedSubviews: [followingStatLabel, followersStatLabel, likesStatLabel])
         statStack1.axis = .horizontal
         statStack1.distribution = .fillEqually
         addSubview(statStack1)
-        statStack1.anchor(top: topAnchor, left: profilePic.trailingAnchor, right: trailingAnchor, paddingTop: stackPadding, paddingLeft: 0, paddingRight: 0)
+        statStack1.anchor(top: profilePic.topAnchor, left: profilePic.trailingAnchor, right: trailingAnchor, paddingTop: padding, paddingRight: 5)
         
         // StatStack2
         statStack2 = UIStackView(arrangedSubviews: [questionsStatLabel, answersStatLabel, somethingStatLabel])
         statStack2.axis = .horizontal
         statStack2.distribution = .fillEqually
         addSubview(statStack2)
-        statStack2.anchor(top: statStack1.bottomAnchor, left: profilePic.trailingAnchor, right: trailingAnchor, paddingTop: stackPadding, paddingLeft: 0, paddingRight: 0)
+        statStack2.anchor(bottom: profilePic.bottomAnchor, left: profilePic.trailingAnchor, right: trailingAnchor, paddingBottom: padding, paddingRight: 5)
     }
     
     func setupEditProfileButton(){
         addSubview(editProfileButton)
-        editProfileButton.anchor(top: statStack2.bottomAnchor, bottom: bottomAnchor, left: nameLabel.trailingAnchor, right: trailingAnchor, paddingTop: 10, paddingBottom: 10, paddingLeft: 20, paddingRight: 20)
+        editProfileButton.centerY(nameLabel.centerYAnchor)
+        editProfileButton.anchor(left: nameLabel.trailingAnchor, right: trailingAnchor, paddingLeft: 20, paddingRight: 20)
+    }
+    
+    func addSeperator(){
+        let line = UIView()
+        line.backgroundColor = .black
+        addSubview(line)
+        line.anchor(bottom: bottomAnchor, left: leadingAnchor, right: trailingAnchor, paddingBottom: 0, height: 1)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -161,9 +169,19 @@ class ProfileHeader: UICollectionViewCell{
 }
 
 class RoundImageView: UIImageView{
+    
+    init(){
+        super.init(frame: .zero)
+        self.clipsToBounds = true
+    }
+    
     override var bounds: CGRect {
         didSet {
             layer.cornerRadius = bounds.height/2
         }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
