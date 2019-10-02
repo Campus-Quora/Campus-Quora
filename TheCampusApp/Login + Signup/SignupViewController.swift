@@ -98,14 +98,14 @@ class SignupViewController: UIViewController{
         emailTextField.delegate = self
         passwordTextField.delegate = self
         
-        // UI
-        view.backgroundColor = .white
-        setupUI()
-        
         // Handle Keyboard Events
         self.hideKeyboardWhenTappedAround()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        // UI
+        view.backgroundColor = .white
+        setupUI()
     }
     
     // MARK:- Setup UI Methods

@@ -37,8 +37,8 @@ class MainTabBarController: UITabBarController{
         let profileCVC = ProfileViewController(collectionViewLayout: profileVCFlowLayout)
         let profileVC = UINavigationController(rootViewController: profileCVC)
         
-//        viewControllers = [homeVC, postVC, profileVC]
-        viewControllers = [profileVC, homeVC, postVC]
+        viewControllers = [homeVC, postVC, profileVC]
+//        viewControllers = [postVC, profileVC, homeVC]
         
         // MARK:- Setting Image for tabBarItem
         let imageNames = ["Home", "Plus", "Profile"]

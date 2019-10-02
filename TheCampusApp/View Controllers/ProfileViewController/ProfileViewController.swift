@@ -50,8 +50,8 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
             navigationItem.largeTitleDisplayMode = .automatic
         }
         navBar.shadowImage = UIImage()
-        headerView.backgroundColor = .brown
         navBar.isTranslucent = false
+        navBar.tintColor = primaryColor
     }
     
     func setupUI(){
