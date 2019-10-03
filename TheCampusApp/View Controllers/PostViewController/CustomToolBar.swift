@@ -177,8 +177,8 @@ class ExtraTextOptionsView: UIView{
         super.didMoveToWindow()
         if #available(iOS 11.0, *) {
             if let window = self.window {
-                self.translatesAutoresizingMaskIntoConstraints = false
-                self.bottomAnchor.constraint(lessThanOrEqualToSystemSpacingBelow: window.safeAreaLayoutGuide.bottomAnchor, multiplier: 1.0).isActive = true
+//                self.translatesAutoresizingMaskIntoConstraints = false
+//                self.bottomAnchor.constraint(lessThanOrEqualToSystemSpacingBelow: window.safeAreaLayoutGuide.bottomAnchor, multiplier: 1.0).isActive = true
 //                self.bottomAnchor.constraint(equalTo: window.safeAreaLayoutGuide.bottomAnchor)
             }
         }

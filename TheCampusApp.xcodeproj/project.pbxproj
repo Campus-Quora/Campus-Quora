@@ -28,6 +28,7 @@
 		00EBA8552344CB0C00539A31 /* KeyboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8542344CB0C00539A31 /* KeyboardService.swift */; };
 		00EBA8572344FD0900539A31 /* QuestionHeader.html in Resources */ = {isa = PBXBuildFile; fileRef = 00EBA8562344FD0900539A31 /* QuestionHeader.html */; };
 		00EBA8592344FD1C00539A31 /* QuestionDescription.html in Resources */ = {isa = PBXBuildFile; fileRef = 00EBA8582344FD1C00539A31 /* QuestionDescription.html */; };
+		00EBA85B23452A2500539A31 /* File.html in Resources */ = {isa = PBXBuildFile; fileRef = 00EBA85A23452A2500539A31 /* File.html */; };
 		1FAC1B282322C01300304173 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAC1B272322C01300304173 /* AppDelegate.swift */; };
 		1FAC1B2A2322C01300304173 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAC1B292322C01300304173 /* ViewController.swift */; };
 		1FAC1B2D2322C01300304173 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FAC1B2B2322C01300304173 /* Main.storyboard */; };
@@ -73,11 +74,12 @@
 		00EBA822233FCA9C00539A31 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		00EBA82523406ECD00539A31 /* CustomToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomToolBar.swift; sourceTree = "<group>"; };
 		00EBA84D23448AE500539A31 /* TextEditor.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = TextEditor.html; sourceTree = "<group>"; };
-		00EBA84F23448AEF00539A31 /* TextEditor.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = TextEditor.js; sourceTree = "<group>"; };
+		00EBA84F23448AEF00539A31 /* TextEditor.js */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.javascript; path = TextEditor.js; sourceTree = "<group>"; tabWidth = 1; usesTabs = 0; };
 		00EBA85123448AF600539A31 /* TextEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextEditor.swift; sourceTree = "<group>"; };
 		00EBA8542344CB0C00539A31 /* KeyboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardService.swift; sourceTree = "<group>"; };
 		00EBA8562344FD0900539A31 /* QuestionHeader.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = QuestionHeader.html; sourceTree = "<group>"; };
 		00EBA8582344FD1C00539A31 /* QuestionDescription.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = QuestionDescription.html; sourceTree = "<group>"; };
+		00EBA85A23452A2500539A31 /* File.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = File.html; sourceTree = "<group>"; };
 		1FAC1B242322C01300304173 /* TheCampusApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TheCampusApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FAC1B272322C01300304173 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1FAC1B292322C01300304173 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -197,6 +199,7 @@
 				00EBA84D23448AE500539A31 /* TextEditor.html */,
 				00EBA84F23448AEF00539A31 /* TextEditor.js */,
 				00EBA85123448AF600539A31 /* TextEditor.swift */,
+				00EBA85A23452A2500539A31 /* File.html */,
 			);
 			path = "Text Editor";
 			sourceTree = "<group>";
@@ -394,6 +397,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1FAC1B322322C01600304173 /* LaunchScreen.storyboard in Resources */,
+				00EBA85B23452A2500539A31 /* File.html in Resources */,
 				1FAC1B582322DB7600304173 /* GoogleService-Info.plist in Resources */,
 				00EBA8592344FD1C00539A31 /* QuestionDescription.html in Resources */,
 				00EBA8572344FD0900539A31 /* QuestionHeader.html in Resources */,

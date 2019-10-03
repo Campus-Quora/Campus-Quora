@@ -10,12 +10,21 @@ import UIKit
 import WebKit
 
 protocol TextEditorDelegate{
-    func textDidChange(_ text: String)
-    func heightDidChange(_ height: CGFloat)
+    func textDidChange(_ text: inout String, for editor: TextEditor)
+    func heightDidChange(_ height: CGFloat, for editor: TextEditor)
 }
 
-class TextEditor: UIView, WKScriptMessageHandler{
+class TextEditor: UIView, WKScriptMessageHandler, UIScrollViewDelegate{
+    static let defaultHeight: CGFloat = 100
+    static var textDidChange = "textDidChange"
+    static var heightDidChange = "heightDidChange"
+    var heightConstraint: NSLayoutConstraint?
     var delegate: TextEditorDelegate?
+    var height: CGFloat = TextEditor.defaultHeight
+    var webView: WKWebView!
+    var padding: CGFloat = 20
+    var scripts = [String]()
+    
     let placeholderLabel: UILabel = {
         let label = UILabel();
         label.textColor = UIColor.lightGray.withAlphaComponent(0.65)
@@ -23,79 +32,18 @@ class TextEditor: UIView, WKScriptMessageHandler{
         return label
     }()
     
-    var font: String?{
-        didSet{
-            guard let font = font else {return}
-            let jsCode = "editor.style.font =  '\(font)'"
-            webView.evaluateJavaScript(jsCode, completionHandler: nil)
-        }
-    }
-    
-    var fontWeight: String?{
-        didSet{
-            guard let font = font else {return}
-            let jsCode = "editor.style.font =  '\(font)'"
-            webView.evaluateJavaScript(jsCode, completionHandler: nil)
-        }
-    }
-    
-    var fontSize: Int?{
-        didSet{
-            guard let fontSize = fontSize else {return}
-            let jsCode = "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust='\(fontSize)%'"
-            print(jsCode)
-            webView.evaluateJavaScript(jsCode, completionHandler: nil)
-        }
-    }
-    
-    // These correspond to name of message recieved from javascript
-    static var textDidChange = "textDidChange"
-    static var heightDidChange = "heightDidChange"
-    static var defaultHeight: CGFloat = 60
-    var height: CGFloat = TextEditor.defaultHeight
-    
-    // This function is called by javascript
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        switch(message.name){
-            case TextEditor.textDidChange:
-                guard let text =
-                    message.body as? String else {return}
-                 placeholderLabel.isHidden = !(text == "" || text == "<br>")
-                delegate?.textDidChange(text)
-            
-            case TextEditor.heightDidChange:
-                guard let height = message.body as? CGFloat else {return}
-                if(height > self.height){
-                    self.height = height
-                    delegate?.heightDidChange(height)
-                }
-            default: break
-        }
-    }
-    
-    var webView: WKWebView!
-    var padding: CGFloat = 20
-    
-    // This adds text to editor
-    func addText(text: String?){
-        guard let text = text else{return}
-    
-        let jsCode = "editor.innerHTML += '\(text.htmlEscapeQuotes)'"
-        webView.evaluateJavaScript(jsCode, completionHandler: nil)
-    }
-    
     init(padding: CGFloat = 20, customHTML: String? = nil){
-        super.init(frame: .zero)
+        super.init(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: TextEditor.defaultHeight))
         self.padding = padding
-    
+        
         guard let scriptPath = Bundle.main.path(forResource: "TextEditor", ofType: "js"),
-        let scriptContent = try? String(contentsOfFile: scriptPath, encoding: .utf8)
-        else { fatalError("Unable to find javscript/html for text editor") }
+            let scriptContent = try? String(contentsOfFile: scriptPath, encoding: .utf8)
+            else { fatalError("Unable to find javscript/html for text editor") }
         
         let HTMLResource = customHTML ?? "TextEditor.html"
         guard let htmlPath = Bundle.main.path(forResource: HTMLResource, ofType: "html"),
-        let html = try? String(contentsOfFile: htmlPath, encoding: .utf8)
-        else{ fatalError("Cannot Read Files") }
+            let html = try? String(contentsOfFile: htmlPath, encoding: .utf8)
+            else{ fatalError("Cannot Read Files") }
         
         // Add Javascript
         let configuration = WKWebViewConfiguration()
@@ -113,7 +61,12 @@ class TextEditor: UIView, WKScriptMessageHandler{
         // Load HTML
         webView.loadHTMLString(html, baseURL: nil)
         
+        webView.navigationDelegate = self as? WKNavigationDelegate
         webView.scrollView.bounces = false
+        webView.scrollView.isScrollEnabled = false
+        webView.scrollView.showsHorizontalScrollIndicator = false
+        webView.scrollView.showsVerticalScrollIndicator = false
+        webView.scrollView.delegate = self
         webView.isOpaque = false
         webView.backgroundColor = .clear
         
@@ -123,6 +76,58 @@ class TextEditor: UIView, WKScriptMessageHandler{
         
         addSubview(webView)
         webView.anchor(top: topAnchor, bottom: bottomAnchor, left: leadingAnchor, right: trailingAnchor, paddingTop: padding, paddingBottom: padding, paddingLeft: padding, paddingRight: padding)
+        
+        self.translatesAutoresizingMaskIntoConstraints = false
+        heightConstraint = self.heightAnchor.constraint(equalToConstant: TextEditor.defaultHeight)
+        heightConstraint?.isActive = true
+    }
+    
+    
+    // This function is called by javascript
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        switch(message.name){
+            case TextEditor.textDidChange:
+                guard var text =
+                    message.body as? String else {return}
+                 placeholderLabel.isHidden = !(text == "" || text == "<br>")
+                delegate?.textDidChange(&text, for: self)
+            
+            case TextEditor.heightDidChange:
+                guard let height = message.body as? CGFloat else { return }
+                if(self.height < height + 30){
+                    self.height += 30
+                    heightConstraint?.constant = self.height
+                    delegate?.heightDidChange(self.height, for: self)
+                }
+            
+            default: break
+        }
+    }
+    
+    // This adds text to editor
+    func addText(text: String?){
+        guard let text = text else{return}
+        let jsCode = "editor.innerHTML += '\(text.htmlEscapeQuotes)'"
+        
+        if webView.isLoading {
+            scripts.append(jsCode)
+        } else {
+            webView.evaluateJavaScript(jsCode, completionHandler: { (id, error) in
+                print(error ?? "ERRor")
+            })
+        }
+    }
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        for script in scripts{
+            self.webView.evaluateJavaScript(script) { (id, error) in
+                print(error ?? "ERRor")
+            }
+        }
+    }
+    
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return nil
     }
     
     required init?(coder aDecoder: NSCoder) {

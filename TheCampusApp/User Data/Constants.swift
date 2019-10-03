@@ -23,3 +23,32 @@ let answerFont = UIFont.systemFont(ofSize: 14, weight: .light)
 
 let numberOfLinesInQuestion = 2
 let numberOfLinesInAnswer = 3
+
+// Tip for asking question
+func tipAttributedString()->NSMutableAttributedString{
+    let attributedText = NSMutableAttributedString(string: "Tips on getting good answers quickly\n", attributes: [.font: UIFont.systemFont(ofSize: 16, weight: .bold), .baselineOffset: 5])
+    
+    // Image Bullet point
+    let imageAttachment = NSTextAttachment()
+    imageAttachment.image = UIImage(named: "TickMark")?.resizeImage(size: CGSize(width: 20, height: 20)).with(color: blueColorDark)
+    let imageString = NSAttributedString(attachment: imageAttachment)
+    
+    // Actual Tips
+    let tips = [
+        " Make sure your question hasn't been asked already\n",
+        " Keep your question short and to the point\n",
+        " Double Check grammer and spelling\n"
+    ]
+    let tipAttributes: [NSAttributedString.Key: Any] = [
+        .font: UIFont.systemFont(ofSize: 14),
+        .foregroundColor: UIColor(white: 0.1, alpha: 1),
+        .baselineOffset: 3
+    ]
+    
+    tips.forEach({(point) in
+        attributedText.append(imageString)
+        attributedText.append(NSAttributedString(string: point, attributes: tipAttributes))
+    })
+    
+    return attributedText
+}
