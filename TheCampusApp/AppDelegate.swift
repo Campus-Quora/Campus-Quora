@@ -19,8 +19,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         FirebaseApp.configure()
+<<<<<<< HEAD
         window?.rootViewController = SignupViewController()
 
+=======
+        window?.rootViewController = MainTabBarController()
+>>>>>>> f2f0076c40d536ad90c548e51c500e3d3d3bdf0f
         
         return true
     }
