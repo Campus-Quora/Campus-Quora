@@ -528,7 +528,6 @@
 			files = (
 			);
 			inputFileListPaths = (
-<<<<<<< HEAD
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TheCampusApp/Pods-TheCampusApp-frameworks.sh",
@@ -555,13 +554,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
-=======
-				"${PODS_ROOT}/Target Support Files/Pods-TheCampusApp/Pods-TheCampusApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TheCampusApp/Pods-TheCampusApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
->>>>>>> 81725157ec873a80233b29303b69057c5a43d9bf
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

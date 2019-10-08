@@ -15,7 +15,7 @@ class MainTabBarController: UITabBarController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        delegate = self
+        self.delegate = self
         if Auth.auth().currentUser == nil {
             DispatchQueue.main.async {
                 let navigationController = UINavigationController(rootViewController: LoginViewController())
@@ -76,6 +76,16 @@ class MainTabBarController: UITabBarController{
         tabBar.shadowImage = UIImage()
         tabBar.isTranslucent = false
         tabBar.barTintColor = primaryColor
+    }
+    
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        if(viewController.tabBarItem.tag == 1){
+            print("YES")
+            let postVC = UINavigationController(rootViewController: PostViewController())
+            present(postVC, animated: true, completion: nil)
+            return false
+        }
+        return true
     }
 }
 

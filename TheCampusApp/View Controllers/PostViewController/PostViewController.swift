@@ -32,8 +32,24 @@ class PostViewController: UIViewController{
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.view.endEditing(true)
+    }
+    
+    let cancelButton: UIButton = {
+        let button = UIButton()
+        let size = CGSize(width: 30, height: 30)
+        let image = UIImage(named: "Cancel")?.resizeImage(size: size).withRenderingMode(.alwaysTemplate)
+        button.setImage(image, for: .normal)
+        button.tintColor = .black
+        button.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
+        return button
+    }()
+    
     func setupNavigationBar(){
         navigationItem.title = "Ask A Question"
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: cancelButton)
         guard let navBar = navigationController?.navigationBar else {return}
         if #available(iOS 11.0, *) {
             // BUG:- Title doesn't return to being large when scrolled upto top
@@ -43,6 +59,11 @@ class PostViewController: UIViewController{
         navBar.shadowImage = UIImage()
         navBar.isTranslucent = false
         navBar.tintColor = primaryColor
+        
+    }
+    
+    @objc func dismissVC(){
+        dismiss(animated: true, completion: nil)
     }
     
     deinit {
@@ -82,6 +103,7 @@ class PostViewController: UIViewController{
         textView.textContainerInset.bottom += 24
         textView.font = .systemFont(ofSize: 20, weight: .bold)
         textView.isScrollEnabled = false
+        textView.becomeFirstResponder()
         return textView
     }()
     
