@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -528,6 +528,7 @@
 			files = (
 			);
 			inputFileListPaths = (
+<<<<<<< HEAD
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TheCampusApp/Pods-TheCampusApp-frameworks.sh",
@@ -554,6 +555,13 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+=======
+				"${PODS_ROOT}/Target Support Files/Pods-TheCampusApp/Pods-TheCampusApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TheCampusApp/Pods-TheCampusApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+>>>>>>> 81725157ec873a80233b29303b69057c5a43d9bf
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -806,7 +814,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = HM.TheCampusApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -825,7 +833,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = HM.TheCampusApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
