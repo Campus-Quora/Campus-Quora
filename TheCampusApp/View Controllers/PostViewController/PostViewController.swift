@@ -12,15 +12,13 @@ let selectedColor = blueColorDark
 let unselectedColor: UIColor = .black
 
 class PostViewController: UIViewController{
-    // MARK:- Data Members
-    var isKeyboardVisible: Bool = true
-    var shouldMoveDown: Bool = true
-    var keyBoardHeight: CGFloat?{
-        didSet{
-//            guard let height = keyBoardHeight else {return}
-//            extraOptionsView.translatesAutoresizingMaskIntoConstraints = false
-//            extraOptionsView.heightAnchor.constraint(equalToConstant: height).isActive = true
-        }
+    // MARK:- Overriden Members
+    override var inputAccessoryView:UIView{
+        get{ return self.toolbar }
+    }
+    
+    override var canBecomeFirstResponder: Bool{
+        return true
     }
     
     // MARK:- Main Methods
@@ -38,7 +36,9 @@ class PostViewController: UIViewController{
         navigationItem.title = "Ask A Question"
         guard let navBar = navigationController?.navigationBar else {return}
         if #available(iOS 11.0, *) {
-            navBar.prefersLargeTitles = true
+            // BUG:- Title doesn't return to being large when scrolled upto top
+            // Setting large title causes some issues in handling scrollview offset with keyboard events
+            // navBar.prefersLargeTitles = true
         }
         navBar.shadowImage = UIImage()
         navBar.isTranslucent = false
@@ -53,6 +53,7 @@ class PostViewController: UIViewController{
     let scrollView: UIScrollView = {
         let view = UIScrollView()
         view.backgroundColor = .clear
+        view.bounces = false
         return view
     }()
     
@@ -63,12 +64,35 @@ class PostViewController: UIViewController{
         return label
     }()
     
-    let questionHeading: TextEditor = {
-        let textView = TextEditor(padding: 10, customHTML: "QuestionHeader")
-        textView.becomeFirstResponder()
-        textView.placeholderLabel.text = "Start your question with \"What\", \"How\", \"Why\", etc"
-        textView.placeholderLabel.font = .systemFont(ofSize: 20, weight: .bold)
-        textView.tag = 0
+    let questionHeadingPlaceholderText: NSAttributedString = {
+        let placeholder = "Start your question with \"What\", \"How\", \"Why\", etc"
+        return NSAttributedString(string: placeholder, attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .bold), .foregroundColor: UIColor.lightGray])
+    }()
+    
+    let questionDescriptionPlaceholderText: NSAttributedString = {
+        let placeholder = "Optional : Provide some extra details, add images or links"
+        return NSAttributedString(string: placeholder, attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .medium), .foregroundColor: UIColor.lightGray])
+    }()
+    
+    lazy var questionHeading: PlaceholderTextView = {
+        let textView = PlaceholderTextView()
+        scrollView.addSubview(textView)
+        textView.attributedPlaceholder = questionHeadingPlaceholderText
+        textView.constrainRight(to: self.view)
+        textView.textContainerInset.bottom += 24
+        textView.font = .systemFont(ofSize: 20, weight: .bold)
+        textView.isScrollEnabled = false
+        return textView
+    }()
+    
+    lazy var questionDescription: PlaceholderTextView = {
+        let textView = PlaceholderTextView()
+        scrollView.addSubview(textView)
+        textView.attributedPlaceholder = questionDescriptionPlaceholderText
+        textView.constrainRight(to: self.view)
+        textView.textContainerInset.bottom += 24
+        textView.font = .systemFont(ofSize: 16, weight: .bold)
+        textView.isScrollEnabled = false
         return textView
     }()
     
@@ -78,35 +102,39 @@ class PostViewController: UIViewController{
         return view
     }()
     
-    let questionDescription: TextEditor = {
-        let textView = TextEditor(padding: 10, customHTML: "QuestionDescription")
-        textView.placeholderLabel.text = "Optional: Include a decription"
-        textView.placeholderLabel.font = .systemFont(ofSize: 18, weight: .bold)
-        textView.tag = 1
-        return textView
+    // This fixes an issue of scrollView offset with keyboard
+    let bottomMargin: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        return view
     }()
     
+    // MARK:- Tool Bar
     lazy var toolbar: CustomToolBar = {
-        let bar = CustomToolBar(height: 60, controller: self)
+        let bar = CustomToolBar()
+        bar.backgroundColor = .white
+        bar.autoresizingMask = .flexibleHeight
         bar.toolSpacing = 35
-        bar.edgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
-        bar.leftItems = [addImageButton, showKeyboardButton, extraOptionsButton]
+        bar.edgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        bar.leftItems = [addImageButton, addLinkButton, textOptionsButton]
         bar.rightItems = [askButton]
         bar.layout()
         return bar
     }()
     
+    // Right Toolbar Buttons
     let askButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Ask", for: .normal)
+        button.setTitle("Done", for: .normal)
         button.tintColor = .white
         button.layer.cornerRadius = 5;
-        button.isEnabled = false
-        button.backgroundColor = blueColorFaint
-        button.addTarget(self, action: #selector(handleAsk), for: .touchUpInside)
+        button.backgroundColor = blueColorDark
+        button.addTarget(self, action: #selector(handleDone), for: .touchUpInside)
+        button.widthAnchor.constraint(equalToConstant: 80).isActive = true
         return button
     }()
     
+    // Left Toolbar Buttons
     let addImageButton: UIButton = {
         let button = ToolBarButton(imageName: "AddImage")
         button.tag = 0
@@ -114,57 +142,29 @@ class PostViewController: UIViewController{
         return button
     }()
     
-    let showKeyboardButton: UIButton = {
-        let button = ToolBarButton(imageName: "Keyboard")
+    let addLinkButton: UIButton = {
+        let button = ToolBarButton(imageName: "Link")
         button.tag = 1
         button.addTarget(self, action: #selector(handleButtonColor), for: .touchUpInside)
-        button.addTarget(self, action: #selector(handleShowKeyboard), for: .touchUpInside)
-        button.tintColor = selectedColor
         return button
     }()
     
-    let extraOptionsButton: ToolBarButton = {
+    let textOptionsButton: ToolBarButton = {
         let button = ToolBarButton(imageName: "Paragraph")
         button.tag = 2
-         button.addTarget(self, action: #selector(handleExtraOptions), for: .touchUpInside)
+         button.addTarget(self, action: #selector(handleTextOptions), for: .touchUpInside)
         button.addTarget(self, action: #selector(handleButtonColor), for: .touchUpInside)
         return button
     }()
     
-    lazy var extraOptionsView: ExtraTextOptionsView = {
-        let view = ExtraTextOptionsView(padding: 20)
-        view.alpha = 0
-        view.clipsToBounds = true
-        return view
-    }()
-    
-//    override var inputAccessoryView:UIView{
-//        get{ return self.toolbar }
-//    }
-//
-    override var canBecomeFirstResponder: Bool{
-        get{ return true }
-    }
-//
-//    override var inputView: UIView?{
-//        get{ return self.extraOptionsView }
-//    }
     func setupUI(){
         view.backgroundColor = primaryColor
     
         // Add Subviews
         view.addSubview(scrollView)
-        scrollView.bounces = false
         scrollView.addSubview(tipsView)
-        scrollView.addSubview(questionHeading)
-        scrollView.addSubview(questionDescription)
-        scrollView.addSubview(extraOptionsView)
         scrollView.addSubview(margin)
-//        view.addSubview(tipsView)
-//        view.addSubview(questionHeading)
-//        view.addSubview(questionDescription)
-//        view.addSubview(extraOptionsView)
-//        view.addSubview(margin)
+        scrollView.addSubview(bottomMargin)
         
         // Setup Delegates
         questionHeading.delegate = self
@@ -175,144 +175,27 @@ class PostViewController: UIViewController{
     
     // Add Constraints
     fileprivate func addConstraints() {
-//        view.translatesAutoresizingMaskIntoConstraints = false
+        // Scroll View
         scrollView.anchor(top: view.topAnchor, left: view.leadingAnchor)
         scrollView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1).isActive = true
         scrollView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1).isActive = true
         
+        // Tips View
         tipsView.anchor(top: scrollView.topAnchor, left: scrollView.leadingAnchor, right: view.trailingAnchor, paddingLeft: 10, paddingRight: 10)
+        
+        // Question Heading
         questionHeading.anchor(top: tipsView.bottomAnchor, left: scrollView.leadingAnchor, right: view.trailingAnchor)
+        questionHeading.sizeToFit()
+        questionHeading.setContentOffset(CGPoint.zero, animated: false)
+        
+        // Question Description
+        questionDescription.anchor(top: margin.bottomAnchor, left: scrollView.leadingAnchor, right: view.trailingAnchor)
+        questionDescription.sizeToFit()
+        questionDescription.setContentOffset(CGPoint.zero, animated: false)
+        
+        // Margins
         margin.anchor(top: questionHeading.bottomAnchor, left: scrollView.leadingAnchor, right: view.trailingAnchor, height: 1)
-        questionDescription.anchor(top: margin.bottomAnchor, bottom: scrollView.bottomAnchor, left: scrollView.leadingAnchor, right: view.trailingAnchor)
-        askButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
-//        extraOptionsView.anchor(top: toolbar.bottomAnchor, left: scrollView.leadingAnchor, right: scrollView.trailingAnchor)
-//
-//        tipsView.anchor(top: view.topAnchor, left: view.leadingAnchor, right: view.trailingAnchor, paddingLeft: 10, paddingRight: 10)
-//        questionHeading.anchor(top: tipsView.bottomAnchor, left: view.leadingAnchor, right: view.trailingAnchor)
-//        margin.anchor(top: questionHeading.bottomAnchor, left: view.leadingAnchor, right: view.trailingAnchor, height: 1)
-//        questionDescription.anchor(top: margin.bottomAnchor, left: view.leadingAnchor, right: view.trailingAnchor)
-//        askButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
-//        extraOptionsView.anchor(top: toolbar.bottomAnchor, left: view.leadingAnchor, right: view.trailingAnchor)
+        bottomMargin.anchor(top: questionDescription.bottomAnchor, bottom: scrollView.bottomAnchor, left: scrollView.leadingAnchor, right: view.trailingAnchor, height: 1)
     }
-    
-    // MARK:- Event Handler
-    
-    @objc func handleAsk(){
-        print("Asking")
-    }
-    
-    @objc func handleButtonColor(_ sender: UIButton){
-        sender.tintColor = selectedColor
-        for button in toolbar.leftItems{
-            if button.tag != sender.tag{
-                button.tintColor = unselectedColor
-            }
-        }
-    }
-    
-    @objc func handleShowKeyboard(){
-        if(!isKeyboardVisible){
-            if(!questionHeading.placeholderLabel.isHidden){
-                questionHeading.becomeFirstResponder()
-            }
-            else{
-                questionDescription.becomeFirstResponder()
-            }
-            extraOptionsView.alpha = 0
-        }
-    }
-    
-    @objc func handleExtraOptions(){
-        if(isKeyboardVisible){
-            shouldMoveDown = false
-            extraOptionsView.alpha = 1
-            UIView.setAnimationsEnabled(false)
-            view.endEditing(true)
-        }
-        else{
-            
-        }
-    }
-}
-
-extension PostViewController: CustomToolBarDelegate {
-    // This is triggered when keyboards shows up
-    @objc func handleKeyboardNotification(notification: NSNotification) {
-        if let userInfo = notification.userInfo, let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect{
-            isKeyboardVisible = notification.name == UIResponder.keyboardWillShowNotification
-            
-            adjustInsetForKeyboardShow(isKeyboardVisible, height: keyboardFrame.height)
-            
-//            if(isKeyboardVisible){
-//                let tabBarHeight = tabBarController!.tabBar.frame.size.height
-//                if keyBoardHeight == nil{
-//                    keyBoardHeight = keyboardFrame.height - tabBarHeight
-//                }
-//                toolbar.bottomConstraint.constant = -(keyboardFrame.height - tabBarHeight)
-//                UIView.setAnimationsEnabled(true)
-//            }
-//            else if(shouldMoveDown){
-//                toolbar.bottomConstraint.constant = 0
-//            }
-//            UIView.animate(withDuration: 0, delay: 0, options: .curveEaseOut, animations: {
-//                self.view.layoutIfNeeded()
-//            }, completion: nil)
-        }
-    }
-    
-    func adjustInsetForKeyboardShow(_ show: Bool, height: CGFloat) {
-        let tabbarHeight = tabBarController?.tabBar.frame.size.height ?? 0
-        let toolbarHeight = navigationController?.toolbar.frame.size.height ?? 0
-        let bottomInset = height - tabbarHeight - toolbarHeight
-        
-        let adjustmentHeight = (bottomInset + 20) * (show ? 1 : -1)
-        scrollView.contentInset.bottom += adjustmentHeight
-        scrollView.scrollIndicatorInsets.bottom += adjustmentHeight
-        print(adjustmentHeight)
-        if(show){
-            var aRect = self.view.frame;
-            print(aRect)
-            aRect.size.height -= adjustmentHeight;
-
-            let activeField: TextEditor? = [questionHeading, questionDescription].first { $0.isFirstResponder }
-            if let activeField = activeField {
-                if aRect.contains(activeField.frame.origin) {
-                    let scrollPoint = CGPoint(x: 0, y: activeField.frame.origin.y - adjustmentHeight)
-                    print(scrollPoint)
-                    scrollView.setContentOffset(scrollPoint, animated: true)
-                }
-            }
-        }
-    }
-}
-
-// MARK:- Extension #1
-extension PostViewController: TextEditorDelegate{
-    
-    func heightDidChange(_ height: CGFloat, for editor: TextEditor) {
-    }
-    
-    func textDidChange(_ text: inout String, for editor: TextEditor) {
-        checkValidInput(&text)
-    }
-    
-    // This is triggered when Keyboards shows
-    
-    // This functions check if input text field in valid
-    func checkValidInput(_ text: inout String){
-        let isQuestionNonEmpty = text.count > 0
-        
-        if isQuestionNonEmpty{
-            askButton.isEnabled = true
-            askButton.backgroundColor = blueColorDark
-        }
-        else{
-            askButton.isEnabled = false
-            askButton.backgroundColor = blueColorFaint
-        }
-    }
-}
-
-extension PostViewController: UIScrollViewDelegate{
     
 }

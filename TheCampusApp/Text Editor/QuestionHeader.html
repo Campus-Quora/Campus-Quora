@@ -5,25 +5,71 @@
         <style>
             body, html{
                 width: 100%;
-                height: 100%
+                height: 100%;
                 padding: 0;
                 margin: 0;
             }
-            #editor{
+            .editor{
+                width: 100%;
+                min-height: 100px;
+                outline: none;
+                background-color: white;
+            }
+            #editor1{
                 font-size: 20px;
                 font-weight: bold;
+                white-space: pre-line;
+            }
+            #editor2{
+                font-size: 18px;
+            }
+            .seperator{
+                width: 100%;
+                height: 1px;
+                background-color: #333333;
             }
         </style>
     </head>
     <body>
-        <div id="editor" contenteditable="true"></div>
+        <div class="editor" id="editor1" contenteditable="true"></div>
+        <div class="seperator"></div>
+        <div class="editor" id="editor2" contenteditable="true"></div>
     </body>
     <script>
         window.addEventListener("keydown", function(event){
-            if (event.which == '13') {
+            if (event.which == '13' && event.target.id == "editor1") {
                 event.preventDefault();
             }
         }, true);
+
+        // Fix Pasting Issues
+        let editors = document.querySelectorAll(".editor")
+        for(let editor of editors){
+            editor.addEventListener("paste", function(e){
+                e.preventDefault();
+                let content;
+                if (window.clipboardData) {
+                    content = window.clipboardData.getData('Text');
+                    if(e.target.id == "editor1"){
+                        console.log(e.target.id)
+                        content = content.replace(/(\r\n|\n|\r|\\n)/gm, '');
+                    }        
+                    if (window.getSelection) {
+                        var selObj = window.getSelection();
+                        var selRange = selObj.getRangeAt(0);
+                        selRange.deleteContents();                
+                        selRange.insertNode(document.createTextNode(content));
+                    }
+                } else if (e.clipboardData) {
+                    content = e.clipboardData.getData('text/plain');
+                    if(e.target.id == "editor1"){
+                        console.log(e.target.id)
+                        content = content.replace(/(\r\n|\n|\r|\\n)/gm, '');
+                    } 
+                    document.execCommand('insertText', false, content);
+                }      
+            }, true);
+        }
     </script>
 </html>
 

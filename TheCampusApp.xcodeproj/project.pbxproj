@@ -25,10 +25,33 @@
 		00EBA84E23448AE500539A31 /* TextEditor.html in Resources */ = {isa = PBXBuildFile; fileRef = 00EBA84D23448AE500539A31 /* TextEditor.html */; };
 		00EBA85023448AEF00539A31 /* TextEditor.js in Resources */ = {isa = PBXBuildFile; fileRef = 00EBA84F23448AEF00539A31 /* TextEditor.js */; };
 		00EBA85223448AF600539A31 /* TextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA85123448AF600539A31 /* TextEditor.swift */; };
-		00EBA8552344CB0C00539A31 /* KeyboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8542344CB0C00539A31 /* KeyboardService.swift */; };
 		00EBA8572344FD0900539A31 /* QuestionHeader.html in Resources */ = {isa = PBXBuildFile; fileRef = 00EBA8562344FD0900539A31 /* QuestionHeader.html */; };
 		00EBA8592344FD1C00539A31 /* QuestionDescription.html in Resources */ = {isa = PBXBuildFile; fileRef = 00EBA8582344FD1C00539A31 /* QuestionDescription.html */; };
 		00EBA85B23452A2500539A31 /* File.html in Resources */ = {isa = PBXBuildFile; fileRef = 00EBA85A23452A2500539A31 /* File.html */; };
+		00EBA87723462B2F00539A31 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA86123462B2F00539A31 /* Storage.swift */; };
+		00EBA87823462B2F00539A31 /* UniversalTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA86223462B2F00539A31 /* UniversalTypes.swift */; };
+		00EBA87923462B2F00539A31 /* Notepad.m in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA86323462B2F00539A31 /* Notepad.m */; };
+		00EBA87A23462B2F00539A31 /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA86423462B2F00539A31 /* Element.swift */; };
+		00EBA87B23462B2F00539A31 /* Notepad-iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA86523462B2F00539A31 /* Notepad-iOS.swift */; };
+		00EBA87C23462B2F00539A31 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA86623462B2F00539A31 /* Extensions.swift */; };
+		00EBA87D23462B2F00539A31 /* Notepad-macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA86723462B2F00539A31 /* Notepad-macOS.swift */; };
+		00EBA87E23462B2F00539A31 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA86823462B2F00539A31 /* Style.swift */; };
+		00EBA87F23462B2F00539A31 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA86A23462B2F00539A31 /* Theme.swift */; };
+		00EBA88023462B2F00539A31 /* solarized-light.json in Resources */ = {isa = PBXBuildFile; fileRef = 00EBA86C23462B2F00539A31 /* solarized-light.json */; };
+		00EBA88123462B2F00539A31 /* one-light.json in Resources */ = {isa = PBXBuildFile; fileRef = 00EBA86D23462B2F00539A31 /* one-light.json */; };
+		00EBA88223462B2F00539A31 /* one-light-custom.json in Resources */ = {isa = PBXBuildFile; fileRef = 00EBA86E23462B2F00539A31 /* one-light-custom.json */; };
+		00EBA88323462B2F00539A31 /* base16-tomorrow-dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 00EBA86F23462B2F00539A31 /* base16-tomorrow-dark.json */; };
+		00EBA88423462B2F00539A31 /* base16-tomorrow-light.json in Resources */ = {isa = PBXBuildFile; fileRef = 00EBA87023462B2F00539A31 /* base16-tomorrow-light.json */; };
+		00EBA88523462B2F00539A31 /* system-minimal.json in Resources */ = {isa = PBXBuildFile; fileRef = 00EBA87123462B2F00539A31 /* system-minimal.json */; };
+		00EBA88623462B2F00539A31 /* blues-clues.json in Resources */ = {isa = PBXBuildFile; fileRef = 00EBA87223462B2F00539A31 /* blues-clues.json */; };
+		00EBA88723462B2F00539A31 /* solarized-dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 00EBA87323462B2F00539A31 /* solarized-dark.json */; };
+		00EBA88823462B2F00539A31 /* one-dark-custom.json in Resources */ = {isa = PBXBuildFile; fileRef = 00EBA87423462B2F00539A31 /* one-dark-custom.json */; };
+		00EBA88923462B2F00539A31 /* one-dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 00EBA87523462B2F00539A31 /* one-dark.json */; };
+		00EBA88C2348AD8900539A31 /* EventHandlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA88B2348AD8900539A31 /* EventHandlers.swift */; };
+		00EBA88E2348ADBB00539A31 /* Keyboard Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA88D2348ADBB00539A31 /* Keyboard Events.swift */; };
+		00EBA8902348ADD900539A31 /* Ask Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA88F2348ADD900539A31 /* Ask Button.swift */; };
+		00EBA8922348ADFE00539A31 /* Rich Text Editor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8912348ADFE00539A31 /* Rich Text Editor.swift */; };
+		00EBA8942348C68100539A31 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8932348C68100539A31 /* UIFont.swift */; };
 		1FAC1B282322C01300304173 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAC1B272322C01300304173 /* AppDelegate.swift */; };
 		1FAC1B2A2322C01300304173 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAC1B292322C01300304173 /* ViewController.swift */; };
 		1FAC1B2D2322C01300304173 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FAC1B2B2322C01300304173 /* Main.storyboard */; };
@@ -76,10 +99,34 @@
 		00EBA84D23448AE500539A31 /* TextEditor.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = TextEditor.html; sourceTree = "<group>"; };
 		00EBA84F23448AEF00539A31 /* TextEditor.js */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.javascript; path = TextEditor.js; sourceTree = "<group>"; tabWidth = 1; usesTabs = 0; };
 		00EBA85123448AF600539A31 /* TextEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextEditor.swift; sourceTree = "<group>"; };
-		00EBA8542344CB0C00539A31 /* KeyboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardService.swift; sourceTree = "<group>"; };
 		00EBA8562344FD0900539A31 /* QuestionHeader.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = QuestionHeader.html; sourceTree = "<group>"; };
 		00EBA8582344FD1C00539A31 /* QuestionDescription.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = QuestionDescription.html; sourceTree = "<group>"; };
 		00EBA85A23452A2500539A31 /* File.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = File.html; sourceTree = "<group>"; };
+		00EBA86123462B2F00539A31 /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		00EBA86223462B2F00539A31 /* UniversalTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UniversalTypes.swift; sourceTree = "<group>"; };
+		00EBA86323462B2F00539A31 /* Notepad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notepad.m; sourceTree = "<group>"; };
+		00EBA86423462B2F00539A31 /* Element.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Element.swift; sourceTree = "<group>"; };
+		00EBA86523462B2F00539A31 /* Notepad-iOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notepad-iOS.swift"; sourceTree = "<group>"; };
+		00EBA86623462B2F00539A31 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		00EBA86723462B2F00539A31 /* Notepad-macOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notepad-macOS.swift"; sourceTree = "<group>"; };
+		00EBA86823462B2F00539A31 /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
+		00EBA86923462B2F00539A31 /* Notepad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notepad.h; sourceTree = "<group>"; };
+		00EBA86A23462B2F00539A31 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		00EBA86C23462B2F00539A31 /* solarized-light.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "solarized-light.json"; sourceTree = "<group>"; };
+		00EBA86D23462B2F00539A31 /* one-light.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "one-light.json"; sourceTree = "<group>"; };
+		00EBA86E23462B2F00539A31 /* one-light-custom.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "one-light-custom.json"; sourceTree = "<group>"; };
+		00EBA86F23462B2F00539A31 /* base16-tomorrow-dark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "base16-tomorrow-dark.json"; sourceTree = "<group>"; };
+		00EBA87023462B2F00539A31 /* base16-tomorrow-light.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "base16-tomorrow-light.json"; sourceTree = "<group>"; };
+		00EBA87123462B2F00539A31 /* system-minimal.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "system-minimal.json"; sourceTree = "<group>"; };
+		00EBA87223462B2F00539A31 /* blues-clues.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "blues-clues.json"; sourceTree = "<group>"; };
+		00EBA87323462B2F00539A31 /* solarized-dark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "solarized-dark.json"; sourceTree = "<group>"; };
+		00EBA87423462B2F00539A31 /* one-dark-custom.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "one-dark-custom.json"; sourceTree = "<group>"; };
+		00EBA87523462B2F00539A31 /* one-dark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "one-dark.json"; sourceTree = "<group>"; };
+		00EBA88B2348AD8900539A31 /* EventHandlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandlers.swift; sourceTree = "<group>"; };
+		00EBA88D2348ADBB00539A31 /* Keyboard Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keyboard Events.swift"; sourceTree = "<group>"; };
+		00EBA88F2348ADD900539A31 /* Ask Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ask Button.swift"; sourceTree = "<group>"; };
+		00EBA8912348ADFE00539A31 /* Rich Text Editor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rich Text Editor.swift"; sourceTree = "<group>"; };
+		00EBA8932348C68100539A31 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		1FAC1B242322C01300304173 /* TheCampusApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TheCampusApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FAC1B272322C01300304173 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1FAC1B292322C01300304173 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -141,6 +188,7 @@
 				00EBA804233CBFF400539A31 /* Dismiss.swift */,
 				00EBA80C233DEB5C00539A31 /* UIImage.swift */,
 				00EBA822233FCA9C00539A31 /* String.swift */,
+				00EBA8932348C68100539A31 /* UIFont.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -187,6 +235,10 @@
 			children = (
 				00EBA811233DF18A00539A31 /* PostViewController.swift */,
 				00EBA82523406ECD00539A31 /* CustomToolBar.swift */,
+				00EBA88B2348AD8900539A31 /* EventHandlers.swift */,
+				00EBA88D2348ADBB00539A31 /* Keyboard Events.swift */,
+				00EBA88F2348ADD900539A31 /* Ask Button.swift */,
+				00EBA8912348ADFE00539A31 /* Rich Text Editor.swift */,
 			);
 			path = PostViewController;
 			sourceTree = "<group>";
@@ -207,9 +259,43 @@
 		00EBA8532344CAFA00539A31 /* API */ = {
 			isa = PBXGroup;
 			children = (
-				00EBA8542344CB0C00539A31 /* KeyboardService.swift */,
 			);
 			path = API;
+			sourceTree = "<group>";
+		};
+		00EBA86023462B2F00539A31 /* Notepad */ = {
+			isa = PBXGroup;
+			children = (
+				00EBA86123462B2F00539A31 /* Storage.swift */,
+				00EBA86223462B2F00539A31 /* UniversalTypes.swift */,
+				00EBA86323462B2F00539A31 /* Notepad.m */,
+				00EBA86423462B2F00539A31 /* Element.swift */,
+				00EBA86523462B2F00539A31 /* Notepad-iOS.swift */,
+				00EBA86623462B2F00539A31 /* Extensions.swift */,
+				00EBA86723462B2F00539A31 /* Notepad-macOS.swift */,
+				00EBA86823462B2F00539A31 /* Style.swift */,
+				00EBA86923462B2F00539A31 /* Notepad.h */,
+				00EBA86A23462B2F00539A31 /* Theme.swift */,
+				00EBA86B23462B2F00539A31 /* themes */,
+			);
+			path = Notepad;
+			sourceTree = "<group>";
+		};
+		00EBA86B23462B2F00539A31 /* themes */ = {
+			isa = PBXGroup;
+			children = (
+				00EBA86C23462B2F00539A31 /* solarized-light.json */,
+				00EBA86D23462B2F00539A31 /* one-light.json */,
+				00EBA86E23462B2F00539A31 /* one-light-custom.json */,
+				00EBA86F23462B2F00539A31 /* base16-tomorrow-dark.json */,
+				00EBA87023462B2F00539A31 /* base16-tomorrow-light.json */,
+				00EBA87123462B2F00539A31 /* system-minimal.json */,
+				00EBA87223462B2F00539A31 /* blues-clues.json */,
+				00EBA87323462B2F00539A31 /* solarized-dark.json */,
+				00EBA87423462B2F00539A31 /* one-dark-custom.json */,
+				00EBA87523462B2F00539A31 /* one-dark.json */,
+			);
+			path = themes;
 			sourceTree = "<group>";
 		};
 		1FAC1B1B2322C01300304173 = {
@@ -237,6 +323,7 @@
 		1FAC1B262322C01300304173 /* TheCampusApp */ = {
 			isa = PBXGroup;
 			children = (
+				00EBA86023462B2F00539A31 /* Notepad */,
 				00EBA8532344CAFA00539A31 /* API */,
 				00EBA84C23448ABE00539A31 /* Text Editor */,
 				00EBA8012337CBAD00539A31 /* Extensions */,
@@ -396,15 +483,25 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00EBA88323462B2F00539A31 /* base16-tomorrow-dark.json in Resources */,
 				1FAC1B322322C01600304173 /* LaunchScreen.storyboard in Resources */,
 				00EBA85B23452A2500539A31 /* File.html in Resources */,
+				00EBA88523462B2F00539A31 /* system-minimal.json in Resources */,
+				00EBA88223462B2F00539A31 /* one-light-custom.json in Resources */,
 				1FAC1B582322DB7600304173 /* GoogleService-Info.plist in Resources */,
 				00EBA8592344FD1C00539A31 /* QuestionDescription.html in Resources */,
+				00EBA88123462B2F00539A31 /* one-light.json in Resources */,
+				00EBA88823462B2F00539A31 /* one-dark-custom.json in Resources */,
 				00EBA8572344FD0900539A31 /* QuestionHeader.html in Resources */,
 				1FAC1B2F2322C01600304173 /* Assets.xcassets in Resources */,
+				00EBA88723462B2F00539A31 /* solarized-dark.json in Resources */,
 				1FAC1B2D2322C01300304173 /* Main.storyboard in Resources */,
+				00EBA88023462B2F00539A31 /* solarized-light.json in Resources */,
 				00EBA85023448AEF00539A31 /* TextEditor.js in Resources */,
+				00EBA88623462B2F00539A31 /* blues-clues.json in Resources */,
 				00EBA84E23448AE500539A31 /* TextEditor.html in Resources */,
+				00EBA88923462B2F00539A31 /* one-dark.json in Resources */,
+				00EBA88423462B2F00539A31 /* base16-tomorrow-light.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,6 +532,7 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TheCampusApp/Pods-TheCampusApp-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/Down/Down.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
@@ -448,6 +546,7 @@
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Down.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
@@ -490,23 +589,36 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00EBA8552344CB0C00539A31 /* KeyboardService.swift in Sources */,
+				00EBA87F23462B2F00539A31 /* Theme.swift in Sources */,
 				00EBA805233CBFF400539A31 /* Dismiss.swift in Sources */,
+				00EBA8902348ADD900539A31 /* Ask Button.swift in Sources */,
 				00EBA817233E217E00539A31 /* ProfileHeader.swift in Sources */,
 				00EBA7FD2337BA5A00539A31 /* LoginViewController.swift in Sources */,
+				00EBA87723462B2F00539A31 /* Storage.swift in Sources */,
 				00EBA80B233DEA0000539A31 /* UserData.swift in Sources */,
+				00EBA87E23462B2F00539A31 /* Style.swift in Sources */,
 				1FAC1B2A2322C01300304173 /* ViewController.swift in Sources */,
+				00EBA8922348ADFE00539A31 /* Rich Text Editor.swift in Sources */,
+				00EBA87B23462B2F00539A31 /* Notepad-iOS.swift in Sources */,
+				00EBA87A23462B2F00539A31 /* Element.swift in Sources */,
 				00EBA81B233E9B2200539A31 /* Constants.swift in Sources */,
 				00EBA808233D468300539A31 /* MainTabBarController.swift in Sources */,
 				00EBA810233DF16900539A31 /* HomeViewController.swift in Sources */,
+				00EBA87823462B2F00539A31 /* UniversalTypes.swift in Sources */,
 				00EBA814233DF1AB00539A31 /* ProfileViewController.swift in Sources */,
 				00EBA8032337CBC700539A31 /* Constraints.swift in Sources */,
 				00EBA80D233DEB5C00539A31 /* UIImage.swift in Sources */,
+				00EBA88C2348AD8900539A31 /* EventHandlers.swift in Sources */,
 				00EBA819233E986D00539A31 /* PostCell.swift in Sources */,
 				00EBA85223448AF600539A31 /* TextEditor.swift in Sources */,
 				00EBA7FF2337BA7400539A31 /* SignupViewController.swift in Sources */,
+				00EBA88E2348ADBB00539A31 /* Keyboard Events.swift in Sources */,
+				00EBA87923462B2F00539A31 /* Notepad.m in Sources */,
+				00EBA87C23462B2F00539A31 /* Extensions.swift in Sources */,
 				1FAC1B282322C01300304173 /* AppDelegate.swift in Sources */,
 				00EBA823233FCA9C00539A31 /* String.swift in Sources */,
+				00EBA8942348C68100539A31 /* UIFont.swift in Sources */,
+				00EBA87D23462B2F00539A31 /* Notepad-macOS.swift in Sources */,
 				00EBA82623406ECD00539A31 /* CustomToolBar.swift in Sources */,
 				00EBA812233DF18A00539A31 /* PostViewController.swift in Sources */,
 			);

@@ -9,5 +9,5 @@ target 'TheCampusApp' do
 	pod 'Firebase/Core'
 	pod 'Firebase/Auth'
 	pod 'Firebase/Firestore'
-
+	pod 'Down', '~> 0.4.2'
 end

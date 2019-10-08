@@ -8,6 +8,6 @@
 
 #import "Notepad.h"
 
-@implementation Notepad
+@implementation Notepad : NSObject 
 
 @end

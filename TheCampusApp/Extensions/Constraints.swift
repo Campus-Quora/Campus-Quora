@@ -41,4 +41,16 @@ extension UIView{
         self.translatesAutoresizingMaskIntoConstraints = false
         self.centerYAnchor.constraint(equalTo: centerAnchor, constant: shiftBy).isActive = true
     }
+    
+    func fillSuperView(){
+        if let superview = superview{
+            anchor(top: superview.topAnchor, bottom: superview.bottomAnchor, left: superview.leadingAnchor, right: superview.trailingAnchor)
+        }
+    }
+    
+    func fillSuperView(padding: CGFloat){
+        if let superview = superview{
+            anchor(top: superview.topAnchor, bottom: superview.bottomAnchor, left: superview.leadingAnchor, right: superview.trailingAnchor, paddingTop: padding, paddingBottom: padding, paddingLeft: padding, paddingRight: padding)
+        }
+    }
 }
