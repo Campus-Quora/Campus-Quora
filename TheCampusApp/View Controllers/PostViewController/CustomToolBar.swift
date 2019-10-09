@@ -225,35 +225,52 @@ class TextFormatOptionsView: UIView, UITextViewDelegate{
     
     @objc func handleOrderedList(){
         isOrderedListActive = !isOrderedListActive
-        if(!isOrderedListActive){return}
+        if(!isOrderedListActive){
+            removeOrderedList()
+            return
+        }
         orderedListHelper()
     }
     func orderedListHelper(){
         guard let textView = dataSource else {return}
         let currentPosition = textView.selectedTextRange
         
-        let startOfLine = textView.tokenizer.position(from: currentPosition!.start, toBoundary: .paragraph, inDirection: TextFormatOptionsView.backwardDirection)
+        let startOfLine = textView.tokenizer.position(from: currentPosition!.start, toBoundary: .line, inDirection: TextFormatOptionsView.backwardDirection)
         if let startOfLine = startOfLine{
-            let location = textView.offset(from: textView.beginningOfDocument, to: startOfLine)
-            let range = NSRange(location: location, length: 0)
-            if (location + 1) < textView.textStorage.length{
-                let textRange = textView.toTextRange(NSRange: NSRange(location: location, length: 1))
-                if let text = textView.text(in: textRange){
-                    if let num = Int(text){
-                        orderedListItemNumber = num
-                        print(1)
-                    }
-                    print(2)
-                }
-                print(3)
-            }
+            var location = textView.offset(from: textView.beginningOfDocument, to: startOfLine)
+            var range = NSRange(location: location, length: 0)
             orderedListItemNumber += 1
-            let number = NSAttributedString(string: "\(orderedListItemNumber). ", attributes: [.font: currentFont])
-            textView.textStorage.replaceCharacters(in: range , with: number)
             var length = 3
             if(orderedListItemNumber > 9){length += 1}
             if(orderedListItemNumber > 99){length += 1}
             if(orderedListItemNumber > 999){length += 1}
+            
+            if(location > 0){
+                var prevCharRange = NSRange(location: location, length: 1)
+                var prevTextRange = textView.toTextRange(NSRange: prevCharRange)
+                var character = textView.text(in: prevTextRange)
+                if(character == "\n"){
+                    let number = NSAttributedString(string: "\n\(orderedListItemNumber). ", attributes: [.font: currentFont])
+                    textView.textStorage.replaceCharacters(in: prevCharRange , with: number)
+                    textView.offsetSelection(by: length)
+                    return
+                }
+                else{
+                    prevCharRange = NSRange(location: location - 1, length: 1)
+                    prevTextRange = textView.toTextRange(NSRange: prevCharRange)
+                    character = textView.text(in: prevTextRange)
+                    if(character != "\n"){
+                        // Fixes text wrapping issue
+                        let startOfLine = textView.tokenizer.position(from: currentPosition!.start, toBoundary: .paragraph, inDirection: TextFormatOptionsView.backwardDirection)
+                        if let startOfLine = startOfLine{
+                            location = textView.offset(from: textView.beginningOfDocument, to: startOfLine)
+                            range = NSRange(location: location, length: 0)
+                        }
+                    }
+                }
+            }
+            let number = NSAttributedString(string: "\(orderedListItemNumber). ", attributes: [.font: currentFont])
+            textView.textStorage.replaceCharacters(in: range , with: number)
             textView.offsetSelection(by: length)
         }
     }
@@ -270,26 +287,79 @@ class TextFormatOptionsView: UIView, UITextViewDelegate{
             if(orderedListItemNumber > 999){length += 1}
             let range = NSRange(location: location, length: length)
             let empty = NSAttributedString(string: "")
+            let currentLoc = textView.selectedRange.location
+            if(currentLoc < length){
+                length = currentLoc
+            }
+            else if(currentLoc + length > textView.textStorage.length){
+                length = textView.textStorage.length - textView.selectedRange.location
+            }
             textView.textStorage.replaceCharacters(in: range , with: empty)
-            textView.offsetSelection(by: length)
+            textView.offsetSelection(by: -length)
         }
     }
     
     @objc func handleUnorderedList(){
         isUnorderedListActive = !isUnorderedListActive
-        if(!isUnorderedListActive){return}
+        if(!isUnorderedListActive){
+            removeUnorderedList()
+            return
+        }
         unorderedListHelper()
     }
     func unorderedListHelper(){
         guard let textView = dataSource else {return}
         let currentPosition = textView.selectedTextRange
-        
         let startOfLine = textView.tokenizer.position(from: currentPosition!.start, toBoundary: .line, inDirection: TextFormatOptionsView.backwardDirection)
         if let startOfLine = startOfLine{
-            let location = textView.offset(from: textView.beginningOfDocument, to: startOfLine)
-            let range = NSRange(location: location, length: 0)
+            var location = textView.offset(from: textView.beginningOfDocument, to: startOfLine)
+            var range = NSRange(location: location, length: 0)
+            if(location > 0){
+                var prevCharRange = NSRange(location: location, length: 1)
+                var prevTextRange = textView.toTextRange(NSRange: prevCharRange)
+                let character = textView.text(in: prevTextRange)
+                if(character == "\n"){
+                    textView.textStorage.replaceCharacters(in: prevCharRange, with: spaceBulletString)
+                    textView.offsetSelection(by: 2)
+                    return
+                }
+                else{
+                    prevCharRange = NSRange(location: location - 1, length: 1)
+                    prevTextRange = textView.toTextRange(NSRange: prevCharRange)
+                    let character = textView.text(in: prevTextRange)
+                    if(character != "\n"){
+                        // Fixes text wrapping issue
+                        let startOfLine = textView.tokenizer.position(from: currentPosition!.start, toBoundary: .paragraph, inDirection: TextFormatOptionsView.backwardDirection)
+                        if let startOfLine = startOfLine{
+                            location = textView.offset(from: textView.beginningOfDocument, to: startOfLine)
+                            range = NSRange(location: location, length: 0)
+                        }
+                    }
+                }
+            }
             textView.textStorage.replaceCharacters(in: range , with: bulletString)
             textView.offsetSelection(by: 2)
+        }
+    }
+    func removeUnorderedList(){
+        guard let textView = dataSource else {return}
+        let currentPosition = textView.selectedTextRange
+        
+        let startOfLine = textView.tokenizer.position(from: currentPosition!.start, toBoundary: .paragraph, inDirection: TextFormatOptionsView.backwardDirection)
+        if let startOfLine = startOfLine{
+            let location = textView.offset(from: textView.beginningOfDocument, to: startOfLine)
+            var length = 2
+            let range = NSRange(location: location, length: length)
+            let empty = NSAttributedString(string: "")
+            let currentLoc = textView.selectedRange.location
+            if(currentLoc < length){
+                length = currentLoc
+            }
+            else if(currentLoc + length > textView.textStorage.length){
+                length = textView.textStorage.length - textView.selectedRange.location
+            }
+            textView.textStorage.replaceCharacters(in: range , with: empty)
+            textView.offsetSelection(by: -length)
         }
     }
     
