@@ -35,6 +35,9 @@ class PostViewController: UIViewController{
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.view.endEditing(true)
+        UIView.animate(withDuration: 0.1) {
+            self.toolbar.alpha = 0
+        }
     }
     
     let cancelButton: UIButton = {
@@ -46,10 +49,23 @@ class PostViewController: UIViewController{
         button.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
         return button
     }()
+    let askButton: UIButton = {
+        let button = UIButton()
+        let size = CGSize(width: 30, height: 30)
+        button.setTitle("Ask", for: .normal)
+        button.tintColor = .white
+        button.layer.cornerRadius = 10;
+        button.backgroundColor = blueColorFaint
+        button.addTarget(self, action: #selector(handleAsk), for: .touchUpInside)
+        button.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        button.isEnabled = false
+        return button
+    }()
     
     func setupNavigationBar(){
         navigationItem.title = "Ask A Question"
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: cancelButton)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: askButton)
         guard let navBar = navigationController?.navigationBar else {return}
         if #available(iOS 11.0, *) {
             // BUG:- Title doesn't return to being large when scrolled upto top
@@ -113,8 +129,10 @@ class PostViewController: UIViewController{
         textView.attributedPlaceholder = questionDescriptionPlaceholderText
         textView.constrainRight(to: self.view)
         textView.textContainerInset.bottom += 24
-        textView.font = .systemFont(ofSize: 16, weight: .bold)
+        textView.font = .systemFont(ofSize: 16)
         textView.isScrollEnabled = false
+        textView.isSelectable = true
+        textView.isEditable = true
         return textView
     }()
     
@@ -139,13 +157,18 @@ class PostViewController: UIViewController{
         bar.toolSpacing = 35
         bar.edgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         bar.leftItems = [addImageButton, addLinkButton, textOptionsButton]
-        bar.rightItems = [askButton]
+        bar.rightItems = [doneButton]
         bar.layout()
         return bar
     }()
     
+    lazy var leftOffset: CGFloat = {
+        let offset: CGFloat = 2 * ((toolbar.toolSpacing ?? 0) + 30) - 10
+        return offset
+    }()
+    
     // Right Toolbar Buttons
-    let askButton: UIButton = {
+    let doneButton: UIButton = {
         let button = UIButton()
         button.setTitle("Done", for: .normal)
         button.tintColor = .white
@@ -174,9 +197,17 @@ class PostViewController: UIViewController{
     let textOptionsButton: ToolBarButton = {
         let button = ToolBarButton(imageName: "Paragraph")
         button.tag = 2
-         button.addTarget(self, action: #selector(handleTextOptions), for: .touchUpInside)
         button.addTarget(self, action: #selector(handleButtonColor), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleTextOptions), for: .touchUpInside)
         return button
+    }()
+    
+    // Text Options
+    let textOptionsView: TextFormatOptionsView = {
+        let view = TextFormatOptionsView()
+        view.backgroundColor = .white
+        view.initialise()
+        return view
     }()
     
     func setupUI(){
@@ -187,10 +218,12 @@ class PostViewController: UIViewController{
         scrollView.addSubview(tipsView)
         scrollView.addSubview(margin)
         scrollView.addSubview(bottomMargin)
+        toolbar.insertSubview(textOptionsView, belowSubview: doneButton)
         
         // Setup Delegates
         questionHeading.delegate = self
         questionDescription.delegate = self
+        textOptionsView.dataSource = questionDescription
         
         addConstraints()
     }
@@ -218,6 +251,16 @@ class PostViewController: UIViewController{
         // Margins
         margin.anchor(top: questionHeading.bottomAnchor, left: scrollView.leadingAnchor, right: view.trailingAnchor, height: 1)
         bottomMargin.anchor(top: questionDescription.bottomAnchor, bottom: scrollView.bottomAnchor, left: scrollView.leadingAnchor, right: view.trailingAnchor, height: 1)
+        
+        // Toolbar
+        textOptionsView.anchor(top: toolbar.topAnchor, bottom: toolbar.layoutMarginsGuide.bottomAnchor, left: toolbar.leftItems.last!.trailingAnchor ,paddingTop: 10, paddingBottom: 10, paddingLeft: 10)
+        
+        textOptionsViewRightConstraintCollapsed = textOptionsView.trailingAnchor.constraint(equalTo: textOptionsView.leadingAnchor, constant: 0)
+        textOptionsViewRightConstraintExpanded = textOptionsView.trailingAnchor.constraint(equalTo: doneButton.leadingAnchor, constant: -10)
+        textOptionsViewRightConstraintCollapsed.isActive = true
     }
+    
+    var textOptionsViewRightConstraintExpanded: NSLayoutConstraint! = nil
+    var textOptionsViewRightConstraintCollapsed: NSLayoutConstraint! = nil
     
 }

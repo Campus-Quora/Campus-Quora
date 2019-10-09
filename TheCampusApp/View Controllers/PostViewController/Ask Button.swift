@@ -12,8 +12,8 @@ import UIKit
 // Ask Question
 extension PostViewController{
     // This functions check if input text field in valid
-    func checkValidInput(_ text: inout String){
-        if text.count > 0{
+    func checkValidInput(_ length: Int){
+        if length > 0{
             askButton.isEnabled = true
             askButton.backgroundColor = blueColorDark
         }

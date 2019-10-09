@@ -35,6 +35,7 @@ class CustomToolBar: UIView{
     var edgeInsets: UIEdgeInsets?
     var toolSpacing: CGFloat?
     var bottomConstraint: NSLayoutConstraint! = nil
+    var leadingConstraint: NSLayoutConstraint! = nil
     
     var topBorder : UIView = {
         let view = UIView()
@@ -45,16 +46,21 @@ class CustomToolBar: UIView{
     func layout(){
         // Layout Left Items
         var leftConstraint = self.leadingAnchor
-        var leftSpacing = self.edgeInsets?.left
+        var leftSpacing = self.edgeInsets?.left ?? 0
         for tool in leftItems{
             addSubview(tool)
             if #available(iOS 11.0, *) {
-                tool.anchor(top: topAnchor, bottom: safeAreaLayoutGuide.bottomAnchor, left: leftConstraint, paddingTop: edgeInsets?.top, paddingBottom: edgeInsets?.bottom, paddingLeft: leftSpacing)
+                tool.anchor(top: topAnchor, bottom: safeAreaLayoutGuide.bottomAnchor, paddingTop: edgeInsets?.top, paddingBottom: edgeInsets?.bottom)
             } else {
-                tool.anchor(top: topAnchor, bottom: bottomAnchor, left: leftConstraint, paddingTop: edgeInsets?.top, paddingBottom: edgeInsets?.bottom, paddingLeft: leftSpacing)
+                tool.anchor(top: topAnchor, bottom: bottomAnchor, left: leftConstraint, paddingTop: edgeInsets?.top, paddingBottom: edgeInsets?.bottom)
+            }
+            let toolLeftConstraint = tool.leadingAnchor.constraint(equalTo: leftConstraint, constant: leftSpacing)
+            toolLeftConstraint.isActive = true
+            if(leadingConstraint == nil){
+                leadingConstraint = toolLeftConstraint
             }
             leftConstraint = tool.trailingAnchor
-            leftSpacing = toolSpacing
+            leftSpacing = toolSpacing ?? 0
         }
         
         // Layout Right Items
@@ -77,16 +83,9 @@ class CustomToolBar: UIView{
     }
 }
 
-protocol TextFormatOptionsViewDelegate{
-    func textViewDidChange(_ textView: UITextView)
-}
-
-extension TextFormatOptionsViewDelegate{
-    func textViewDidChange(_ textView: UITextView){}
-}
-
 // MARK:- Text Format Options
 class TextFormatOptionsView: UIView, UITextViewDelegate{
+    // MARK:- Button Types
     enum ButtonType: String{
         case bold = "Bold"
         case italics = "Italics"
@@ -95,38 +94,73 @@ class TextFormatOptionsView: UIView, UITextViewDelegate{
         case orderedList = "OrderedList"
     }
     
+    // MARK:- Data Members
+    var itemPadding: CGFloat = 10
     let baseFontSize: CGFloat = 16
+    
     lazy var font = UIFont.systemFont(ofSize: baseFontSize)
     lazy var currentFont = font
-    lazy var bulletString = NSAttributedString(string: "\u{2022} ", attributes: [.font: currentFont])
-    var isUnderlined = false
     
-    var dataSource: UITextView?{
+    lazy var bulletString = NSAttributedString(string: "\u{2022} ", attributes: [.font: currentFont])
+    lazy var spaceBulletString = NSAttributedString(string: "\n\u{2022} ", attributes: [.font: currentFont])
+    
+    static let backwardDirection = UITextDirection(rawValue: UITextStorageDirection.backward.rawValue)
+    lazy var bulletPointParagraphStyle: NSMutableParagraphStyle = {
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.headIndent = NSString(string: "\u{2022}").size(withAttributes: [.font: currentFont]).width
+        return paragraph
+    }()
+    
+    var isUnderlined = false
+    var isUnorderedListActive = false{
         didSet{
-            dataSource?.delegate = self
+            if(oldValue == isUnorderedListActive){ return }
+            unorderedListButton.tintColor = isUnorderedListActive ? selectedColor: unselectedColor
         }
     }
+    var isOrderedListActive = false{
+        didSet{
+            if(oldValue == isOrderedListActive){ return }
+            orderedListButton.tintColor = isOrderedListActive ? selectedColor: unselectedColor
+            orderedListItemNumber = 0
+        }
+    }
+    var orderedListItemNumber = 0
     
-    var delegate: TextFormatOptionsViewDelegate?
+    var dataSource: UITextView?
     
+    // MARK:- UI Elements
     let boldButton = ToolBarButton(imageName: ButtonType.bold.rawValue)
     let italicsButton = ToolBarButton(imageName: ButtonType.italics.rawValue)
     let underlinedButton = ToolBarButton(imageName: ButtonType.underlined.rawValue)
     let orderedListButton = ToolBarButton(imageName: ButtonType.orderedList.rawValue)
     let unorderedListButton = ToolBarButton(imageName: ButtonType.unorderedList.rawValue)
     
+    // MARK:- Setup Mehods
     func initialise(){
         layout()
         setupActions()
     }
     
     func layout(){
-        let stackView = UIStackView(arrangedSubviews: [boldButton, italicsButton, underlinedButton, orderedListButton, unorderedListButton])
-        addSubview(stackView)
-        stackView.fillSuperView()
+        let scrollView = UIScrollView()
+        scrollView.showsHorizontalScrollIndicator = false
         
+        let stackView = UIStackView(arrangedSubviews: [boldButton, italicsButton, underlinedButton, orderedListButton, unorderedListButton])
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
+        
+        let numberOfItems = stackView.arrangedSubviews.count
+        let stackWidth: CGFloat = CGFloat((numberOfItems * 30)) + CGFloat(numberOfItems + 1) * itemPadding
+        
+        addSubview(scrollView)
+        scrollView.addSubview(stackView)
+        
+        scrollView.anchor(top: topAnchor, left: leadingAnchor)
+        scrollView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1).isActive = true
+        scrollView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 1).isActive = true
+        
+        stackView.anchor(top: scrollView.topAnchor, bottom: bottomAnchor, left: scrollView.leadingAnchor, right: scrollView.trailingAnchor, width: stackWidth)
     }
     
     func setupActions(){
@@ -137,6 +171,7 @@ class TextFormatOptionsView: UIView, UITextViewDelegate{
         unorderedListButton.addTarget(self, action: #selector(handleUnorderedList), for: .touchUpInside)
     }
     
+    // MARK:- Button Handlers
     @objc func handleBold(){
         guard let textView = dataSource else {return}
         let range = textView.selectedRange
@@ -146,7 +181,6 @@ class TextFormatOptionsView: UIView, UITextViewDelegate{
             return
         }
         textView.attributedText.enumerateAttributes(in: range, options: .longestEffectiveRangeNotRequired) { (attributes, range, stop) in
-            print("YES")
             if let font = attributes[.font] as? UIFont{
                 textView.textStorage.addAttributes([NSAttributedString.Key.font: font.bold()], range: range)
             }
@@ -190,24 +224,63 @@ class TextFormatOptionsView: UIView, UITextViewDelegate{
     }
     
     @objc func handleOrderedList(){
+        isOrderedListActive = !isOrderedListActive
+        if(!isOrderedListActive){return}
+        orderedListHelper()
+    }
+    func orderedListHelper(){
+        guard let textView = dataSource else {return}
+        let currentPosition = textView.selectedTextRange
         
+        let startOfLine = textView.tokenizer.position(from: currentPosition!.start, toBoundary: .paragraph, inDirection: TextFormatOptionsView.backwardDirection)
+        if let startOfLine = startOfLine{
+            let location = textView.offset(from: textView.beginningOfDocument, to: startOfLine)
+            let range = NSRange(location: location, length: 0)
+            if (location + 1) < textView.textStorage.length{
+                let textRange = textView.toTextRange(NSRange: NSRange(location: location, length: 1))
+                if let text = textView.text(in: textRange){
+                    if let num = Int(text){
+                        orderedListItemNumber = num
+                        print(1)
+                    }
+                    print(2)
+                }
+                print(3)
+            }
+            orderedListItemNumber += 1
+            let number = NSAttributedString(string: "\(orderedListItemNumber). ", attributes: [.font: currentFont])
+            textView.textStorage.replaceCharacters(in: range , with: number)
+            var length = 3
+            if(orderedListItemNumber > 9){length += 1}
+            if(orderedListItemNumber > 99){length += 1}
+            if(orderedListItemNumber > 999){length += 1}
+            textView.offsetSelection(by: length)
+        }
+    }
+    func removeOrderedList(){
+        guard let textView = dataSource else {return}
+        let currentPosition = textView.selectedTextRange
+        
+        let startOfLine = textView.tokenizer.position(from: currentPosition!.start, toBoundary: .paragraph, inDirection: TextFormatOptionsView.backwardDirection)
+        if let startOfLine = startOfLine{
+            let location = textView.offset(from: textView.beginningOfDocument, to: startOfLine)
+            var length = 3
+            if(orderedListItemNumber > 9){length += 1}
+            if(orderedListItemNumber > 99){length += 1}
+            if(orderedListItemNumber > 999){length += 1}
+            let range = NSRange(location: location, length: length)
+            let empty = NSAttributedString(string: "")
+            textView.textStorage.replaceCharacters(in: range , with: empty)
+            textView.offsetSelection(by: length)
+        }
     }
     
-    var isBulletPointActive: Bool = false
     @objc func handleUnorderedList(){
-        isBulletPointActive = !isBulletPointActive
-        if(!isBulletPointActive){return}
-        convertToBulletPoint()
+        isUnorderedListActive = !isUnorderedListActive
+        if(!isUnorderedListActive){return}
+        unorderedListHelper()
     }
-    
-    static let backwardDirection = UITextDirection(rawValue: UITextStorageDirection.backward.rawValue)
-    lazy var bulletPointParagraphStyle: NSMutableParagraphStyle = {
-       let paragraph = NSMutableParagraphStyle()
-        paragraph.headIndent = NSString(string: "\u{2022}").size(withAttributes: [.font: currentFont]).width
-        return paragraph
-    }()
-    
-    func convertToBulletPoint(){
+    func unorderedListHelper(){
         guard let textView = dataSource else {return}
         let currentPosition = textView.selectedTextRange
         
@@ -232,39 +305,43 @@ class TextFormatOptionsView: UIView, UITextViewDelegate{
 //        textView.textStorage.deleteCharacters(in: range)
 //    }
     
-    var lastNewLineLocation: NSRange?
-    var lastLength: Int = 0
-    var lastCharacter: NSAttributedString?
     
-    func textViewDidChange(_ textView: UITextView) {
-        var range = textView.selectedRange
-        range.length = 1
-        range.location -= 1
-        if(range.location < 0){
-            lastCharacter = nil
-            lastLength = 0
-            lastNewLineLocation = nil
-            return
+    // Delegate Functions
+    func textViewDidChange(_ textView: UITextView){}
+    
+    func changeText(_ textView: UITextView, _ text: String, _ deletedText: String?, _ isDeleted: Bool)->Bool{
+        if(!isDeleted && isUnorderedListActive && text == "\n"){
+            textView.textStorage.insert(spaceBulletString, at: textView.selectedRange.location)
+            textView.offsetSelection(by: 3)
+            return false
         }
-        lastCharacter = textView.textStorage.attributedSubstring(from: range)
-        if let lastCharacter = lastCharacter{
-            if(isBulletPointActive && lastCharacter.string == "\n"){
-                textView.textStorage.insert(bulletString, at: range.location + 1)
-                textView.typingAttributes[.paragraphStyle] = self.bulletPointParagraphStyle
-                textView.offsetSelection(by: 2)
-            }
+        if(!isDeleted && isOrderedListActive && text == "\n"){
+            orderedListItemNumber += 1
+            let number = NSAttributedString(string: "\n\(orderedListItemNumber). ", attributes: [.font: currentFont])
+            textView.textStorage.insert(number, at: textView.selectedRange.location)
+            textView.offsetSelection(by: 4)
+            return false
         }
-        lastLength = textView.textStorage.length
+        else if(isDeleted && deletedText! == "\u{2022}"){
+            isUnorderedListActive = false
+        }
+        return true
     }
 }
 
 extension UITextView{
     func offsetSelection(by offset: Int){
         if let range = selectedTextRange{
-            let newStart = position(from: range.start, offset: 2)!
-            let newEnd = position(from: range.end, offset: 2)!
+            let newStart = position(from: range.start, offset: offset)!
+            let newEnd = position(from: range.end, offset: offset)!
             self.selectedTextRange = textRange(from: newStart, to: newEnd)
         }
+    }
+    
+    func toTextRange(NSRange range: NSRange)->UITextRange{
+        let newStart = position(from: beginningOfDocument, offset: range.location)!
+        let newEnd = position(from: newStart, offset: range.length)!
+        return textRange(from: newStart, to: newEnd)!
     }
 }
 
@@ -279,94 +356,3 @@ extension UITextView{
 // Optional Features
 // 1. Add quote
 // 2. Add code
-
-// UNUSED CODE
-
-//class ExtraTextOptionsView: UIView{
-//    let unOrderedListButton : ExtraTextOptionsButton = {
-//        let button = ExtraTextOptionsButton(text: "Unordered List", imageName: "UnorderedList")
-//        return button
-//    }()
-//
-//    let orderedListButton : ExtraTextOptionsButton = {
-//        let button = ExtraTextOptionsButton(text: "Ordered List", imageName: "UnorderedList")
-//        return button
-//    }()
-//
-//    let quoteButton : ExtraTextOptionsButton = {
-//        let button = ExtraTextOptionsButton(text: "Quote", imageName: "Quote")
-//        return button
-//    }()
-//
-//    let codeButton : ExtraTextOptionsButton = {
-//        let button = ExtraTextOptionsButton(text: "Code", imageName: "CurlyBraces")
-//        return button
-//    }()
-//
-//    let mathButton : ExtraTextOptionsButton = {
-//        let button = ExtraTextOptionsButton(text: "Math", imageName: "Sigma")
-//        return button
-//    }()
-//
-//    let background = UIView()
-//
-//
-//    init(padding: CGFloat){
-//        super.init(frame: .zero)
-//
-//        let stack = UIStackView(arrangedSubviews: [unOrderedListButton, orderedListButton, quoteButton, codeButton, mathButton])
-//        stack.axis = .vertical
-//        stack.distribution = .fillEqually
-//        addSubview(background)
-//        background.addSubview(stack)
-//        backgroundColor = .white
-//
-//        for item in stack.arrangedSubviews{
-//            item.anchor(left: stack.leadingAnchor, right: stack.trailingAnchor, paddingLeft: 0, paddingRight: 0)
-//        }
-//
-//        background.backgroundColor = UIColor(white: 0.83, alpha: 1)
-//
-//        // Constraints
-//        stack.anchor(top: background.topAnchor, bottom: background.bottomAnchor, left: background.leadingAnchor, right: background.trailingAnchor)
-//        background.anchor(top: topAnchor, bottom: bottomAnchor, left: leadingAnchor, right: trailingAnchor, paddingTop: padding, paddingBottom: padding, paddingLeft: padding, paddingRight: padding)
-//    }
-//
-//    override func didMoveToWindow() {
-//        super.didMoveToWindow()
-//        if #available(iOS 11.0, *) {
-//            //            if let window = self.window {
-//            //                self.translatesAutoresizingMaskIntoConstraints = false
-//            //                self.bottomAnchor.constraint(lessThanOrEqualToSystemSpacingBelow: window.safeAreaLayoutGuide.bottomAnchor, multiplier: 1.0).isActive = true
-//            //                self.bottomAnchor.constraint(equalTo: window.safeAreaLayoutGuide.bottomAnchor)
-//            //            }
-//        }
-//    }
-//
-//    required init?(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//}
-
-
-//class ExtraTextOptionsButton: UIButton{
-//    init(text: String imageName: String) {
-//        super.init(frame: .zero)
-//        let size = CGSize(width: 30, height: 30)
-//        let image = UIImage(named: imageName)?.resizeImage(size: size).withRenderingMode(.alwaysTemplate)
-//        self.setImage(image, for: .normal)
-//        self.titleEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
-//        self.contentHorizontalAlignment = .left
-//        self.setTitle(text, for: .normal)
-//        self.setColor(unselectedColor)
-//    }
-//
-//    required init?(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//
-//    func setColor(_ color: UIColor){
-//        self.tintColor = color
-//        self.setTitleColor(color, for: .normal)
-//    }
-//}

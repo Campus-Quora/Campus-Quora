@@ -12,7 +12,7 @@ import UIKit
 // Event Handlers
 extension PostViewController{
     @objc func handleDone(){
-        view.endEditing(false)
+        view.endEditing(true)
     }
     
     @objc func handleAsk(){
@@ -28,7 +28,25 @@ extension PostViewController{
         }
     }
     
+    
     @objc func handleTextOptions(){
+        if(toolbar.leadingConstraint.constant == 10){
+            // Expand
+            self.toolbar.leadingConstraint.constant = -leftOffset
+            textOptionsViewRightConstraintCollapsed.isActive = false
+            textOptionsViewRightConstraintExpanded.isActive = true
+        }
+        else{
+            // Collapse
+            self.toolbar.leadingConstraint.constant = 10
+            textOptionsViewRightConstraintCollapsed.isActive = true
+            textOptionsViewRightConstraintExpanded.isActive = false
+            textOptionsButton.tintColor = unselectedColor
+        }
+        
+        UIView.animate(withDuration: 0.25){
+            self.toolbar.superview?.layoutIfNeeded()
+        }
         
     }
 }

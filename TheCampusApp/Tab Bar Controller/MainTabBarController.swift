@@ -80,7 +80,6 @@ class MainTabBarController: UITabBarController{
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         if(viewController.tabBarItem.tag == 1){
-            print("YES")
             let postVC = UINavigationController(rootViewController: PostViewController())
             present(postVC, animated: true, completion: nil)
             return false

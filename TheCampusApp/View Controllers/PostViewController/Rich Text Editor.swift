@@ -26,13 +26,19 @@ class PlaceholderTextView: UITextView{
 
 // MARK:- PostViewController Extension #4
 // Text Editor
-extension PostViewController: UITextViewDelegate{
-    
+extension PostViewController : UITextViewDelegate{
     // Manage placeholders showing and hiding
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String)->Bool{
         guard let textView = textView as? PlaceholderTextView else {return true}
         let newLength = textView.text.utf16.count + text.utf16.count - range.length
-        if newLength > 0{
+        let deletedText = textView.text(in: textView.toTextRange(NSRange: range))
+        let isDeleted = (deletedText!.count != 0)
+        handlePlaceholder(textView, newLength)
+        return textOptionsView.changeText(textView, text, deletedText, isDeleted)
+    }
+    
+    func handlePlaceholder(_ textView: PlaceholderTextView, _ length: Int){
+        if length > 0{
             if(!textView.placeholderLabel.isHidden){
                 textView.placeholderLabel.isHidden = true
                 textView.textContainerInset.bottom -= 24
@@ -44,7 +50,11 @@ extension PostViewController: UITextViewDelegate{
                 textView.textContainerInset.bottom += 24
             }
         }
-        return true
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        checkValidInput(textView.attributedText.length)
+        textOptionsView.textViewDidChange(textView)
     }
 }
 

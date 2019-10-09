@@ -19,7 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         FirebaseApp.configure()
-        window?.rootViewController = MainTabBarController()
+//        window?.rootViewController = MainTabBarController()
+        let postVC = UINavigationController(rootViewController: PostViewController())
+        window?.rootViewController = postVC
         return true
     }
 
