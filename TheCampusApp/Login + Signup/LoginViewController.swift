@@ -187,25 +187,10 @@ class LoginViewController: UIViewController{
             
             
             if let error = error{
-                // This occurs when username or password is wrong
-                // TODO:- Add UI to alert user -- Done
-                //self.flag.text=nil
-                SVProgressHUD.dismiss()
                 
-//                let alertController = UIAlertController(title: "Invalid Username/Password", message: "Click 'Sign Up' to create a new account.", preferredStyle: .alert)
-//                alertController.addAction(UIAlertAction(title: "Try Again", style: .cancel, handler: { (_) in
-//                    self.emailTextField.text = nil;
-//                    self.passwordTextField.text = nil;
-//                }))
-//
-//                alertController.addAction(UIAlertAction(title: "Sign Up", style: .default, handler: { (_) in
-//                    self.emailTextField.text = nil;
-//                    self.passwordTextField.text = nil;
-//                    self.changeToSignUpController()
-//                }))
-//
-//                self.present(alertController, animated: true, completion: nil)
+                
                 self.firebaseErrorHandler(error: error as NSError)
+                SVProgressHUD.dismiss()
                 
                 print("Login ERROR #1 : \n\n", error)
                 return;
@@ -251,6 +236,7 @@ class LoginViewController: UIViewController{
         let isValidEmail = emailTextField.text?.count ?? 0 > 0
         let passwordLength = passwordTextField.text?.count ?? 0
         let isValidPassword = (passwordLength >= 6) && (passwordLength <= 16)
+        
         if isValidEmail && isValidPassword{
             loginButton.backgroundColor = blueColorDark
             loginButton.isEnabled = true

@@ -83,7 +83,7 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     }
     
     func setupUI(){
-        collectionView.backgroundColor = .white
+        //collectionView.backgroundColor = .white
     }
     
     var postsData: [PostData] = []

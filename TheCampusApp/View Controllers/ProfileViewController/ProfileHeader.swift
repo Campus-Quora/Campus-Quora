@@ -21,7 +21,7 @@ class ProfileHeader: UICollectionViewCell{
     
     let nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Yogesh Kumar"
+        label.text = UserData.shared.name ?? "Yogesh Kumar"
         label.font = .systemFont(ofSize: 16, weight: .medium)
         label.textColor = .cyan
         return label
