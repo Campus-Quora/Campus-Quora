@@ -188,12 +188,12 @@ class LoginViewController: UIViewController{
             
             if let error = error{
                 
-                
                 self.firebaseErrorHandler(error: error as NSError)
                 SVProgressHUD.dismiss()
                 
                 print("Login ERROR #1 : \n\n", error)
                 return;
+            
             }
 
             guard let user = user?.user else{
