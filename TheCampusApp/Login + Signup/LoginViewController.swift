@@ -32,7 +32,7 @@ class LoginViewController: UIViewController{
     let emailTextField : UITextField = {
         let textField = UITextField()
         textField.placeholder = "Email"
-        textField.backgroundColor = .black
+        textField.backgroundColor = textFieldBackgroundColor
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
         textField.tag = 1
@@ -45,7 +45,7 @@ class LoginViewController: UIViewController{
         let textField = UITextField()
         textField.isSecureTextEntry = true
         textField.placeholder = "Password"
-        textField.backgroundColor = .black
+        textField.backgroundColor = textFieldBackgroundColor
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
         textField.tag = 2
@@ -75,8 +75,6 @@ class LoginViewController: UIViewController{
     // MARK:- Overriden Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-       
-        
         
         // Set Constants
         stackHeight = inputHeight * 3 + inputPadding * 2
@@ -154,6 +152,7 @@ class LoginViewController: UIViewController{
     }
     
     @objc func handleLogin(){
+        view.endEditing(true)
         guard let email = emailTextField.text     else {return}
         guard let password = passwordTextField.text     else {return}
         print("Trying To Log In")
@@ -164,13 +163,13 @@ class LoginViewController: UIViewController{
                 
                 let alertController = UIAlertController(title: "Invalid Username/Password", message: "Click 'Sign Up' to create a new account.", preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: "Try Again", style: .cancel, handler: { (_) in
-                    self.emailTextField.text = nil;
-                    self.passwordTextField.text = nil;
+                    self.emailTextField.text = "";
+                    self.passwordTextField.text = "";
                 }))
                 
                 alertController.addAction(UIAlertAction(title: "Sign Up", style: .default, handler: { (_) in
-                    self.emailTextField.text = nil;
-                    self.passwordTextField.text = nil;
+                    self.emailTextField.text = "";
+                    self.passwordTextField.text = "";
                     self.changeToSignUpController()
                 }))
                 

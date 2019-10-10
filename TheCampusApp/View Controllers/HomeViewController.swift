@@ -8,6 +8,7 @@
 
 import UIKit
 import Down
+import Firebase
 
 class HomeViewController: UIViewController, UITextViewDelegate{
     
@@ -31,36 +32,58 @@ class HomeViewController: UIViewController, UITextViewDelegate{
     let renderedView = UITextView()
     
     func setupUI(){
-        
         view.backgroundColor = .white
+        let signOutButton = UIButton()
+        signOutButton.setTitle("Signout", for: .normal)
+        signOutButton.addTarget(self, action: #selector(handleSignout), for: .touchUpInside)
+        view.addSubview(signOutButton)
+        signOutButton.anchor(top: view.topAnchor, right: view.trailingAnchor, paddingTop: 200, paddingRight: 50)
+        signOutButton.backgroundColor = blueColorDark
+        signOutButton.isUserInteractionEnabled = true
+    }
+    
+    @objc func handleSignout(){
+        print("Trying to sign out")
+        do{
+            try Auth.auth().signOut()
+            print("Signout Successful")
+            let loginVC = LoginViewController()
+            let navigationLoginVC = UINavigationController(rootViewController: loginVC)
+            self.present(navigationLoginVC, animated: true, completion: nil)
+        }
+        catch let signOutError as NSError {
+            print ("Error signing out: \(signOutError)")
+        }
+    }
+    
+}
+
+
 //        editor = Notepad(frame: view.bounds, themeFile: "one-light")
 //        editor?.autocorrectionType = .no
 //        editor?.autocapitalizationType = .none
 //        view.addSubview(editor!)
 //        editor?.textContainerInset = UIEdgeInsets(top: 40, left: 20, bottom: 40, right: 20)
 //        editor?.delegate = self
+
 //
-        view.addSubview(renderedView)
-        renderedView.textContainerInset = UIEdgeInsets(top: 40, left: 20, bottom: 40, right: 20)
-        renderedView.font = .systemFont(ofSize: 16)
-//        renderedView.isEditable = false
-        renderedView.anchor(top: view.topAnchor, left: view.leadingAnchor, right: view.trailingAnchor, paddingTop: 100, height: 300)
-        renderedView.layer.borderWidth = 1
-        renderedView.layer.borderColor = UIColor.gray.cgColor
-        
-        
-        
-        let toolbar = TextFormatOptionsView()
-        toolbar.dataSource = renderedView
-        toolbar.initialise()
-        toolbar.backgroundColor = .yellow
-        view.addSubview(toolbar)
-        toolbar.anchor(bottom: view.layoutMarginsGuide.bottomAnchor, left: view.leadingAnchor, right: view.trailingAnchor, paddingBottom: 80, height: 50)
-    }
-    
+//        view.addSubview(renderedView)
+//        renderedView.textContainerInset = UIEdgeInsets(top: 40, left: 20, bottom: 40, right: 20)
+//        renderedView.font = .systemFont(ofSize: 16)
+////        renderedView.isEditable = false
+//        renderedView.anchor(top: view.topAnchor, left: view.leadingAnchor, right: view.trailingAnchor, paddingTop: 100, height: 300)
+//        renderedView.layer.borderWidth = 1
+//        renderedView.layer.borderColor = UIColor.gray.cgColor
+
+//        let toolbar = TextFormatOptionsView()
+//        toolbar.dataSource = renderedView
+//        toolbar.initialise()
+//        toolbar.backgroundColor = .yellow
+//        view.addSubview(toolbar)
+//        toolbar.anchor(bottom: view.layoutMarginsGuide.bottomAnchor, left: view.leadingAnchor, right: view.trailingAnchor, paddingBottom: 80, height: 50)
+
 //    func textViewDidChange(_ textView: UITextView) {
 //        let attrText = try? Down(markdownString: editor!.text).toAttributedString()
 //        renderedView.attributedText = attrText
 //    }
-    
-}
+

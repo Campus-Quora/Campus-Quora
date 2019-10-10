@@ -9,6 +9,8 @@
 import UIKit
 import Firebase
 
+let textFieldBackgroundColor = UIColor(white: 0, alpha: 0.05)
+
 class SignupViewController: UIViewController{
     // MARK:- Constants
     
@@ -33,7 +35,7 @@ class SignupViewController: UIViewController{
     let nameTextField : UITextField = {
         let textField = UITextField()
         textField.placeholder = "Name"
-        textField.backgroundColor = .black
+        textField.backgroundColor = textFieldBackgroundColor
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
         textField.autocapitalizationType = .none
@@ -45,7 +47,7 @@ class SignupViewController: UIViewController{
     let emailTextField : UITextField = {
         let textField = UITextField()
         textField.placeholder = "Email"
-        textField.backgroundColor = .black
+        textField.backgroundColor = textFieldBackgroundColor
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
         textField.autocapitalizationType = .none
@@ -58,7 +60,7 @@ class SignupViewController: UIViewController{
         let textField = UITextField()
         textField.isSecureTextEntry = true
         textField.placeholder = "Password"
-        textField.backgroundColor = .black
+        textField.backgroundColor = textFieldBackgroundColor
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
         textField.tag = 2
@@ -88,6 +90,7 @@ class SignupViewController: UIViewController{
     // MARK:- Overriden Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.isNavigationBarHidden = true
         
         // Set Constants
         stackHeight = inputHeight * 4 + inputPadding * 3
@@ -163,6 +166,7 @@ class SignupViewController: UIViewController{
     }
     
     @objc func handleSignup(){
+        view.endEditing(true)
         guard let name = nameTextField.text             else {return}
         guard let email = emailTextField.text           else {return}
         guard let password = passwordTextField.text     else {return}
