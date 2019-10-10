@@ -24,7 +24,8 @@ class SignupViewController: UIViewController{
     let header : UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 24, weight: .bold)
-        label.text = "Welcome To App"
+        label.text = "Sign Up"
+        label.textColor = .black
         label.textAlignment = .center
         return label
     }()
@@ -32,7 +33,7 @@ class SignupViewController: UIViewController{
     let nameTextField : UITextField = {
         let textField = UITextField()
         textField.placeholder = "Name"
-        textField.backgroundColor = UIColor(white: 0, alpha: 0.05)
+        textField.backgroundColor = .black
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
         textField.autocapitalizationType = .none
@@ -44,7 +45,7 @@ class SignupViewController: UIViewController{
     let emailTextField : UITextField = {
         let textField = UITextField()
         textField.placeholder = "Email"
-        textField.backgroundColor = UIColor(white: 0, alpha: 0.05)
+        textField.backgroundColor = .black
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
         textField.autocapitalizationType = .none
@@ -57,7 +58,7 @@ class SignupViewController: UIViewController{
         let textField = UITextField()
         textField.isSecureTextEntry = true
         textField.placeholder = "Password"
-        textField.backgroundColor = UIColor(white: 0, alpha: 0.05)
+        textField.backgroundColor = .black
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
         textField.tag = 2

@@ -10,6 +10,8 @@ import UIKit
 import Down
 
 class HomeViewController: UIViewController, UITextViewDelegate{
+    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()

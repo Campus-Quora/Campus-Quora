@@ -23,13 +23,14 @@ class ProfileHeader: UICollectionViewCell{
         let label = UILabel()
         label.text = "Yogesh Kumar"
         label.font = .systemFont(ofSize: 16, weight: .medium)
+        label.textColor = .cyan
         return label
     }()
     
     let followingStatLabel: UILabel = {
         let label = UILabel()
         let count = UserData.shared.followingCount ?? 0
-        let attributedText = NSMutableAttributedString(string: "\(count)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18, weight: .bold)])
+        let attributedText = NSMutableAttributedString(string: "\(count)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18, weight: .bold), NSAttributedString.Key.foregroundColor : UIColor.black])
         attributedText.append(NSAttributedString(string: "\nFollowing", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray, NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)]))
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -40,7 +41,7 @@ class ProfileHeader: UICollectionViewCell{
     let followersStatLabel: UILabel = {
         let label = UILabel()
         let count = UserData.shared.followerCount ?? 0
-        let attributedText = NSMutableAttributedString(string: "\(count)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18, weight: .bold)])
+        let attributedText = NSMutableAttributedString(string: "\(count)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18, weight: .bold), NSAttributedString.Key.foregroundColor : UIColor.black])
         attributedText.append(NSAttributedString(string: "\nFollowers", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray, NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)]))
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -51,7 +52,7 @@ class ProfileHeader: UICollectionViewCell{
     let likesStatLabel: UILabel = {
         let label = UILabel()
         let count = UserData.shared.likesCount ?? 0
-        let attributedText = NSMutableAttributedString(string: "\(count)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18, weight: .bold)])
+        let attributedText = NSMutableAttributedString(string: "\(count)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18, weight: .bold), NSAttributedString.Key.foregroundColor : UIColor.black])
         attributedText.append(NSAttributedString(string: "\nLikes", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray, NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)]))
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -62,7 +63,7 @@ class ProfileHeader: UICollectionViewCell{
     let questionsStatLabel: UILabel = {
         let label = UILabel()
         let count = UserData.shared.questionsCount ?? 0
-        let attributedText = NSMutableAttributedString(string: "\(count)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18, weight: .bold)])
+        let attributedText = NSMutableAttributedString(string: "\(count)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18, weight: .bold), NSAttributedString.Key.foregroundColor : UIColor.black])
         attributedText.append(NSAttributedString(string: "\nQuestions", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray, NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)]))
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -73,7 +74,7 @@ class ProfileHeader: UICollectionViewCell{
     let answersStatLabel: UILabel = {
         let label = UILabel()
         let count = UserData.shared.answersCount ?? 0 
-        let attributedText = NSMutableAttributedString(string: "\(count)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18, weight: .bold)])
+        let attributedText = NSMutableAttributedString(string: "\(count)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18, weight: .bold), NSAttributedString.Key.foregroundColor : UIColor.black])
         attributedText.append(NSAttributedString(string: "\nAnswers", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray, NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)]))
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -85,7 +86,7 @@ class ProfileHeader: UICollectionViewCell{
     let somethingStatLabel: UILabel = {
         let label = UILabel()
         let count = UserData.shared.likesCount ?? 0
-        let attributedText = NSMutableAttributedString(string: "\(count)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18, weight: .bold)])
+        let attributedText = NSMutableAttributedString(string: "\(count)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18, weight: .bold), NSAttributedString.Key.foregroundColor : UIColor.black])
         attributedText.append(NSAttributedString(string: "\nSomething", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray, NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)]))
         label.textAlignment = .center
         label.numberOfLines = 0

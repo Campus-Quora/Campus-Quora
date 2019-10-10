@@ -23,7 +23,8 @@ class LoginViewController: UIViewController{
     let header : UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 24, weight: .bold)
-        label.text = "Welcome Back"
+        label.textColor = .black
+        label.text = "Log In"
         label.textAlignment = .center
         return label
     }()
@@ -31,7 +32,7 @@ class LoginViewController: UIViewController{
     let emailTextField : UITextField = {
         let textField = UITextField()
         textField.placeholder = "Email"
-        textField.backgroundColor = UIColor(white: 0, alpha: 0.05)
+        textField.backgroundColor = .black
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
         textField.tag = 1
@@ -44,7 +45,7 @@ class LoginViewController: UIViewController{
         let textField = UITextField()
         textField.isSecureTextEntry = true
         textField.placeholder = "Password"
-        textField.backgroundColor = UIColor(white: 0, alpha: 0.05)
+        textField.backgroundColor = .black
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
         textField.tag = 2
@@ -74,6 +75,8 @@ class LoginViewController: UIViewController{
     // MARK:- Overriden Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+       
+        
         
         // Set Constants
         stackHeight = inputHeight * 3 + inputPadding * 2
@@ -157,7 +160,22 @@ class LoginViewController: UIViewController{
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             if let error = error{
                 // This occurs when username or password is wrong
-                // TODO:- Add UI to alert user
+                // TODO:- Add UI to alert user -- Done
+                
+                let alertController = UIAlertController(title: "Invalid Username/Password", message: "Click 'Sign Up' to create a new account.", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Try Again", style: .cancel, handler: { (_) in
+                    self.emailTextField.text = nil;
+                    self.passwordTextField.text = nil;
+                }))
+                
+                alertController.addAction(UIAlertAction(title: "Sign Up", style: .default, handler: { (_) in
+                    self.emailTextField.text = nil;
+                    self.passwordTextField.text = nil;
+                    self.changeToSignUpController()
+                }))
+                
+                self.present(alertController, animated: true, completion: nil)
+                
                 print("Login ERROR #1 : \n\n", error)
                 return;
             }

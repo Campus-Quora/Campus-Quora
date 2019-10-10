@@ -9,6 +9,7 @@
 //visibleHeight = UIScreen.main.nativeBounds.height/UIScreen.main.nativeScale - navigationController!.navigationBar.frame.size.height - tabBarController!.tabBar.frame.size.height - UIApplication.shared.statusBarFrame.height
 
 import UIKit
+import Firebase
 
 class ProfileViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout{
     let headerID = "headerID"
@@ -35,6 +36,8 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
         collectionView.register(PostCell.self, forCellWithReuseIdentifier: cellID)
         
         headerHeight = (UIScreen.main.nativeBounds.height/UIScreen.main.nativeScale) * 0.23
+        
+        setupLogOut()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -48,10 +51,33 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
         if #available(iOS 11.0, *) {
             navBar.prefersLargeTitles = true
             navigationItem.largeTitleDisplayMode = .automatic
+            
         }
         navBar.shadowImage = UIImage()
         navBar.isTranslucent = false
         navBar.tintColor = primaryColor
+    }
+    //log out button
+    func setupLogOut(){
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Settings"), style: .plain, target: self, action: #selector(handleLogOut))
+    }
+    
+    @objc func handleLogOut() {
+        let alertController = UIAlertController(title: "Log Out?", message: "Are you sure you want to Log Out?", preferredStyle: .alert)
+        present(alertController, animated: true, completion: nil)
+        
+        alertController.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { (_) in
+            do{
+                try Auth.auth().signOut()
+                let loginController = LoginViewController()
+                let navController = UINavigationController(rootViewController: loginController)
+                self.present(navController, animated: true, completion: nil
+                )
+            } catch let signOutError {
+                print("Failed to Sign Out: ", signOutError)
+            }
+        }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
     }
     
     func setupUI(){
