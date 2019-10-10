@@ -185,6 +185,8 @@ class SignupViewController: UIViewController{
     
     @objc func handleSignup(){
         view.endEditing(true)
+        self.signupButton.isEnabled = false;
+        self.signupButton.backgroundColor = blueColorFaint
         
         guard let name = nameTextField.text             else {return}
         guard let email = emailTextField.text           else {return}
@@ -285,7 +287,6 @@ class SignupViewController: UIViewController{
             })
             
             self.present(alertController, animated: true, completion: nil)
-            
         }
     }
     

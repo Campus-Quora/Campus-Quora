@@ -52,7 +52,10 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
         if #available(iOS 11.0, *) {
             navBar.prefersLargeTitles = true
             navigationItem.largeTitleDisplayMode = .automatic
-            
+            navBar.backgroundColor = .black
+            navBar.barTintColor = .black
+            navBar.titleTextAttributes = [.foregroundColor : UIColor.white]
+            navBar.largeTitleTextAttributes = [.foregroundColor : UIColor.white]
         }
         navBar.shadowImage = UIImage()
         navBar.isTranslucent = false

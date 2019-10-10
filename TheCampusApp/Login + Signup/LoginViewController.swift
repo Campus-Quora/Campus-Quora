@@ -180,6 +180,9 @@ class LoginViewController: UIViewController{
     
     @objc func handleLogin(){
         view.endEditing(true)
+        self.loginButton.isEnabled = false;
+        self.loginButton.backgroundColor = blueColorFaint;
+        
         guard let email = emailTextField.text           else {return}
         guard let password = passwordTextField.text     else {return}
         SVProgressHUD.setRingThickness(5)
