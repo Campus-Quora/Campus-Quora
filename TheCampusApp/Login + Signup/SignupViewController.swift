@@ -163,12 +163,15 @@ class SignupViewController: UIViewController{
         } else {
             alreadyHaveAccountButton.anchor(bottom: view.bottomAnchor, left: view.leadingAnchor, right: view.trailingAnchor, paddingBottom: 5, paddingLeft: 10, paddingRight: 10, height: 50)
         }
-        alreadyHaveAccountButton.addTarget(self, action: #selector(changeToLogInController), for: .touchUpInside)
+        alreadyHaveAccountButton.addTarget(self, action: #selector(handleAlreadyHaveAccountButton), for: .touchUpInside)
     }
 
     
     // MARK:- Triggering Methods
-    @objc func changeToLogInController(loginEmail: String? = nil){
+    @objc func handleAlreadyHaveAccountButton(){
+        changeToLogInController()
+    }
+    func changeToLogInController(loginEmail: String? = nil){
         if let email = loginEmail{
             if let loginVC = self.navigationController?.viewControllers.first as? LoginViewController{
                 loginVC.emailTextField.text = email

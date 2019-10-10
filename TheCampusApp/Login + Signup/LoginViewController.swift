@@ -160,15 +160,21 @@ class LoginViewController: UIViewController{
         } else {
             dontHaveAccountButton.anchor(bottom: view.bottomAnchor, left: view.leadingAnchor, right: view.trailingAnchor, paddingBottom: 5, paddingLeft: 10, paddingRight: 10, height: 50)
         }
-        dontHaveAccountButton.addTarget(self, action: #selector(changeToSignUpController), for: .touchUpInside)
+        dontHaveAccountButton.addTarget(self, action: #selector(handleDontHaveAccountButton), for: .touchUpInside)
     }
     
-    
     // MARK:- Triggering Methods
-    @objc func changeToSignUpController(){
+    @objc func handleDontHaveAccountButton(){
+        changeToSignUpController()
+    }
+    
+    func changeToSignUpController(signupEmail: String? = nil){
         emailTextField.text = ""
         passwordTextField.text = ""
         let signUpVC = SignupViewController()
+        if let email = signupEmail{
+            signUpVC.emailTextField.text = email
+        }
         navigationController?.pushViewController(signUpVC, animated: true)
     }
     
@@ -245,14 +251,6 @@ class LoginViewController: UIViewController{
             var errorTitle: String = ""
             var errorMessage: String = ""
             
-            let action1 = UIAlertAction(title: "Try Again", style: .cancel, handler: { (_) in
-                self.passwordTextField.text = "";
-            })
-            
-            let action2 = UIAlertAction(title: "Sign Up", style: .default, handler: { (_) in
-                self.changeToSignUpController()
-            })
-            
             let defaultAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
             
             var actions = [UIAlertAction]()
@@ -265,6 +263,15 @@ class LoginViewController: UIViewController{
                 case .userNotFound:
                     errorTitle = "Account does not exist"
                     errorMessage = "Click 'Sign Up' to create an account."
+                    
+                    let action1 = UIAlertAction(title: "Try Again", style: .cancel, handler: { (_) in
+                        self.passwordTextField.text = "";
+                    })
+                    
+                    let action2 = UIAlertAction(title: "Sign Up", style: .default, handler: { (_) in
+                        self.changeToSignUpController(signupEmail: self.emailTextField.text)
+                    })
+                    
                     actions.append(action1)
                     actions.append(action2)
                 
