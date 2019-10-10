@@ -24,7 +24,7 @@ class PostCell: UICollectionViewCell{
             questionLabel.text = postData?.question
             answerLabel.text = postData?.answer
             personWhoAnsweredPic.personWhoAnswered = postData?.personWhoAnswered
-            personWhoAnsweredPic.date = postData?.date 
+            personWhoAnsweredPic.date = postData?.date
         }
     }
 
@@ -34,6 +34,7 @@ class PostCell: UICollectionViewCell{
         let label = UILabel()
         label.font = questionFont
         label.numberOfLines = numberOfLinesInQuestion
+        label.textColor = .black
         return label
     }()
     
@@ -41,6 +42,7 @@ class PostCell: UICollectionViewCell{
         let label = UILabel()
         label.font = answerFont
         label.numberOfLines = numberOfLinesInAnswer
+        label.textColor = .black
         return label
     }()
     
