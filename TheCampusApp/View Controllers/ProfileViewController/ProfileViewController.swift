@@ -47,6 +47,7 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     
     func setupNavigationBar(){
         navigationItem.title = "Profile"
+        
         guard let navBar = navigationController?.navigationBar else {return}
         if #available(iOS 11.0, *) {
             navBar.prefersLargeTitles = true
@@ -70,9 +71,10 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
             do{
                 try Auth.auth().signOut()
                 let loginController = LoginViewController()
+
                 let navController = UINavigationController(rootViewController: loginController)
-                self.present(navController, animated: true, completion: nil
-                )
+
+                self.present(navController, animated: true, completion: nil)
             } catch let signOutError {
                 print("Failed to Sign Out: ", signOutError)
             }

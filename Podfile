@@ -10,4 +10,5 @@ target 'TheCampusApp' do
 	pod 'Firebase/Auth'
 	pod 'Firebase/Firestore'
 	pod 'Down', '~> 0.4.2'
+	pod 'SVProgressHUD'
 end

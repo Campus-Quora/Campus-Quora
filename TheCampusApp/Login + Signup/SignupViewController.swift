@@ -8,11 +8,11 @@
 
 import UIKit
 import Firebase
-
-let textFieldBackgroundColor = UIColor(white: 0, alpha: 0.05)
+import SVProgressHUD
 
 class SignupViewController: UIViewController{
     // MARK:- Constants
+    
     
     let inputPadding: CGFloat = 20
     let inputHeight: CGFloat = 40
@@ -32,9 +32,11 @@ class SignupViewController: UIViewController{
         return label
     }()
     
+
     let nameTextField : UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Name"
+        textField.attributedPlaceholder = NSAttributedString(string: "Name", attributes: [.foregroundColor : textFieldPlaceholderColor])
+        textField.textColor = textFieldTextColor
         textField.backgroundColor = textFieldBackgroundColor
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
@@ -46,8 +48,9 @@ class SignupViewController: UIViewController{
     
     let emailTextField : UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Email"
+        textField.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [.foregroundColor : textFieldPlaceholderColor])
         textField.backgroundColor = textFieldBackgroundColor
+        textField.textColor = textFieldTextColor
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
         textField.autocapitalizationType = .none
@@ -59,8 +62,9 @@ class SignupViewController: UIViewController{
     let passwordTextField : UITextField = {
         let textField = UITextField()
         textField.isSecureTextEntry = true
-        textField.placeholder = "Password"
+        textField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [.foregroundColor : textFieldPlaceholderColor])
         textField.backgroundColor = textFieldBackgroundColor
+        textField.textColor = textFieldTextColor
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
         textField.tag = 2
@@ -91,6 +95,10 @@ class SignupViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.isNavigationBarHidden = true
+//        if #available(iOS 13, *){
+//            self.isModalInPresentation = true
+//            self.modalPresentationStyle = .fullScreen
+//        }
         
         // Set Constants
         stackHeight = inputHeight * 4 + inputPadding * 3
@@ -166,6 +174,9 @@ class SignupViewController: UIViewController{
                 loginVC.emailTextField.text = email
             }
         }
+        emailTextField.text = ""
+        passwordTextField.text = ""
+        nameTextField.text = ""
         navigationController?.popViewController(animated: true)
     }
     
@@ -176,9 +187,14 @@ class SignupViewController: UIViewController{
         guard let email = emailTextField.text           else {return}
         guard let password = passwordTextField.text     else {return}
         print("Trying To Sign Up")
+        
+        SVProgressHUD.setRingThickness(5)
+        SVProgressHUD.show()
+
         Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
             if let error = error{
                 print("Signup ERROR #1 : \n\n", error)
+                SVProgressHUD.dismiss()
                 self.handleSignupError(error)
                 return;
             }
@@ -201,6 +217,7 @@ class SignupViewController: UIViewController{
                 UserData.shared.setData(user)
                 // Go to Main Tab Bar Controller
                 DispatchQueue.main.async {
+                    SVProgressHUD.dismiss()
                     if let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController{
                         mainTabBarController.setupViewControllers()
                         self.dismiss(animated: true, completion: nil)
@@ -220,6 +237,11 @@ class SignupViewController: UIViewController{
             
             var actions = [UIAlertAction]()
             switch(errorCode){
+                case .invalidEmail, .invalidSender, .invalidRecipientEmail:
+                    errorTitle = "Invalid Email"
+                    errorMessage = "Please enter a valid Email."
+                    actions.append(defaultAction)
+                
                 case .emailAlreadyInUse:
                     errorTitle = "User Already Registered"
                     errorMessage = "A user is already registered with this Email. Click 'Login' to use this account"
@@ -243,12 +265,13 @@ class SignupViewController: UIViewController{
                     actions.append(action2)
                 
                 case .networkError:
-                    errorTitle = "Network error"
-                    errorMessage = "Please Try Again"
+                    errorTitle = "Network Error"
+                    errorMessage = "Please make sure you are connected to the Internet."
                     actions.append(defaultAction)
                 
                 default:
                     errorTitle =  "Unknown error occurred"
+                    errorMessage =  "Sorry for the inconvenience."
                     actions.append(defaultAction)
             }
             

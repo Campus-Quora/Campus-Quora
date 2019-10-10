@@ -24,6 +24,10 @@ let answerFont = UIFont.systemFont(ofSize: 14, weight: .light)
 let numberOfLinesInQuestion = 2
 let numberOfLinesInAnswer = 3
 
+let textFieldBackgroundColor = UIColor(white: 0, alpha: 0.05)
+let textFieldTextColor = UIColor.black
+let textFieldPlaceholderColor = UIColor(white: 0.15, alpha: 0.6)
+
 // Tip for asking question
 func tipAttributedString()->NSMutableAttributedString{
     let attributedText = NSMutableAttributedString(string: "Tips on getting good answers quickly\n", attributes: [.font: UIFont.systemFont(ofSize: 16, weight: .bold), .baselineOffset: 5])
