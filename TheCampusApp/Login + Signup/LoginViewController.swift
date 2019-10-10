@@ -89,6 +89,8 @@ class LoginViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
        
+        navigationController?.isNavigationBarHidden = true
+        
         if #available(iOS 13, *){
             self.isModalInPresentation = true
             self.modalPresentationStyle = .fullScreen
