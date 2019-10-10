@@ -160,13 +160,18 @@ class SignupViewController: UIViewController{
 
     
     // MARK:- Triggering Methods
-    @objc func changeToLogInController(){
-        print("Log In")
+    @objc func changeToLogInController(loginEmail: String? = nil){
+        if let email = loginEmail{
+            if let loginVC = self.navigationController?.viewControllers.first as? LoginViewController{
+                loginVC.emailTextField.text = email
+            }
+        }
         navigationController?.popViewController(animated: true)
     }
     
     @objc func handleSignup(){
         view.endEditing(true)
+        
         guard let name = nameTextField.text             else {return}
         guard let email = emailTextField.text           else {return}
         guard let password = passwordTextField.text     else {return}
@@ -174,6 +179,7 @@ class SignupViewController: UIViewController{
         Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
             if let error = error{
                 print("Signup ERROR #1 : \n\n", error)
+                self.handleSignupError(error)
                 return;
             }
             
@@ -203,6 +209,58 @@ class SignupViewController: UIViewController{
             }
         }
         
+    }
+    
+    func handleSignupError(_ error: Error){
+        if let errorCode = AuthErrorCode(rawValue: error._code){
+            var errorTitle: String = ""
+            var errorMessage: String = ""
+            
+            let defaultAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+            
+            var actions = [UIAlertAction]()
+            switch(errorCode){
+                case .emailAlreadyInUse:
+                    errorTitle = "User Already Registered"
+                    errorMessage = "A user is already registered with this Email. Click 'Login' to use this account"
+                    
+                    let action1 = UIAlertAction(title: "Try Again", style: .cancel, handler: { (_) in
+                        self.emailTextField.text = "";
+                        self.passwordTextField.text = "";
+                    })
+                    
+                    let action2 = UIAlertAction(title: "Log In", style: .default, handler: { (_) in
+                        let email = self.emailTextField.text
+                        
+                        self.nameTextField.text = ""
+                        self.emailTextField.text = "";
+                        self.passwordTextField.text = "";
+                        
+                        self.changeToLogInController(loginEmail: email)
+                    })
+                    
+                    actions.append(action1)
+                    actions.append(action2)
+                
+                case .networkError:
+                    errorTitle = "Network error"
+                    errorMessage = "Please Try Again"
+                    actions.append(defaultAction)
+                
+                default:
+                    errorTitle =  "Unknown error occurred"
+                    actions.append(defaultAction)
+            }
+            
+            let alertController = UIAlertController(title: errorTitle, message: errorMessage, preferredStyle: .alert)
+            
+            actions.forEach({ (action) in
+                alertController.addAction(action)
+            })
+            
+            self.present(alertController, animated: true, completion: nil)
+            
+        }
     }
     
     // This is triggered when Keyboards shows

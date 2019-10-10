@@ -76,6 +76,9 @@ class LoginViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.isNavigationBarHidden = true
+        view.backgroundColor = .white
+        
         // Set Constants
         stackHeight = inputHeight * 3 + inputPadding * 2
         inputWidth = view.frame.width * 0.8
@@ -96,9 +99,6 @@ class LoginViewController: UIViewController{
     
     // MARK:- Setup UI Methods
     func setupUI(){
-        navigationController?.isNavigationBarHidden = true
-        view.backgroundColor = .white
-        
         setupHeader()
         setupStack()
         setupFooter()
@@ -146,7 +146,6 @@ class LoginViewController: UIViewController{
     
     // MARK:- Triggering Methods
     @objc func changeToSignUpController(){
-        print("Sign Up")
         let signUpVC = SignupViewController()
         navigationController?.pushViewController(signUpVC, animated: true)
     }
@@ -161,21 +160,8 @@ class LoginViewController: UIViewController{
                 // This occurs when username or password is wrong
                 // TODO:- Add UI to alert user -- Done
                 
-                let alertController = UIAlertController(title: "Invalid Username/Password", message: "Click 'Sign Up' to create a new account.", preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: "Try Again", style: .cancel, handler: { (_) in
-                    self.emailTextField.text = "";
-                    self.passwordTextField.text = "";
-                }))
-                
-                alertController.addAction(UIAlertAction(title: "Sign Up", style: .default, handler: { (_) in
-                    self.emailTextField.text = "";
-                    self.passwordTextField.text = "";
-                    self.changeToSignUpController()
-                }))
-                
-                self.present(alertController, animated: true, completion: nil)
-                
                 print("Login ERROR #1 : \n\n", error)
+                self.handleLoginError(error)
                 return;
             }
 
@@ -195,6 +181,58 @@ class LoginViewController: UIViewController{
             }
         }
         
+    }
+    
+    func handleLoginError(_ error: Error){
+        if let errorCode = AuthErrorCode(rawValue: error._code){
+            var errorTitle: String = ""
+            var errorMessage: String = ""
+            
+            let defaultAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+            
+            var actions = [UIAlertAction]()
+            switch(errorCode){
+            case .userNotFound, .invalidEmail, .invalidSender, .invalidRecipientEmail, .wrongPassword:
+                errorTitle = "Invalid Username/Password"
+                errorMessage = "Click 'Sign Up' to create a new account."
+                
+                let action1 = UIAlertAction(title: "Try Again", style: .cancel, handler: { (_) in
+                    self.passwordTextField.text = "";
+                })
+                
+                let action2 = UIAlertAction(title: "Sign Up", style: .default, handler: { (_) in
+                    self.emailTextField.text = "";
+                    self.passwordTextField.text = "";
+                    self.changeToSignUpController()
+                })
+                
+                actions.append(action1)
+                actions.append(action2)
+                
+            case .userDisabled:
+                errorTitle = "Your account has been disabled"
+                errorMessage = "Please Contact Support"
+                actions.append(defaultAction)
+                
+            case .networkError:
+                errorTitle = "Network error"
+                errorMessage = "Please Try Again"
+                actions.append(defaultAction)
+                
+            default:
+                errorTitle =  "Unknown error occurred"
+                actions.append(defaultAction)
+            }
+            
+            let alertController = UIAlertController(title: errorTitle, message: errorMessage, preferredStyle: .alert)
+            
+            actions.forEach({ (action) in
+                alertController.addAction(action)
+            })
+            
+            self.present(alertController, animated: true, completion: nil)
+            
+        }
     }
     
     // This is triggered when Keyboards shows
