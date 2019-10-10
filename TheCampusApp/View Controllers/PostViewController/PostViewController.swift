@@ -7,11 +7,12 @@
 //
 
 import UIKit
+import Photos
 
 let selectedColor = blueColorDark
 let unselectedColor: UIColor = .black
 
-class PostViewController: UIViewController{
+class PostViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIViewControllerTransitioningDelegate{
     // MARK:- Overriden Members
     override var inputAccessoryView:UIView{
         get{ return self.toolbar }
@@ -24,6 +25,7 @@ class PostViewController: UIViewController{
     // MARK:- Main Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        UIApplication.shared.keyWindow?.backgroundColor = .white
         setupNavigationBar()
         setupUI()
         
@@ -131,8 +133,6 @@ class PostViewController: UIViewController{
         textView.textContainerInset.bottom += 24
         textView.font = .systemFont(ofSize: 16)
         textView.isScrollEnabled = false
-        textView.isSelectable = true
-        textView.isEditable = true
         return textView
     }()
     
@@ -184,7 +184,14 @@ class PostViewController: UIViewController{
         let button = ToolBarButton(imageName: "AddImage")
         button.tag = 0
         button.addTarget(self, action: #selector(handleButtonColor), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleImageSelection), for: .touchUpInside)
         return button
+    }()
+    var imagePickerVC: UIImagePickerController = {
+        let picker = UIImagePickerController()
+        picker.sourceType = .photoLibrary
+        picker.allowsEditing = false
+        return picker
     }()
     
     let addLinkButton: UIButton = {
@@ -223,6 +230,7 @@ class PostViewController: UIViewController{
         // Setup Delegates
         questionHeading.delegate = self
         questionDescription.delegate = self
+        imagePickerVC.delegate = self
         textOptionsView.dataSource = questionDescription
         
         addConstraints()
@@ -260,7 +268,84 @@ class PostViewController: UIViewController{
         textOptionsViewRightConstraintCollapsed.isActive = true
     }
     
+    lazy var toolbarHideConstraint = toolbar.heightAnchor.constraint(equalToConstant: 0)
+    
     var textOptionsViewRightConstraintExpanded: NSLayoutConstraint! = nil
     var textOptionsViewRightConstraintCollapsed: NSLayoutConstraint! = nil
     
+    @objc func handleImageSelection(){
+        checkPermission()
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        dismiss(picker: picker)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController){
+        dismiss(picker: picker)
+    }
+    
+    func dismiss(picker: UIImagePickerController){
+        picker.willMove(toParent: nil)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        let finalFrame = view.bounds.offsetBy(dx: 0, dy: UIScreen.main.bounds.size.height)
+        toolbarHideConstraint.isActive = false
+        self.toolbar.isHidden = false
+        self.toolbar.isUserInteractionEnabled = true
+        UIView.animate(withDuration: 0.35, delay: 0, options: .curveLinear, animations: {
+            self.imagePickerVC.view.frame = finalFrame
+            self.toolbar.superview?.layoutIfNeeded()
+            self.tipsView.alpha = 1
+        }, completion: { _ in
+            picker.view.removeFromSuperview()
+            picker.removeFromParent()
+            self.becomeFirstResponder()
+        })
+    }
+    func showImagePicker(){
+        self.view.endEditing(true)
+        if(self.isFirstResponder){
+            toolbar.frame = toolbar.frame.offsetBy(dx: 0, dy: -40)
+        }
+        addChild(imagePickerVC)
+        view.addSubview(imagePickerVC.view)
+        imagePickerVC.didMove(toParent: self)
+        imagePickerVC.view.frame = view.bounds.offsetBy(dx: 0, dy: UIScreen.main.bounds.size.height)
+        let finalFrame = self.view.bounds
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        toolbarHideConstraint.isActive = true
+        UIView.animate(withDuration: 0.35, delay: 0, options: .curveLinear, animations: {
+            self.imagePickerVC.view.frame = finalFrame
+            self.tipsView.alpha = 0
+            self.toolbar.superview?.layoutIfNeeded()
+        }, completion: { _ in
+            self.toolbar.isHidden = true
+            self.toolbar.isUserInteractionEnabled = false
+        })
+    }
+    
+    func checkPermission() {
+        let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
+        switch photoAuthorizationStatus {
+        case .authorized:
+            print("Access is granted by user")
+            showImagePicker()
+        case .notDetermined:
+            PHPhotoLibrary.requestAuthorization({ newStatus in
+                print("status is \(newStatus)")
+                if newStatus == PHAuthorizationStatus.authorized {
+                    /* do stuff here */
+                    print("success")
+                    DispatchQueue.main.async {
+                        self.showImagePicker()
+                    }
+                }
+            })
+        case .restricted:
+            print("User do not have access to photo album.")
+        case .denied:
+            print("User has denied the permission.")
+        }
+        
+    }
 }

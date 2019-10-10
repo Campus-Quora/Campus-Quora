@@ -15,6 +15,8 @@ class ToolBarButton: UIButton{
         let size = CGSize(width: 30, height: 30)
         let image = UIImage(named: imageName)?.resizeImage(size: size).withRenderingMode(.alwaysTemplate)
         self.setImage(image, for: .normal)
+        self.imageView?.contentMode = .top
+//        self.imageView?.clipsToBounds = true
         tintColor = unselectedColor
     }
     
@@ -229,6 +231,10 @@ class TextFormatOptionsView: UIView, UITextViewDelegate{
             removeOrderedList()
             return
         }
+        if(isUnorderedListActive){
+            isUnorderedListActive = false
+            removeUnorderedList()
+        }
         orderedListHelper()
     }
     func orderedListHelper(){
@@ -304,6 +310,10 @@ class TextFormatOptionsView: UIView, UITextViewDelegate{
         if(!isUnorderedListActive){
             removeUnorderedList()
             return
+        }
+        if(isOrderedListActive){
+            isOrderedListActive = false
+            removeOrderedList()
         }
         unorderedListHelper()
     }
@@ -419,9 +429,7 @@ extension UITextView{
 
 // Additional Required Functionality:-
 // 1. Set the tintcolor of button based on attributes of text. Eg:- make tint blue when text is bold
-// 2. Add unordered list
-// 3. Add ordered list
-// 4. Add 3 levels of heading
+// 2. Add 3 levels of heading
 
 // Optional Features
 // 1. Add quote

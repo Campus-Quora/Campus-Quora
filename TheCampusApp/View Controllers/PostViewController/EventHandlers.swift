@@ -28,7 +28,6 @@ extension PostViewController{
         }
     }
     
-    
     @objc func handleTextOptions(){
         if(toolbar.leadingConstraint.constant == 10){
             // Expand
@@ -48,5 +47,20 @@ extension PostViewController{
             self.toolbar.superview?.layoutIfNeeded()
         }
         
+    }
+}
+
+
+class CustomVC: UIViewController{
+    override func viewDidLoad(){
+        let button = UIButton()
+        button.setTitle("Back", for: .normal)
+        button.addTarget(self, action: #selector(resign), for: .touchUpInside)
+        view.addSubview(button)
+        button.anchor(top: view.topAnchor, left: view.leadingAnchor, paddingTop: 400, paddingLeft: 200)
+    }
+    
+    @objc func resign(){
+        navigationController?.popViewController(animated: true)
     }
 }

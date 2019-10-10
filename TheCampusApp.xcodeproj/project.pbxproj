@@ -52,6 +52,7 @@
 		00EBA8902348ADD900539A31 /* Ask Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA88F2348ADD900539A31 /* Ask Button.swift */; };
 		00EBA8922348ADFE00539A31 /* Rich Text Editor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8912348ADFE00539A31 /* Rich Text Editor.swift */; };
 		00EBA8942348C68100539A31 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8932348C68100539A31 /* UIFont.swift */; };
+		00EBA898234DB90200539A31 /* Image Picker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA897234DB90200539A31 /* Image Picker.swift */; };
 		1FAC1B282322C01300304173 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAC1B272322C01300304173 /* AppDelegate.swift */; };
 		1FAC1B2A2322C01300304173 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAC1B292322C01300304173 /* ViewController.swift */; };
 		1FAC1B2D2322C01300304173 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FAC1B2B2322C01300304173 /* Main.storyboard */; };
@@ -127,6 +128,7 @@
 		00EBA88F2348ADD900539A31 /* Ask Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ask Button.swift"; sourceTree = "<group>"; };
 		00EBA8912348ADFE00539A31 /* Rich Text Editor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rich Text Editor.swift"; sourceTree = "<group>"; };
 		00EBA8932348C68100539A31 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
+		00EBA897234DB90200539A31 /* Image Picker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image Picker.swift"; sourceTree = "<group>"; };
 		1FAC1B242322C01300304173 /* TheCampusApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TheCampusApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FAC1B272322C01300304173 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1FAC1B292322C01300304173 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -239,6 +241,7 @@
 				00EBA88D2348ADBB00539A31 /* Keyboard Events.swift */,
 				00EBA88F2348ADD900539A31 /* Ask Button.swift */,
 				00EBA8912348ADFE00539A31 /* Rich Text Editor.swift */,
+				00EBA897234DB90200539A31 /* Image Picker.swift */,
 			);
 			path = PostViewController;
 			sourceTree = "<group>";
@@ -616,6 +619,7 @@
 				00EBA87923462B2F00539A31 /* Notepad.m in Sources */,
 				00EBA87C23462B2F00539A31 /* Extensions.swift in Sources */,
 				1FAC1B282322C01300304173 /* AppDelegate.swift in Sources */,
+				00EBA898234DB90200539A31 /* Image Picker.swift in Sources */,
 				00EBA823233FCA9C00539A31 /* String.swift in Sources */,
 				00EBA8942348C68100539A31 /* UIFont.swift in Sources */,
 				00EBA87D23462B2F00539A31 /* Notepad-macOS.swift in Sources */,
