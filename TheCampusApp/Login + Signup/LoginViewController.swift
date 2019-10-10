@@ -280,6 +280,8 @@ class LoginViewController: UIViewController{
             }
             self.emailTextField.text = nil;
             self.passwordTextField.text = nil;
+            self.loginButton.isEnabled = false;
+            self.loginButton.backgroundColor = blueColorFaint;
         }
         
         

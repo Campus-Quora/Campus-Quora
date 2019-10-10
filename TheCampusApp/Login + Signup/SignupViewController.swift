@@ -301,6 +301,8 @@ class SignupViewController: UIViewController{
             self.emailTextField.text = nil;
             self.passwordTextField.text = nil;
             self.nameTextField.text = nil;
+            self.signupButton.isEnabled = false;
+            self.signupButton.backgroundColor = blueColorFaint
         }
         
         
