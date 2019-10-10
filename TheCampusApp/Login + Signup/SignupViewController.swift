@@ -8,9 +8,11 @@
 
 import UIKit
 import Firebase
+import SVProgressHUD
 
 class SignupViewController: UIViewController{
     // MARK:- Constants
+    
     
     let inputPadding: CGFloat = 20
     let inputHeight: CGFloat = 40
@@ -30,9 +32,11 @@ class SignupViewController: UIViewController{
         return label
     }()
     
+
     let nameTextField : UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Name"
+        textField.attributedPlaceholder = NSAttributedString(string: "Name", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
+        textField.textColor = .white
         textField.backgroundColor = .black
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
@@ -44,8 +48,9 @@ class SignupViewController: UIViewController{
     
     let emailTextField : UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Email"
+        textField.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
         textField.backgroundColor = .black
+        textField.textColor = .white
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
         textField.autocapitalizationType = .none
@@ -57,8 +62,9 @@ class SignupViewController: UIViewController{
     let passwordTextField : UITextField = {
         let textField = UITextField()
         textField.isSecureTextEntry = true
-        textField.placeholder = "Password"
+        textField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
         textField.backgroundColor = .black
+        textField.textColor = .white
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
         textField.tag = 2
@@ -88,6 +94,12 @@ class SignupViewController: UIViewController{
     // MARK:- Overriden Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        if #available(iOS 13, *){
+            self.isModalInPresentation = true
+            self.modalPresentationStyle = .fullScreen
+        }
+        
+
         
         // Set Constants
         stackHeight = inputHeight * 4 + inputPadding * 3
@@ -159,6 +171,9 @@ class SignupViewController: UIViewController{
     // MARK:- Triggering Methods
     @objc func changeToLogInController(){
         print("Log In")
+        emailTextField.text=nil
+        passwordTextField.text=nil
+        nameTextField.text=nil
         navigationController?.popViewController(animated: true)
     }
     
@@ -167,9 +182,23 @@ class SignupViewController: UIViewController{
         guard let email = emailTextField.text           else {return}
         guard let password = passwordTextField.text     else {return}
         print("Trying To Sign Up")
+        
+        SVProgressHUD.setRingThickness(5)
+        SVProgressHUD.show()
+
         Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
             if let error = error{
                 print("Signup ERROR #1 : \n\n", error)
+//                let alertController = UIAlertController(title: "Invalid Email", message: "Please enter a valid Email ID", preferredStyle: .alert)
+//                alertController.addAction(UIAlertAction(title: "Try Again", style: .cancel, handler: nil))
+//                self.emailTextField.text=nil
+//                self.nameTextField.text=nil
+//                self.passwordTextField.text=nil
+//                self.present(alertController, animated: true, completion: nil)
+                
+                SVProgressHUD.dismiss()
+
+                self.firebaseErrorHandler(error: error as NSError)
                 return;
             }
             
@@ -191,6 +220,7 @@ class SignupViewController: UIViewController{
                 UserData.shared.setData(user)
                 // Go to Main Tab Bar Controller
                 DispatchQueue.main.async {
+                    SVProgressHUD.dismiss()
                     if let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController{
                         mainTabBarController.setupViewControllers()
                         self.dismiss(animated: true, completion: nil)
@@ -231,6 +261,46 @@ class SignupViewController: UIViewController{
             signupButton.backgroundColor = blueColorFaint
             signupButton.isEnabled = false
         }
+    }
+    
+    func firebaseErrorHandler(error: NSError){
+        
+        print(error.debugDescription)
+        if let errorCode = AuthErrorCode(rawValue: error.code){
+            switch errorCode {
+            case .emailAlreadyInUse :
+                 let alertController = UIAlertController(title: "Email already in use.", message: "Click 'Log In' to log in.", preferredStyle: .alert)
+                 alertController.addAction(UIAlertAction(title: "Try Again", style: .cancel, handler: nil))
+                 alertController.addAction(UIAlertAction(title: "Log In", style: .default, handler: { (_) in
+                     self.changeToLogInController()
+                 }))
+                 present(alertController, animated: true, completion: nil)
+            case .invalidEmail:
+                
+                let alertController = UIAlertController(title: "Invalid Email", message: "Please enter a valid Email.", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Try Again", style: .cancel, handler: nil))
+                
+                present(alertController, animated: true, completion: nil)
+                
+            case .networkError:
+                let alertController = UIAlertController(title: "Network Error", message: "Please make sure you are connected to the Internet.", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                present(alertController, animated: true, completion: nil)
+            case .wrongPassword:
+                let alertController = UIAlertController(title: "Wrong Password", message: "Please enter the correct password.", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Try Again", style: .cancel, handler: nil))
+                present(alertController, animated: true, completion: nil)
+            default:
+                let alertController = UIAlertController(title: "There was an unknown error.", message: "Sorry for the inconvenience.", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Try Again", style: .cancel, handler: nil))
+                present(alertController, animated: true, completion: nil)
+            }
+            self.emailTextField.text = nil;
+            self.passwordTextField.text = nil;
+            self.nameTextField.text = nil;
+        }
+        
+        
     }
 }
 
