@@ -74,14 +74,13 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
             do{
                 try Auth.auth().signOut()
                 let loginController = LoginViewController()
-
                 let navController = UINavigationController(rootViewController: loginController)
-
                 self.present(navController, animated: true, completion: nil)
             } catch let signOutError {
                 print("Failed to Sign Out: ", signOutError)
             }
         }))
+        
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
     }
     

@@ -33,29 +33,7 @@ class HomeViewController: UIViewController, UITextViewDelegate{
     
     func setupUI(){
         view.backgroundColor = .white
-        let signOutButton = UIButton()
-        signOutButton.setTitle("Signout", for: .normal)
-        signOutButton.addTarget(self, action: #selector(handleSignout), for: .touchUpInside)
-        view.addSubview(signOutButton)
-        signOutButton.anchor(top: view.topAnchor, right: view.trailingAnchor, paddingTop: 200, paddingRight: 50)
-        signOutButton.backgroundColor = blueColorDark
-        signOutButton.isUserInteractionEnabled = true
     }
-    
-    @objc func handleSignout(){
-        print("Trying to sign out")
-        do{
-            try Auth.auth().signOut()
-            print("Signout Successful")
-            let loginVC = LoginViewController()
-            let navigationLoginVC = UINavigationController(rootViewController: loginVC)
-            self.present(navigationLoginVC, animated: true, completion: nil)
-        }
-        catch let signOutError as NSError {
-            print ("Error signing out: \(signOutError)")
-        }
-    }
-    
 }
 
 
