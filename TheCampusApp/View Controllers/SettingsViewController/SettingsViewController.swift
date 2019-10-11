@@ -39,41 +39,12 @@ class SettingsViewController: UITableViewController{
         tableView.register(SettingsColorCell.self, forCellReuseIdentifier: SettingsViewController.settingsColorCellID)
     
         // Footer
-//        let containerView = UIView()
         let footer = SettingsFooter()
         footer.setUp()
         tableView.setAndLayoutTableFooterView(footer: footer)
-//        containerView.translatesAutoresizingMaskIntoConstraints = false
-//        containerView.addSubview(footer)
-//        self.tableView.tableFooterView = containerView
-//        containerView.centerXAnchor.constraint(equalTo: self.tableView.centerXAnchor).isActive = true
-//        containerView.widthAnchor.constraint(equalTo: self.tableView.widthAnchor).isActive = true
-//        containerView.bottomAnchor.constraint(equalTo: self.tableView.bottomAnchor).isActive = true
-//        self.tableView.tableFooterView?.layoutIfNeeded()
-//        self.tableView.tableFooterView = self.tableView.tableFooterView
-        
-        
-//        let footer = SettingsFooter()
-//        footer.setUp()
-//        tableView.addSubview(footer)
-//        footer.translatesAutoresizingMaskIntoConstraints = false
-//        footer.widthAnchor.constraint(equalTo: tableView.widthAnchor, multiplier: 1).isActive = true
-//        footer.heightAnchor.constraint(equalToConstant: 100).isActive = true
-//        footer.bottomAnchor.constraint(equalTo: tableView.bottomAnchor).isActive = true
-//        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
-//        tableView.tableFooterView = footer
-        
-        
-        let name = Notification.Name(changeThemeKey)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateColors), name: name, object: nil)
-    }
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        DispatchQueue.main.async {
-            self.tableView.tableFooterView?.layoutIfNeeded()
-            self.tableView.tableFooterView = self.tableView.tableFooterView
-        }
+
+//        let name = Notification.Name(changeThemeKey)
+//        NotificationCenter.default.addObserver(self, selector: #selector(updateColors), name: name, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {

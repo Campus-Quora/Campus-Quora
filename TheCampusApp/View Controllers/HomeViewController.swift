@@ -28,9 +28,6 @@ class HomeViewController: UIViewController, UITextViewDelegate{
         navigationController?.navigationBar.shadowImage = UIImage()
     }
     
-    var editor: Notepad?
-    let renderedView = UITextView()
-    
     func setupUI(){
         view.backgroundColor = .white
     }

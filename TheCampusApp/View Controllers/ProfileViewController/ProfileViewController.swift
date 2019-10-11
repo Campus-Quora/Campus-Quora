@@ -20,6 +20,16 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     var maxQuestionSize: CGSize!
     var estimatedWidth: CGFloat!
     
+    lazy var settingsButton: UIButton = {
+        let button = UIButton()
+        let size = CGSize(width: 30, height: 30)
+        let image = UIImage(named: "Settings")?.resizeImage(size: size).withRenderingMode(.alwaysTemplate)
+        button.setImage(image, for: .normal)
+        button.tintColor = .black
+        button.addTarget(self, action: #selector(ProfileViewController.launchSettings), for: .touchUpInside)
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupData()
@@ -36,8 +46,6 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
         collectionView.register(PostCell.self, forCellWithReuseIdentifier: cellID)
         
         headerHeight = (UIScreen.main.nativeBounds.height/UIScreen.main.nativeScale) * 0.23
-        
-        setupLogOut()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -47,41 +55,19 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     
     func setupNavigationBar(){
         navigationItem.title = "Profile"
-        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: settingsButton)
         guard let navBar = navigationController?.navigationBar else {return}
         if #available(iOS 11.0, *) {
             navBar.prefersLargeTitles = true
-            navigationItem.largeTitleDisplayMode = .automatic
-            navBar.backgroundColor = .black
-            navBar.barTintColor = .black
-            navBar.titleTextAttributes = [.foregroundColor : UIColor.white]
-            navBar.largeTitleTextAttributes = [.foregroundColor : UIColor.white]
         }
         navBar.shadowImage = UIImage()
         navBar.isTranslucent = false
         navBar.tintColor = primaryColor
     }
-    //log out button
-    func setupLogOut(){
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Settings"), style: .plain, target: self, action: #selector(handleLogOut))
-    }
     
-    @objc func handleLogOut() {
-        let alertController = UIAlertController(title: "Log Out?", message: "Are you sure you want to Log Out?", preferredStyle: .alert)
-        present(alertController, animated: true, completion: nil)
-        
-        alertController.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { (_) in
-            do{
-                try Auth.auth().signOut()
-                let loginController = LoginViewController()
-                let navController = UINavigationController(rootViewController: loginController)
-                self.present(navController, animated: true, completion: nil)
-            } catch let signOutError {
-                print("Failed to Sign Out: ", signOutError)
-            }
-        }))
-        
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+    @objc func launchSettings(){
+        let settingsVC = SettingsViewController()
+        self.navigationController?.pushViewController(settingsVC, animated: true)
     }
     
     func setupUI(){
