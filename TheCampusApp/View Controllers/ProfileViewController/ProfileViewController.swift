@@ -12,20 +12,25 @@ import UIKit
 import Firebase
 
 class ProfileViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout{
-    let headerID = "headerID"
-    let cellID = "cellID"
+    let headerID = "progileHeaderID"
+    let cellID = "profileCellID"
     var headerHeight: CGFloat = 0
     
     var maxAnswerSize: CGSize!
     var maxQuestionSize: CGSize!
     var estimatedWidth: CGFloat!
     
+    func setupColors(){
+        settingsButton.tintColor = selectedAccentColor.primaryColor
+        navigationController?.navigationBar.tintColor = selectedTheme.primaryColor
+        collectionView.backgroundColor = selectedTheme.primaryColor
+    }
+    
     lazy var settingsButton: UIButton = {
         let button = UIButton()
         let size = CGSize(width: 30, height: 30)
         let image = UIImage(named: "Settings")?.resizeImage(size: size).withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = .black
         button.addTarget(self, action: #selector(ProfileViewController.launchSettings), for: .touchUpInside)
         return button
     }()
@@ -35,6 +40,7 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
         setupData()
         estimateSize()
         setupUI()
+        setupColors()
         
         // This is used to force collectionView to stick to safe layout
         if #available(iOS 11.0, *) {
@@ -62,7 +68,7 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
         }
         navBar.shadowImage = UIImage()
         navBar.isTranslucent = false
-        navBar.tintColor = primaryColor
+        navBar.tintColor = selectedTheme.primaryColor
     }
     
     @objc func launchSettings(){
@@ -71,7 +77,7 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     }
     
     func setupUI(){
-        collectionView.backgroundColor = .white
+        
     }
     
     var postsData: [PostData] = []
@@ -135,7 +141,6 @@ extension ProfileViewController{
         let maxQuestionHeight = CGFloat(numberOfLinesInQuestion) * String.findSingleLineHeight(width: estimatedWidth, attributes: [.font: questionFont])
         maxAnswerSize = CGSize(width: estimatedWidth, height: maxAnswerHeight)
         maxQuestionSize = CGSize(width: estimatedWidth, height: maxQuestionHeight)
-        print(maxAnswerHeight, maxQuestionHeight)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -143,7 +148,6 @@ extension ProfileViewController{
         
         let estimatedAnswerFrame = NSString(string: data.answer ?? "").boundingRect(with: maxAnswerSize, options: .usesLineFragmentOrigin, attributes: [.font : answerFont], context: nil)
         let estimatedQuestionFrame = NSString(string: data.question ?? "").boundingRect(with: maxQuestionSize, options: .usesLineFragmentOrigin, attributes: [.font : questionFont], context: nil)
-        print(estimatedAnswerFrame.height, estimatedQuestionFrame.height)
         let estimatedHeight = estimatedAnswerFrame.height + estimatedQuestionFrame.height + 50 + 35 + 15
         return CGSize(width: estimatedWidth, height: estimatedHeight)
     }

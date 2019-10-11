@@ -76,7 +76,7 @@ class PostViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
         navBar.shadowImage = UIImage()
         navBar.isTranslucent = false
-        navBar.tintColor = primaryColor
+        navBar.tintColor = selectedTheme.primaryColor
         
     }
     
@@ -218,7 +218,7 @@ class PostViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     }()
     
     func setupUI(){
-        view.backgroundColor = primaryColor
+        view.backgroundColor = selectedTheme.primaryColor
     
         // Add Subviews
         view.addSubview(scrollView)

@@ -34,10 +34,10 @@ class BasePopup: UIView, UICollectionViewDelegate, UICollectionViewDataSource, U
     
     init(frame: CGRect, headerText: String){
         super.init(frame: frame)
-        backgroundColor = selectedTheme.secondColor
+        backgroundColor = selectedTheme.secondaryColor
         header.text = headerText
         header.font = UIFont(name: "Avenir-Heavy", size: 24)
-        header.textColor = selectedTheme.textColor
+        header.textColor = selectedTheme.primaryTextColor
         
         collectionView.delegate = self
         collectionView.dataSource = self

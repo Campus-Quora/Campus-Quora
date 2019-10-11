@@ -16,7 +16,7 @@ class SettingsFooter: UIView{
         button.setTitle("Sign Out", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18, weight: .bold)
         button.titleLabel?.textAlignment = .center
-        button.setTitleColor(primaryTextColor, for: .normal)
+        button.setTitleColor(selectedTheme.primaryTextColor, for: .normal)
         button.addTarget(self, action: #selector(handleSignOut), for: .touchUpInside)
         return button
     }()
@@ -31,7 +31,7 @@ class SettingsFooter: UIView{
     }()
     
     func setUp() {
-        self.backgroundColor = tableViewSectionBackground
+        self.backgroundColor = selectedTheme.secondaryColor
         let stack = UIStackView(arrangedSubviews: [signOutButton, deleteAccountButton])
         stack.axis = .vertical
         stack.distribution = .fillEqually

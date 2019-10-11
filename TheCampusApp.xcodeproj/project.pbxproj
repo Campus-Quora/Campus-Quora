@@ -50,8 +50,11 @@
 		00EBA8EF23506B1600539A31 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8DC23506B1600539A31 /* SettingsViewController.swift */; };
 		00EBA8F023506B1600539A31 /* Theme Selector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8DE23506B1600539A31 /* Theme Selector.swift */; };
 		00EBA8F123506B1600539A31 /* Apply Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8DF23506B1600539A31 /* Apply Theme.swift */; };
-		00EBA8F223506B1600539A31 /* Theme Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8E023506B1600539A31 /* Theme Model.swift */; };
 		00EBA8F323506B1600539A31 /* Theme Selector Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8E123506B1600539A31 /* Theme Selector Function.swift */; };
+		00EBA8F6235076DB00539A31 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8F5235076DB00539A31 /* Theme.swift */; };
+		00EBA8F8235078C100539A31 /* Dark Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8F7235078C100539A31 /* Dark Theme.swift */; };
+		00EBA8FA235078D300539A31 /* Light Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8F9235078D200539A31 /* Light Theme.swift */; };
+		00EBA8FC235079C800539A31 /* Accent Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8FB235079C800539A31 /* Accent Colors.swift */; };
 		1FAC1B282322C01300304173 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAC1B272322C01300304173 /* AppDelegate.swift */; };
 		1FAC1B2A2322C01300304173 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAC1B292322C01300304173 /* ViewController.swift */; };
 		1FAC1B2D2322C01300304173 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FAC1B2B2322C01300304173 /* Main.storyboard */; };
@@ -124,8 +127,11 @@
 		00EBA8DC23506B1600539A31 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		00EBA8DE23506B1600539A31 /* Theme Selector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Theme Selector.swift"; sourceTree = "<group>"; };
 		00EBA8DF23506B1600539A31 /* Apply Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Apply Theme.swift"; sourceTree = "<group>"; };
-		00EBA8E023506B1600539A31 /* Theme Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Theme Model.swift"; sourceTree = "<group>"; };
 		00EBA8E123506B1600539A31 /* Theme Selector Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Theme Selector Function.swift"; sourceTree = "<group>"; };
+		00EBA8F5235076DB00539A31 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		00EBA8F7235078C100539A31 /* Dark Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dark Theme.swift"; sourceTree = "<group>"; };
+		00EBA8F9235078D200539A31 /* Light Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Light Theme.swift"; sourceTree = "<group>"; };
+		00EBA8FB235079C800539A31 /* Accent Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Accent Colors.swift"; sourceTree = "<group>"; };
 		1FAC1B242322C01300304173 /* TheCampusApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TheCampusApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FAC1B272322C01300304173 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1FAC1B292322C01300304173 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -307,10 +313,20 @@
 			children = (
 				00EBA8DE23506B1600539A31 /* Theme Selector.swift */,
 				00EBA8DF23506B1600539A31 /* Apply Theme.swift */,
-				00EBA8E023506B1600539A31 /* Theme Model.swift */,
 				00EBA8E123506B1600539A31 /* Theme Selector Function.swift */,
 			);
 			path = "Theme Selector";
+			sourceTree = "<group>";
+		};
+		00EBA8F42350768100539A31 /* Themes */ = {
+			isa = PBXGroup;
+			children = (
+				00EBA8F5235076DB00539A31 /* Theme.swift */,
+				00EBA8F7235078C100539A31 /* Dark Theme.swift */,
+				00EBA8F9235078D200539A31 /* Light Theme.swift */,
+				00EBA8FB235079C800539A31 /* Accent Colors.swift */,
+			);
+			path = Themes;
 			sourceTree = "<group>";
 		};
 		1FAC1B1B2322C01300304173 = {
@@ -338,6 +354,7 @@
 		1FAC1B262322C01300304173 /* TheCampusApp */ = {
 			isa = PBXGroup;
 			children = (
+				00EBA8F42350768100539A31 /* Themes */,
 				00EBA8532344CAFA00539A31 /* API */,
 				00EBA84C23448ABE00539A31 /* Text Editor */,
 				00EBA8012337CBAD00539A31 /* Extensions */,
@@ -596,12 +613,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				00EBA805233CBFF400539A31 /* Dismiss.swift in Sources */,
+				00EBA8FC235079C800539A31 /* Accent Colors.swift in Sources */,
 				00EBA8EC23506B1600539A31 /* SettingsToggleCell.swift in Sources */,
 				00EBA8F023506B1600539A31 /* Theme Selector.swift in Sources */,
 				00EBA8902348ADD900539A31 /* Ask Button.swift in Sources */,
 				00EBA817233E217E00539A31 /* ProfileHeader.swift in Sources */,
 				00EBA7FD2337BA5A00539A31 /* LoginViewController.swift in Sources */,
 				00EBA80B233DEA0000539A31 /* UserData.swift in Sources */,
+				00EBA8FA235078D300539A31 /* Light Theme.swift in Sources */,
 				00EBA8EA23506B1600539A31 /* SettingsSelectorCell.swift in Sources */,
 				00EBA8E923506B1600539A31 /* Theme Selector Cell.swift in Sources */,
 				1FAC1B2A2322C01300304173 /* ViewController.swift in Sources */,
@@ -610,13 +629,13 @@
 				00EBA81B233E9B2200539A31 /* Constants.swift in Sources */,
 				00EBA8EB23506B1600539A31 /* PopupBaseClass.swift in Sources */,
 				00EBA808233D468300539A31 /* MainTabBarController.swift in Sources */,
-				00EBA8F223506B1600539A31 /* Theme Model.swift in Sources */,
 				00EBA810233DF16900539A31 /* HomeViewController.swift in Sources */,
 				00EBA8E823506B1600539A31 /* SettingsFooter.swift in Sources */,
 				00EBA814233DF1AB00539A31 /* ProfileViewController.swift in Sources */,
 				00EBA8032337CBC700539A31 /* Constraints.swift in Sources */,
 				00EBA80D233DEB5C00539A31 /* UIImage.swift in Sources */,
 				00EBA8EE23506B1600539A31 /* SettingsButtonCell.swift in Sources */,
+				00EBA8F8235078C100539A31 /* Dark Theme.swift in Sources */,
 				00EBA88C2348AD8900539A31 /* EventHandlers.swift in Sources */,
 				00EBA8EF23506B1600539A31 /* SettingsViewController.swift in Sources */,
 				00EBA819233E986D00539A31 /* PostCell.swift in Sources */,
@@ -625,6 +644,7 @@
 				00EBA8F323506B1600539A31 /* Theme Selector Function.swift in Sources */,
 				00EBA7FF2337BA7400539A31 /* SignupViewController.swift in Sources */,
 				00EBA8E223506B1600539A31 /* Accent Color Function.swift in Sources */,
+				00EBA8F6235076DB00539A31 /* Theme.swift in Sources */,
 				00EBA88E2348ADBB00539A31 /* Keyboard Events.swift in Sources */,
 				00EBA8E723506B1600539A31 /* Settings Cell.swift in Sources */,
 				1FAC1B282322C01300304173 /* AppDelegate.swift in Sources */,

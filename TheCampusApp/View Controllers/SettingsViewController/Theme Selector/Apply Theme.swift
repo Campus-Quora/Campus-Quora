@@ -11,12 +11,12 @@ import UIKit
 
 func applyTheme(){
     let sharedApplication = UIApplication.shared
-    sharedApplication.delegate?.window??.backgroundColor = selectedTheme.themeColor
-    UINavigationBar.appearance().tintColor = selectedAccentColor
+    sharedApplication.delegate?.window??.backgroundColor = selectedTheme.primaryColor
+    UINavigationBar.appearance().tintColor = selectedAccentColor.primaryColor
     if #available(iOS 11.0, *) {
         UINavigationBar.appearance().largeTitleTextAttributes =
             [   NSAttributedString.Key.font : UIFont(name: "AvenirNext-Bold", size: 32)!,
-                NSAttributedString.Key.foregroundColor : selectedTheme.textColor
+                NSAttributedString.Key.foregroundColor : selectedTheme.primaryTextColor
         ]
     } 
 }

@@ -12,110 +12,76 @@ class ProfileHeader: UICollectionViewCell{
     // Constants
     var height: CGFloat = 0
     
-    // UI Elements
+    // MARK:- UI Elements
+    
+    // User
     let profilePic: RoundImageView = {
         let imageView = RoundImageView()
         imageView.image = UIImage(named: "Avatar")
         return imageView
     }()
-    
     let nameLabel: UILabel = {
         let label = UILabel()
-        label.text = UserData.shared.name ?? "Yogesh Kumar"
+        label.text = UserData.shared.name ?? ""
         label.font = .systemFont(ofSize: 16, weight: .medium)
+        label.numberOfLines = 2
         return label
     }()
     
-    let followingStatLabel: UILabel = {
-        let label = UILabel()
-        let count = UserData.shared.followingCount ?? 0
-        let attributedText = NSMutableAttributedString(string: "\(count)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18, weight: .bold), NSAttributedString.Key.foregroundColor : UIColor.black])
-        attributedText.append(NSAttributedString(string: "\nFollowing", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray, NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)]))
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.attributedText = attributedText
-        return label
-    }()
+    // Stats
+    let followingStatLabel = UILabel()
+    let followersStatLabel = UILabel()
+    let likesStatLabel = UILabel()
+    let questionsStatLabel = UILabel()
+    let answersStatLabel = UILabel()
+    let somethingStatLabel = UILabel()
     
-    let followersStatLabel: UILabel = {
-        let label = UILabel()
-        let count = UserData.shared.followerCount ?? 0
-        let attributedText = NSMutableAttributedString(string: "\(count)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18, weight: .bold), NSAttributedString.Key.foregroundColor : UIColor.black])
-        attributedText.append(NSAttributedString(string: "\nFollowers", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray, NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)]))
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.attributedText = attributedText
-        return label
-    }()
-    
-    let likesStatLabel: UILabel = {
-        let label = UILabel()
-        let count = UserData.shared.likesCount ?? 0
-        let attributedText = NSMutableAttributedString(string: "\(count)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18, weight: .bold), NSAttributedString.Key.foregroundColor : UIColor.black])
-        attributedText.append(NSAttributedString(string: "\nLikes", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray, NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)]))
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.attributedText = attributedText
-        return label
-    }()
-    
-    let questionsStatLabel: UILabel = {
-        let label = UILabel()
-        let count = UserData.shared.questionsCount ?? 0
-        let attributedText = NSMutableAttributedString(string: "\(count)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18, weight: .bold), NSAttributedString.Key.foregroundColor : UIColor.black])
-        attributedText.append(NSAttributedString(string: "\nQuestions", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray, NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)]))
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.attributedText = attributedText
-        return label
-    }()
-    
-    let answersStatLabel: UILabel = {
-        let label = UILabel()
-        let count = UserData.shared.answersCount ?? 0 
-        let attributedText = NSMutableAttributedString(string: "\(count)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18, weight: .bold), NSAttributedString.Key.foregroundColor : UIColor.black])
-        attributedText.append(NSAttributedString(string: "\nAnswers", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray, NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)]))
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.attributedText = attributedText
-        return label
-    }()
-    
-    // TODO: Add Some stat here and then also update it in statStack2 in setupStack method
-    let somethingStatLabel: UILabel = {
-        let label = UILabel()
-        let count = UserData.shared.likesCount ?? 0
-        let attributedText = NSMutableAttributedString(string: "\(count)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 18, weight: .bold), NSAttributedString.Key.foregroundColor : UIColor.black])
-        attributedText.append(NSAttributedString(string: "\nSomething", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray, NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)]))
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.attributedText = attributedText
-        return label
-    }()
-    
+    // Stack
     var statStack1: UIStackView!
     var statStack2: UIStackView!
     
+    // Settings
     let editProfileButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Edit Profile", for: .normal)
-        button.tintColor = .black
         button.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
         button.layer.cornerRadius = 10
         button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.black.cgColor
-//        button.backgroundColor = .gray
         return button
     }()
     
+    // Seperator
+    let headerSeperator = UIView()
+    
+    // MARK:- Initializers
+    
     override init(frame: CGRect){
         super.init(frame: frame)
-//        backgroundColor = .yellow
+        setupColors()
+        addStatsText()
         setupProfilePic()
         setupNameLabel()
         setupStats()
         setupEditProfileButton()
         addSeperator()
+    }
+    
+    // MARK:- Setup
+    func setupColors(){
+        editProfileButton.tintColor = selectedTheme.primaryTextColor
+        editProfileButton.layer.borderColor = selectedTheme.primaryTextColor.cgColor
+        nameLabel.textColor = selectedTheme.primaryTextColor
+        headerSeperator.backgroundColor = selectedTheme.secondaryTextColor
+    }
+    
+    func addStatsText(){
+        let data = UserData.shared
+        followingStatLabel.attributedText = getAttributedText(for: "Following", with: data.followingCount ?? 0)
+        followersStatLabel.attributedText = getAttributedText(for: "Followers", with: data.followerCount ?? 0)
+        likesStatLabel.attributedText = getAttributedText(for: "Likes", with: data.likesCount ?? 0)
+        questionsStatLabel.attributedText = getAttributedText(for: "Questions", with: data.questionsCount ?? 0)
+        answersStatLabel.attributedText = getAttributedText(for: "Answers", with: data.answersCount ?? 0)
+        somethingStatLabel.attributedText = getAttributedText(for: "Something", with: 0)
     }
     
     func setupProfilePic(){
@@ -134,6 +100,11 @@ class ProfileHeader: UICollectionViewCell{
     
     func setupStats(){
         let padding: CGFloat = 10
+        
+        [followingStatLabel, followersStatLabel, likesStatLabel, questionsStatLabel, answersStatLabel, somethingStatLabel].forEach { (label) in
+            label.textAlignment = .center
+            label.numberOfLines = 0
+        }
         
         // StatStack1
         statStack1 = UIStackView(arrangedSubviews: [followingStatLabel, followersStatLabel, likesStatLabel])
@@ -157,10 +128,22 @@ class ProfileHeader: UICollectionViewCell{
     }
     
     func addSeperator(){
-        let line = UIView()
-        line.backgroundColor = .black
-        addSubview(line)
-        line.anchor(bottom: bottomAnchor, left: leadingAnchor, right: trailingAnchor, paddingBottom: 0, height: 1)
+        addSubview(headerSeperator)
+        headerSeperator.anchor(bottom: bottomAnchor, left: leadingAnchor, right: trailingAnchor, paddingBottom: 0, height: 2)
+    }
+    
+    private func getAttributedText(for stat: String, with count: Int) -> NSMutableAttributedString{
+        let attributedText = NSMutableAttributedString(string: "\(count)", attributes: [
+            .font : UIFont.systemFont(ofSize: 18, weight: .bold),
+            .foregroundColor : selectedTheme.primaryTextColor
+            ])
+        
+        attributedText.append(NSAttributedString(string: "\n\(stat)", attributes: [
+            .foregroundColor: selectedTheme.secondaryTextColor,
+            .font : UIFont.systemFont(ofSize: 14)
+            ]))
+        
+        return attributedText
     }
     
     required init?(coder aDecoder: NSCoder) {

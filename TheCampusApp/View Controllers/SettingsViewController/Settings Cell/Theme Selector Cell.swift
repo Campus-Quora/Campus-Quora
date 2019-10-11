@@ -39,21 +39,21 @@ class OptionSelectorCell: UICollectionViewCell{
         
         // Setup Outer circle
         if selected {
-            setupOuterCircle(color: selectedAccentColor)
+            setupOuterCircle(color: selectedAccentColor.primaryColor)
             setupinnerCircle()
         }
             
         else{
             // Setup Inner Circle
             destroyInnerCircleIfPresent()
-            setupOuterCircle(color: secondaryColor)
+            setupOuterCircle(color: selectedAccentColor.secondaryColor)
         }
     }
     
     func setUpTextButton(with data: String){
         option.text = data
         option.font = UIFont(name: "Avenir-Heavy", size: 18)
-        option.textColor = secondaryColor
+        option.textColor = selectedTheme.secondaryColor 
         option.translatesAutoresizingMaskIntoConstraints = false
         
         addSubview(option)
@@ -74,7 +74,7 @@ class OptionSelectorCell: UICollectionViewCell{
     
     func setupinnerCircle(){
         setupLayer(layer: insideCircle, radius: innerCircleRadius)
-        insideCircle.fillColor = selectedAccentColor.cgColor
+        insideCircle.fillColor = selectedAccentColor.primaryColor.cgColor
     }
     
     func destroyInnerCircleIfPresent(){

@@ -8,6 +8,8 @@
 
 import UIKit
 
+let dismissPopupKey = "dismissPopupKey"
+
 //extension SettingFunctions{
 //    func accentFunction(){
 //        setupDimBG()

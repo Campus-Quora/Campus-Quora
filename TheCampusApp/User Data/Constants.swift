@@ -55,30 +55,9 @@ func tipAttributedString()->NSMutableAttributedString{
 }
 
 let changeThemeKey = "changeThemeKey"
-let dismissPopupKey = "dismissPopupKey"
 let glyphSize = CGSize(width: 30, height: 30)
 let iconSize = CGSize(width: 30, height: 30)
 
-let themes : [Theme] = [
-    Theme(themeName: "Clearly White", themeColor: .white, textColor: .black, secondColor: .white),
-    Theme(themeName: "Kinda Dark", themeColor: UIColor(white: 0.15, alpha: 1), textColor: .white, secondColor: UIColor(white: 0.3, alpha: 1)),
-    Theme(themeName: "Just Black", themeColor: .black, textColor: .white, secondColor: UIColor(white: 0.15, alpha: 1))
-]
-
-let accentColors : [UIColor] = [
-    UIColor(red:0.96, green:0.00, blue:0.34, alpha:1.0),
-    UIColor(red:0.95, green:0.15, blue:0.07, alpha:1.0),
-    UIColor(red:0.00, green:0.90, blue:0.25, alpha:1.0),
-    UIColor(red:0.18, green:0.80, blue:0.44, alpha:1.0),
-    UIColor(red:0.10, green:0.71, blue:1.00, alpha:1.0),
-    UIColor(red:0.33, green:0.20, blue:0.93, alpha:1.0)
-]
-
-let primaryColor: UIColor = .white
-let secondaryColor: UIColor = .black
-var selectedTheme = themes[1]
-var selectedAccentColor = accentColors[0]
-var primaryTextColor = UIColor.black
-var secondaryTextColor = UIColor.gray
-var tableViewSectionBackground = UIColor(white: 0.15, alpha: 0.05)
+var selectedTheme: Theme = lightTheme
+var selectedAccentColor: AccentColor = blueAccentColor
 

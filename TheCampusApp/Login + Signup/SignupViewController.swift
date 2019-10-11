@@ -27,17 +27,16 @@ class SignupViewController: UIViewController{
         let label = UILabel()
         label.font = .systemFont(ofSize: 24, weight: .bold)
         label.text = "Sign Up"
-        label.textColor = .black
+        label.textColor = selectedTheme.primaryTextColor
         label.textAlignment = .center
         return label
     }()
     
-
     let nameTextField : UITextField = {
         let textField = UITextField()
-        textField.attributedPlaceholder = NSAttributedString(string: "Name", attributes: [.foregroundColor : textFieldPlaceholderColor])
-        textField.textColor = textFieldTextColor
-        textField.backgroundColor = textFieldBackgroundColor
+        textField.attributedPlaceholder = NSAttributedString(string: "Name", attributes: [.foregroundColor : selectedTheme.primaryPlaceholderColor])
+        textField.textColor = selectedTheme.primaryTextColor
+        textField.backgroundColor = selectedTheme.secondaryColor
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
         textField.autocapitalizationType = .none
@@ -48,12 +47,13 @@ class SignupViewController: UIViewController{
     
     let emailTextField : UITextField = {
         let textField = UITextField()
-        textField.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [.foregroundColor : textFieldPlaceholderColor])
-        textField.backgroundColor = textFieldBackgroundColor
-        textField.textColor = textFieldTextColor
+        textField.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [.foregroundColor : selectedTheme.primaryPlaceholderColor])
+        textField.backgroundColor = selectedTheme.secondaryColor
+        textField.textColor = selectedTheme.primaryTextColor
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
         textField.autocapitalizationType = .none
+        textField.keyboardType = .emailAddress
         textField.tag = 1
         textField.addTarget(self, action: #selector(checkValidInput), for: .editingChanged)
         return textField
@@ -62,9 +62,9 @@ class SignupViewController: UIViewController{
     let passwordTextField : UITextField = {
         let textField = UITextField()
         textField.isSecureTextEntry = true
-        textField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [.foregroundColor : textFieldPlaceholderColor])
-        textField.backgroundColor = textFieldBackgroundColor
-        textField.textColor = textFieldTextColor
+        textField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [.foregroundColor : selectedTheme.primaryPlaceholderColor])
+        textField.backgroundColor = selectedTheme.secondaryColor
+        textField.textColor = selectedTheme.primaryTextColor
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
         textField.tag = 2
@@ -77,7 +77,7 @@ class SignupViewController: UIViewController{
         button.setTitle("Sign Up", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18, weight: .bold)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = blueColorFaint
+        button.backgroundColor = selectedAccentColor.secondaryColor
         button.layer.cornerRadius = 5
         button.isEnabled = false
         return button
@@ -85,8 +85,8 @@ class SignupViewController: UIViewController{
     
     let alreadyHaveAccountButton : UIButton = {
         let button = UIButton()
-        let attributedText = NSMutableAttributedString(string: "Already have an account  ", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18), NSAttributedString.Key.foregroundColor : UIColor(white: 0, alpha: 0.7)])
-        attributedText.append(NSAttributedString(string: "Log In", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18, weight: .medium), NSAttributedString.Key.foregroundColor : blueColorDark]))
+        let attributedText = NSMutableAttributedString(string: "Already have an account  ", attributes: [.font: UIFont.systemFont(ofSize: 18), .foregroundColor : selectedTheme.secondaryTextColor])
+        attributedText.append(NSAttributedString(string: "Log In", attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .medium), .foregroundColor : selectedAccentColor.primaryColor]))
         button.setAttributedTitle(attributedText, for: .normal)
         return button;
     }()
@@ -94,6 +94,7 @@ class SignupViewController: UIViewController{
     // MARK:- Overriden Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = selectedTheme.primaryColor
         navigationController?.isNavigationBarHidden = true
 //        if #available(iOS 13, *){
 //            self.isModalInPresentation = true
@@ -115,8 +116,7 @@ class SignupViewController: UIViewController{
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
-        // UI
-        view.backgroundColor = .white
+        
         setupUI()
     }
     
@@ -313,11 +313,11 @@ class SignupViewController: UIViewController{
         let passwordLength = passwordTextField.text?.count ?? 0
         let isValidPassword = (passwordLength >= 6) && (passwordLength <= 16)
         if isValidName && isValidEmail && isValidPassword{
-            signupButton.backgroundColor = blueColorDark
+            signupButton.backgroundColor = selectedAccentColor.primaryColor
             signupButton.isEnabled = true
         }
         else{
-            signupButton.backgroundColor = blueColorFaint
+            signupButton.backgroundColor = selectedAccentColor.secondaryColor
             signupButton.isEnabled = false
         }
     }

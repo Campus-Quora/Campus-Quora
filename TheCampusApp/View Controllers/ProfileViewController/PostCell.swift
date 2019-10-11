@@ -15,8 +15,8 @@ struct PostData{
     var date: String?
 }
 
-let seperatorColor: UIColor = .gray
-let seperatorSize: CGFloat =  2
+fileprivate let seperatorColor: UIColor = selectedTheme.secondaryTextColor
+fileprivate let seperatorSize: CGFloat =  2
 
 class PostCell: UICollectionViewCell{
     var postData: PostData?{
@@ -27,14 +27,12 @@ class PostCell: UICollectionViewCell{
             personWhoAnsweredPic.date = postData?.date
         }
     }
-
     
-    // UI Elements
+    // MARK:- UI Elements
     let questionLabel: UILabel = {
         let label = UILabel()
         label.font = questionFont
         label.numberOfLines = numberOfLinesInQuestion
-        label.textColor = .black
         return label
     }()
     
@@ -42,25 +40,25 @@ class PostCell: UICollectionViewCell{
         let label = UILabel()
         label.font = answerFont
         label.numberOfLines = numberOfLinesInAnswer
-        label.textColor = .black
         return label
     }()
     
-    let personWhoAnsweredPic: PersonWhoAnsweredPic = {
-        let person = PersonWhoAnsweredPic()
-        return person
-    }()
+    let personWhoAnsweredPic = PersonWhoAnsweredPic()
     
-    let seperator: UIView = {
-        let view = UIView()
-        view.backgroundColor = seperatorColor
-        return view
-    }()
+    let seperator = UIView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-//        backgroundColor = .yellow
+        setupColors()
         setupUI()
+    }
+    
+    func setupColors(){
+        questionLabel.textColor = selectedTheme.primaryTextColor
+        answerLabel.textColor = selectedTheme.primaryTextColor
+        seperator.backgroundColor = selectedTheme.secondaryTextColor
+        personWhoAnsweredPic.dateLabel.textColor = selectedTheme.primaryTextColor
+        personWhoAnsweredPic.detailsLabel.textColor = selectedTheme.primaryTextColor
     }
     
     func setupUI(){
@@ -69,14 +67,12 @@ class PostCell: UICollectionViewCell{
         
         addSubview(questionLabel)
         questionLabel.anchor(top: topAnchor, left: leadingAnchor, right: trailingAnchor, paddingTop: 10)
-//        questionLabel.backgroundColor = .red
         
         addSubview(personWhoAnsweredPic)
         personWhoAnsweredPic.anchor(top: questionLabel.bottomAnchor, left: leadingAnchor, right: trailingAnchor, paddingTop: 5, height: 50)
         
         addSubview(answerLabel)
         answerLabel.anchor(top: personWhoAnsweredPic.bottomAnchor, bottom: bottomAnchor, left: leadingAnchor, right: trailingAnchor, paddingTop: 10, paddingBottom: 10)
-//        answerLabel.backgroundColor = .red
     }
     
     required init?(coder aDecoder: NSCoder) {

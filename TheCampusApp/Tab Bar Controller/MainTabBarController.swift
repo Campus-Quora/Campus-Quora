@@ -10,9 +10,6 @@ import UIKit
 import Firebase
 
 class MainTabBarController: UITabBarController{
-    let selectedColor : UIColor = .black
-    let unselectedColor : UIColor = .gray
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
@@ -38,7 +35,6 @@ class MainTabBarController: UITabBarController{
         let profileVC = UINavigationController(rootViewController: profileCVC)
         
         viewControllers = [homeVC, postVC, profileVC]
-//        viewControllers = [postVC, profileVC, homeVC]
         
         // MARK:- Setting Image for tabBarItem
         let imageNames = ["Home", "Plus", "Profile"]
@@ -54,17 +50,17 @@ class MainTabBarController: UITabBarController{
         
         // MARK:- Customisizing Tab Bar
         // Color of selected tab
-        tabBar.tintColor = selectedColor
+        tabBar.tintColor = selectedAccentColor.primaryColor
         
         guard let tabBarItems = tabBar.items else{return}
         
         // Color of unselected tab
         if #available(iOS 10.0, *) {
-            tabBar.unselectedItemTintColor = unselectedColor
+            tabBar.unselectedItemTintColor = selectedTheme.unselectedTabBarItemColor
         }
         else{
             for item in tabBarItems {
-                item.image = item.selectedImage!.with(color: unselectedColor).withRenderingMode(.alwaysOriginal)
+                item.image = item.selectedImage!.with(color: selectedTheme.unselectedTabBarItemColor).withRenderingMode(.alwaysOriginal)
             }
         }
         
@@ -75,7 +71,7 @@ class MainTabBarController: UITabBarController{
         // Color of TabBar
         tabBar.shadowImage = UIImage()
         tabBar.isTranslucent = false
-        tabBar.barTintColor = primaryColor
+        tabBar.barTintColor = selectedTheme.primaryColor
     }
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {

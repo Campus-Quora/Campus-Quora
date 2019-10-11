@@ -17,19 +17,27 @@ class HomeViewController: UIViewController, UITextViewDelegate{
         super.viewDidLoad()
         setupNavigationBar()
         setupUI()
+        setupColors()
     }
     
     func setupNavigationBar(){
         navigationItem.title = "Home"
+        guard let navBar = navigationController?.navigationBar else{ return }
         if #available(iOS 11.0, *) {
-            navigationController?.navigationBar.prefersLargeTitles = true
+            navBar.prefersLargeTitles = true
         }
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
+        navBar.setBackgroundImage(UIImage(), for: .default)
+        navBar.shadowImage = UIImage()
+        navBar.tintColor = selectedTheme.primaryColor
     }
     
     func setupUI(){
-        view.backgroundColor = .white
+        
+    }
+    
+    func setupColors(){
+        view.backgroundColor = selectedTheme.primaryColor
+        navigationController?.navigationBar.tintColor = selectedTheme.primaryColor
     }
 }
 

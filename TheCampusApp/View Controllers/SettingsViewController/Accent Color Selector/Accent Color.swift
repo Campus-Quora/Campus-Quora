@@ -25,7 +25,7 @@ class AccentColorPicker: BasePopup, BasePopupDelegate{
         
         super.init(frame: frame, headerText: headerText) 
         delegate = self
-        self.selectedOption = selectedAccentColor
+        self.selectedOption = selectedAccentColor.primaryColor
         self.function = function
         cellID = "AccentColorCellID"
         
@@ -62,19 +62,19 @@ class AccentColorPicker: BasePopup, BasePopupDelegate{
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath)
         if let cell = cell as? AccentColorPickerCell{
             
-            cell.setupCell(data: accentColors[indexPath.item], selected : accentColors[indexPath.item] == selectedOption)
+//            cell.setupCell(data: accentColors[indexPath.item], selected : accentColors[indexPath.item] == selectedOption)
         }
         return cell
     }
     
     func didSelectRow(at index: Int) {
-        if(selectedOption != accentColors[index]){
-            selectedAccentColor = accentColors[index]
-            function(true)
-        }
-        else{
-            function(false)
-        }
+//        if(selectedOption != accentColors[index]){
+//            selectedAccentColor = accentColors[index]
+//            function(true)
+//        }
+//        else{
+//            function(false)
+//        }
     }
     
     func sizeOfCell() -> CGSize {

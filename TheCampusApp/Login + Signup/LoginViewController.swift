@@ -24,7 +24,7 @@ class LoginViewController: UIViewController{
     let header : UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 24, weight: .bold)
-        label.textColor = .black
+        label.textColor = selectedTheme.primaryTextColor
         label.text = "Log In"
         label.textAlignment = .center
         return label
@@ -32,13 +32,14 @@ class LoginViewController: UIViewController{
     
     let emailTextField : UITextField = {
         let textField = UITextField()
-        textField.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [.foregroundColor : textFieldPlaceholderColor])
-        textField.backgroundColor = textFieldBackgroundColor
-        textField.textColor = textFieldTextColor
+        textField.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [.foregroundColor : selectedTheme.primaryPlaceholderColor])
+        textField.backgroundColor = selectedTheme.secondaryColor
+        textField.textColor = selectedTheme.primaryTextColor
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
         textField.tag = 1
         textField.autocapitalizationType = .none
+        textField.keyboardType = .emailAddress
         textField.addTarget(self, action: #selector(checkValidInput), for: .editingChanged)
         return textField
     }()
@@ -46,9 +47,9 @@ class LoginViewController: UIViewController{
     let passwordTextField : UITextField = {
         let textField = UITextField()
         textField.isSecureTextEntry = true
-        textField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [.foregroundColor : textFieldPlaceholderColor])
-        textField.backgroundColor = textFieldBackgroundColor
-        textField.textColor = textFieldTextColor
+        textField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [.foregroundColor : selectedTheme.primaryPlaceholderColor])
+        textField.backgroundColor = selectedTheme.secondaryColor
+        textField.textColor = selectedTheme.primaryTextColor
         textField.borderStyle = .roundedRect
         textField.font = .systemFont(ofSize: 18)
         textField.tag = 2
@@ -61,7 +62,7 @@ class LoginViewController: UIViewController{
         button.setTitle("Log In", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18, weight: .bold)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = blueColorFaint
+        button.backgroundColor = selectedAccentColor.secondaryColor
         button.layer.cornerRadius = 5
         button.isEnabled = false
         return button
@@ -69,8 +70,8 @@ class LoginViewController: UIViewController{
     
     let dontHaveAccountButton : UIButton = {
         let button = UIButton()
-        let attributedText = NSMutableAttributedString(string: "Don't have an account  ", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18), NSAttributedString.Key.foregroundColor : UIColor(white: 0, alpha: 0.7)])
-        attributedText.append(NSAttributedString(string: "Sign Up", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18, weight: .medium), NSAttributedString.Key.foregroundColor : blueColorDark]))
+        let attributedText = NSMutableAttributedString(string: "Don't have an account  ", attributes: [.font: UIFont.systemFont(ofSize: 18), .foregroundColor : selectedTheme.secondaryTextColor])
+        attributedText.append(NSAttributedString(string: "Sign Up", attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .medium), .foregroundColor : selectedAccentColor.primaryColor]))
         button.setAttributedTitle(attributedText, for: .normal)
         return button;
     }()
@@ -89,7 +90,7 @@ class LoginViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.isNavigationBarHidden = true
-        view.backgroundColor = .white
+        view.backgroundColor = selectedTheme.primaryColor
         
 //        if #available(iOS 13, *){
 //            self.isModalInPresentation = true
@@ -181,7 +182,7 @@ class LoginViewController: UIViewController{
     @objc func handleLogin(){
         view.endEditing(true)
         self.loginButton.isEnabled = false;
-        self.loginButton.backgroundColor = blueColorFaint;
+        self.loginButton.backgroundColor = selectedAccentColor.secondaryColor;
         
         guard let email = emailTextField.text           else {return}
         guard let password = passwordTextField.text     else {return}
@@ -240,11 +241,11 @@ class LoginViewController: UIViewController{
         let isValidPassword = (passwordLength >= 6) && (passwordLength <= 16)
         
         if isValidEmail && isValidPassword{
-            loginButton.backgroundColor = blueColorDark
+            loginButton.backgroundColor = selectedAccentColor.primaryColor
             loginButton.isEnabled = true
         }
         else{
-            loginButton.backgroundColor = blueColorFaint
+            loginButton.backgroundColor = selectedAccentColor.secondaryColor
             loginButton.isEnabled = false
         }
     }

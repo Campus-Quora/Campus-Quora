@@ -62,21 +62,21 @@ class SettingsViewController: UITableViewController{
         }
         navBar.shadowImage = UIImage()
         navBar.isTranslucent = false
-        navBar.tintColor = primaryColor
+        navBar.tintColor = selectedTheme.primaryColor
     }
 
     @objc func updateColors(){
-        view.backgroundColor = selectedTheme.themeColor
+        view.backgroundColor = selectedTheme.primaryColor
         if let navBar = navigationController?.navigationBar{
-            navBar.tintColor = selectedAccentColor
+            navBar.tintColor = selectedAccentColor.primaryColor
             if #available(iOS 11.0, *) {
-                navBar.largeTitleTextAttributes?[NSAttributedString.Key.foregroundColor] = selectedTheme.textColor
+                navBar.largeTitleTextAttributes?[NSAttributedString.Key.foregroundColor] = selectedTheme.primaryTextColor
             }
         }
         if let tabBar = tabBarController?.tabBar{
-            tabBar.tintColor = selectedAccentColor
+            tabBar.tintColor = selectedAccentColor.primaryColor
             if #available(iOS 10.0, *) {
-                tabBar.unselectedItemTintColor = secondaryColor
+                tabBar.unselectedItemTintColor = selectedTheme.secondaryColor
             } else {
 //                for item in tabBarItems {
 //                    item.image = item.selectedImage!.with(color: unselectedColor).withRenderingMode(.alwaysOriginal)
@@ -104,10 +104,10 @@ class SettingsViewController: UITableViewController{
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
-        view.backgroundColor = tableViewSectionBackground
+        view.backgroundColor = selectedTheme.secondaryColor
         let title = UILabel()
         title.font = UIFont.boldSystemFont(ofSize: 16)
-        title.textColor = secondaryTextColor
+        title.textColor = selectedTheme.secondaryTextColor
         title.text = SettingsSection(rawValue: section)?.description
         view.addSubview(title)
         title.translatesAutoresizingMaskIntoConstraints = false

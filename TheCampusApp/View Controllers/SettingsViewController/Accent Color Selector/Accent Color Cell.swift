@@ -31,7 +31,7 @@ class AccentColorPickerCell: UICollectionViewCell{
         color.backgroundColor = data
         if(selected){
             color.layer.borderWidth = colorCellborderWidth
-            color.layer.borderColor = selectedTheme.textColor.cgColor
+            color.layer.borderColor = selectedTheme.primaryTextColor.cgColor
         }
     }
     
