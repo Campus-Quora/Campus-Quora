@@ -15,6 +15,8 @@ let darkTheme = Theme.init(
     primaryTextColor: UIColor.white,
     secondaryTextColor: UIColor(white: 0.7, alpha: 1),
     primaryPlaceholderColor: UIColor(white: 0.9, alpha: 0.5),
+    secondaryPlaceholderColor: UIColor(white: 0.7, alpha: 0.8),
     unselectedTabBarItemColor: UIColor.gray,
-    statusBarStyle: UIStatusBarStyle.lightContent
+    statusBarStyle: UIStatusBarStyle.lightContent,
+    keyboardStyle: UIKeyboardAppearance.dark
 )

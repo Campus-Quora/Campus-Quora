@@ -29,6 +29,10 @@ func applyTheme(){
     
     // UI Label
     UILabel.appearance().textColor = selectedTheme.primaryTextColor
+    
+    // Keyboard Color
+//    UITextField.appearance().keyboardAppearance = .dark
+//    UITextView.appearance().keyboardAppearance = .dark
 }
 
 func applyAccentColor(){
@@ -62,13 +66,27 @@ extension UIViewController{
         
     }
     
-    @objc func didChangeColorTheme(){
+    @objc func didChangeTheme(){
         handleNavBarColors()
+        updateTheme()
         updateColors()
         setNeedsStatusBarAppearanceUpdate()
     }
     
+    @objc func didChangeAccentColor(){
+        updateAccentColor()
+        updateColors()
+    }
+    
     @objc func updateColors(){
+    
+    }
+    
+    @objc func updateTheme(){
+        
+    }
+    
+    @objc func updateAccentColor(){
         
     }
 }
@@ -85,8 +103,11 @@ class ColorThemeObservingViewController: UIViewController{
         super.viewDidLoad()
         
         // Add Notification Observer
-        let name = Notification.Name(changeThemeKey)
-        NotificationCenter.default.addObserver(self, selector: #selector(didChangeColorTheme), name: name, object: nil)
+        var name = Notification.Name(changeThemeKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangeTheme), name: name, object: nil)
+        
+        name = Notification.Name(changeAccentColorKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangeAccentColor), name: name, object: nil)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle{
@@ -104,8 +125,11 @@ class ColorThemeObservingCollectionViewController: UICollectionViewController{
         super.viewDidLoad()
         
         // Add Notification Observer
-        let name = Notification.Name(changeThemeKey)
-        NotificationCenter.default.addObserver(self, selector: #selector(didChangeColorTheme), name: name, object: nil)
+        var name = Notification.Name(changeThemeKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangeTheme), name: name, object: nil)
+        
+        name = Notification.Name(changeAccentColorKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangeAccentColor), name: name, object: nil)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle{
@@ -123,8 +147,11 @@ class ColorThemeObservingTableViewController: UITableViewController{
         super.viewDidLoad()
         
         // Add Notification Observer
-        let name = Notification.Name(changeThemeKey)
-        NotificationCenter.default.addObserver(self, selector: #selector(didChangeColorTheme), name: name, object: nil)
+        var name = Notification.Name(changeThemeKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangeTheme), name: name, object: nil)
+        
+        name = Notification.Name(changeAccentColorKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangeAccentColor), name: name, object: nil)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle{

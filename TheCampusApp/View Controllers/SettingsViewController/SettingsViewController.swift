@@ -20,6 +20,8 @@ class SettingsViewController: ColorThemeObservingTableViewController{
         return button
     }()
     
+    let footer = SettingsFooter()
+    
     @objc func dismissVC(){
         navigationController?.popViewController(animated: true)
     }
@@ -39,8 +41,9 @@ class SettingsViewController: ColorThemeObservingTableViewController{
         tableView.register(SettingsSelectorCell.self, forCellReuseIdentifier: SettingsViewController.settingsSelectorCellID)
         tableView.register(SettingsColorCell.self, forCellReuseIdentifier: SettingsViewController.settingsColorCellID)
     
+        SettingsHandler.delegate = self
+        
         // Footer
-        let footer = SettingsFooter()
         footer.setUp()
         tableView.setAndLayoutTableFooterView(footer: footer)
     }
@@ -51,8 +54,13 @@ class SettingsViewController: ColorThemeObservingTableViewController{
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
     }
     
-    override func updateColors() {
-        setupColors()
+    override func updateTheme() {
+        tableView.backgroundColor = selectedTheme.primaryColor
+        footer.setupThemeColors()
+    }
+    
+    override func updateAccentColor() {
+        backButton.tintColor = selectedAccentColor.primaryColor
     }
 
     func setupColors(){
@@ -139,6 +147,8 @@ class SettingsViewController: ColorThemeObservingTableViewController{
         
         switch section {
             case .Theme:
+                let theme = ThemeOptions(rawValue: indexPath.row)
+                theme?.cellDetails.eventHandler?()
                 print(ThemeOptions(rawValue: indexPath.row)?.description)
         }
     }

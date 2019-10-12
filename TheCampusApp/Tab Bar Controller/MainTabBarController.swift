@@ -20,8 +20,16 @@ class MainTabBarController: UITabBarController{
             }
             return
         }
+        else{
+            setupViewControllers()
+        }
         
-        setupViewControllers()
+        // Add Notification Observer
+        var name = Notification.Name(changeThemeKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangeTheme), name: name, object: nil)
+        
+        name = Notification.Name(changeAccentColorKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangeAccentColor), name: name, object: nil)
     }
     
     func setupViewControllers(){
@@ -74,7 +82,7 @@ class MainTabBarController: UITabBarController{
         }
     }
     
-    override func updateColors(){
+    override func updateColors() {
         setupColors()
     }
     

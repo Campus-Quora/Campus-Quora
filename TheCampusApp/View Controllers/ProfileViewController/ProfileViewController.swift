@@ -34,7 +34,8 @@ class ProfileViewController: ColorThemeObservingCollectionViewController, UIColl
         setupData()
         estimateSize()
         setupUI()
-        setupColors()
+        updateAccentColor()
+        updateTheme()
         
         // This is used to force collectionView to stick to safe layout
         if #available(iOS 11.0, *) {
@@ -54,14 +55,12 @@ class ProfileViewController: ColorThemeObservingCollectionViewController, UIColl
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: settingsButton)
     }
     
-    func setupColors(){
-        collectionView.backgroundColor = selectedTheme.primaryColor
+    override func updateAccentColor() {
         settingsButton.tintColor = selectedAccentColor.primaryColor
     }
     
-    override func updateColors() {
-        setupColors()
-        UILabel.appearance().textColor = selectedTheme.primaryTextColor
+    override func updateTheme() {
+        collectionView.backgroundColor = selectedTheme.primaryColor
     }
     
     deinit {

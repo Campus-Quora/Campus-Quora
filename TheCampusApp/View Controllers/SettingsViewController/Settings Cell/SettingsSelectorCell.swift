@@ -20,7 +20,7 @@ class SettingsSelectorCell: UITableViewCell{
         let label = UILabel()
         label.font = .systemFont(ofSize: 14)
         label.textAlignment = .right
-        label.text = "Light"
+        label.text = selectedTheme.name
         return label
     }()
     
@@ -47,6 +47,7 @@ class SettingsSelectorCell: UITableViewCell{
     
     @objc func didChangeColorTheme(){
         setupColors()
+        selectedOptionLabel.text = selectedTheme.name
     }
     
     func setupColors(){

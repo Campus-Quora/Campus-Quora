@@ -38,8 +38,8 @@ enum ThemeOptions: Int, CaseIterable, SectionType {
     
     var cellDetails: SettingCellDetails {
         switch self {
-            case .theme: return .init(cellType: .selector, eventHandler: nil)
-            case .accentColor: return .init(cellType: .color, eventHandler: nil)
+            case .theme: return .init(cellType: .selector, eventHandler: SettingsHandler.handleTheme)
+            case .accentColor: return .init(cellType: .color, eventHandler: SettingsHandler.handleAccentColor)
         }
     }
     

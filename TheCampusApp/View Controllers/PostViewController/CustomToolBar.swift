@@ -17,7 +17,7 @@ class ToolBarButton: UIButton{
         self.setImage(image, for: .normal)
         self.imageView?.contentMode = .top
 //        self.imageView?.clipsToBounds = true
-        tintColor = unselectedColor
+        tintColor = selectedTheme.primaryTextColor
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -99,6 +99,7 @@ class TextFormatOptionsView: UIView, UITextViewDelegate{
     // MARK:- Data Members
     var itemPadding: CGFloat = 10
     let baseFontSize: CGFloat = 16
+    var unselectedColor: UIColor! = nil
     
     lazy var font = UIFont.systemFont(ofSize: baseFontSize)
     lazy var currentFont = font
@@ -117,13 +118,13 @@ class TextFormatOptionsView: UIView, UITextViewDelegate{
     var isUnorderedListActive = false{
         didSet{
             if(oldValue == isUnorderedListActive){ return }
-            unorderedListButton.tintColor = isUnorderedListActive ? selectedColor: unselectedColor
+            unorderedListButton.tintColor = isUnorderedListActive ? selectedAccentColor.primaryColor: selectedTheme.primaryTextColor
         }
     }
     var isOrderedListActive = false{
         didSet{
             if(oldValue == isOrderedListActive){ return }
-            orderedListButton.tintColor = isOrderedListActive ? selectedColor: unselectedColor
+            orderedListButton.tintColor = isOrderedListActive ? selectedAccentColor.primaryColor: selectedTheme.primaryTextColor
             orderedListItemNumber = 0
         }
     }
@@ -139,9 +140,10 @@ class TextFormatOptionsView: UIView, UITextViewDelegate{
     let unorderedListButton = ToolBarButton(imageName: ButtonType.unorderedList.rawValue)
     
     // MARK:- Setup Mehods
-    func initialise(){
+    func initialise(_ unselectedColor: UIColor){
         layout()
         setupActions()
+        setupColors(unselectedColor)
     }
     
     func layout(){
@@ -171,6 +173,13 @@ class TextFormatOptionsView: UIView, UITextViewDelegate{
         underlinedButton.addTarget(self, action: #selector(handleUnderlined), for: .touchUpInside)
         orderedListButton.addTarget(self, action: #selector(handleOrderedList), for: .touchUpInside)
         unorderedListButton.addTarget(self, action: #selector(handleUnorderedList), for: .touchUpInside)
+    }
+    
+    func setupColors(_ color: UIColor){
+        self.unselectedColor = color
+        [boldButton,italicsButton,underlinedButton,orderedListButton,unorderedListButton].forEach { (button) in
+            button.tintColor = color
+        }
     }
     
     // MARK:- Button Handlers

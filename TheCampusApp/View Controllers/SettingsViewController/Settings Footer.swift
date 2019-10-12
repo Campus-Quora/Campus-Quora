@@ -16,7 +16,6 @@ class SettingsFooter: UIView{
         button.setTitle("Sign Out", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18, weight: .bold)
         button.titleLabel?.textAlignment = .center
-        button.setTitleColor(selectedTheme.primaryTextColor, for: .normal)
         button.addTarget(self, action: #selector(handleSignOut), for: .touchUpInside)
         return button
     }()
@@ -38,6 +37,11 @@ class SettingsFooter: UIView{
         stack.spacing = 10
         addSubview(stack)
         stack.fillSuperView(padding: 10)
+        setupThemeColors()
+    }
+    
+    func setupThemeColors(){
+        signOutButton.setTitleColor(selectedTheme.primaryTextColor, for: .normal)
     }
     
     @objc func handleSignOut() {

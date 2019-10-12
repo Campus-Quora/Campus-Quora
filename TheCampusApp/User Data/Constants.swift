@@ -27,11 +27,15 @@ let textFieldPlaceholderColor = UIColor(white: 0.15, alpha: 0.6)
 
 // Tip for asking question
 func tipAttributedString()->NSMutableAttributedString{
-    let attributedText = NSMutableAttributedString(string: "Tips on getting good answers quickly\n", attributes: [.font: UIFont.systemFont(ofSize: 16, weight: .bold), .baselineOffset: 5])
+    let attributedText = NSMutableAttributedString(string: "Tips on getting good answers quickly\n", attributes: [
+        .font: UIFont.systemFont(ofSize: 16, weight: .bold),
+        .foregroundColor: selectedTheme.primaryTextColor,
+        .baselineOffset: 5
+    ])
     
     // Image Bullet point
     let imageAttachment = NSTextAttachment()
-    imageAttachment.image = UIImage(named: "TickMark")?.resizeImage(size: CGSize(width: 20, height: 20)).with(color: blueColorDark)
+    imageAttachment.image = UIImage(named: "TickMark")?.resizeImage(size: CGSize(width: 20, height: 20)).with(color: selectedAccentColor.primaryColor)
     let imageString = NSAttributedString(attachment: imageAttachment)
     
     // Actual Tips
@@ -42,7 +46,7 @@ func tipAttributedString()->NSMutableAttributedString{
     ]
     let tipAttributes: [NSAttributedString.Key: Any] = [
         .font: UIFont.systemFont(ofSize: 14),
-        .foregroundColor: UIColor(white: 0.1, alpha: 1),
+        .foregroundColor: selectedTheme.primaryPlaceholderColor,
         .baselineOffset: 3
     ]
     
@@ -55,9 +59,11 @@ func tipAttributedString()->NSMutableAttributedString{
 }
 
 let changeThemeKey = "changeThemeKey"
+let changeAccentColorKey = "changeAccentColorKey"
 let glyphSize = CGSize(width: 30, height: 30)
 let iconSize = CGSize(width: 30, height: 30)
 
-var selectedTheme: Theme = darkTheme
+let themes = [lightTheme, darkTheme]
+var selectedTheme: Theme = lightTheme // darkTheme
 var selectedAccentColor: AccentColor = blueAccentColor
 

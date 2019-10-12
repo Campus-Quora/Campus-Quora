@@ -37,10 +37,10 @@
 		00EBA8E223506B1600539A31 /* Accent Color Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8CE23506B1600539A31 /* Accent Color Function.swift */; };
 		00EBA8E323506B1600539A31 /* Accent Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8CF23506B1600539A31 /* Accent Color.swift */; };
 		00EBA8E423506B1600539A31 /* Accent Color Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8D023506B1600539A31 /* Accent Color Cell.swift */; };
-		00EBA8E523506B1600539A31 /* SettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8D123506B1600539A31 /* SettingsSection.swift */; };
+		00EBA8E523506B1600539A31 /* Settings Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8D123506B1600539A31 /* Settings Section.swift */; };
 		00EBA8E623506B1600539A31 /* Settings Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8D223506B1600539A31 /* Settings Model.swift */; };
 		00EBA8E723506B1600539A31 /* Settings Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8D323506B1600539A31 /* Settings Cell.swift */; };
-		00EBA8E823506B1600539A31 /* SettingsFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8D423506B1600539A31 /* SettingsFooter.swift */; };
+		00EBA8E823506B1600539A31 /* Settings Footer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8D423506B1600539A31 /* Settings Footer.swift */; };
 		00EBA8E923506B1600539A31 /* Theme Selector Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8D623506B1600539A31 /* Theme Selector Cell.swift */; };
 		00EBA8EA23506B1600539A31 /* SettingsSelectorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8D723506B1600539A31 /* SettingsSelectorCell.swift */; };
 		00EBA8EB23506B1600539A31 /* PopupBaseClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8D823506B1600539A31 /* PopupBaseClass.swift */; };
@@ -55,6 +55,8 @@
 		00EBA8F8235078C100539A31 /* Dark Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8F7235078C100539A31 /* Dark Theme.swift */; };
 		00EBA8FA235078D300539A31 /* Light Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8F9235078D200539A31 /* Light Theme.swift */; };
 		00EBA8FC235079C800539A31 /* Accent Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8FB235079C800539A31 /* Accent Colors.swift */; };
+		00EBA8FE2351ED4500539A31 /* Settings Handler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8FD2351ED4500539A31 /* Settings Handler.swift */; };
+		00EBA900235263AE00539A31 /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA8FF235263AE00539A31 /* PopupViewController.swift */; };
 		1FAC1B282322C01300304173 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAC1B272322C01300304173 /* AppDelegate.swift */; };
 		1FAC1B2A2322C01300304173 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAC1B292322C01300304173 /* ViewController.swift */; };
 		1FAC1B2D2322C01300304173 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FAC1B2B2322C01300304173 /* Main.storyboard */; };
@@ -114,10 +116,10 @@
 		00EBA8CE23506B1600539A31 /* Accent Color Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Accent Color Function.swift"; sourceTree = "<group>"; };
 		00EBA8CF23506B1600539A31 /* Accent Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Accent Color.swift"; sourceTree = "<group>"; };
 		00EBA8D023506B1600539A31 /* Accent Color Cell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Accent Color Cell.swift"; sourceTree = "<group>"; };
-		00EBA8D123506B1600539A31 /* SettingsSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsSection.swift; sourceTree = "<group>"; };
+		00EBA8D123506B1600539A31 /* Settings Section.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Settings Section.swift"; sourceTree = "<group>"; };
 		00EBA8D223506B1600539A31 /* Settings Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Settings Model.swift"; sourceTree = "<group>"; };
 		00EBA8D323506B1600539A31 /* Settings Cell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Settings Cell.swift"; sourceTree = "<group>"; };
-		00EBA8D423506B1600539A31 /* SettingsFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsFooter.swift; sourceTree = "<group>"; };
+		00EBA8D423506B1600539A31 /* Settings Footer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Settings Footer.swift"; sourceTree = "<group>"; };
 		00EBA8D623506B1600539A31 /* Theme Selector Cell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Theme Selector Cell.swift"; sourceTree = "<group>"; };
 		00EBA8D723506B1600539A31 /* SettingsSelectorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsSelectorCell.swift; sourceTree = "<group>"; };
 		00EBA8D823506B1600539A31 /* PopupBaseClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupBaseClass.swift; sourceTree = "<group>"; };
@@ -132,6 +134,8 @@
 		00EBA8F7235078C100539A31 /* Dark Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dark Theme.swift"; sourceTree = "<group>"; };
 		00EBA8F9235078D200539A31 /* Light Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Light Theme.swift"; sourceTree = "<group>"; };
 		00EBA8FB235079C800539A31 /* Accent Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Accent Colors.swift"; sourceTree = "<group>"; };
+		00EBA8FD2351ED4500539A31 /* Settings Handler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Settings Handler.swift"; sourceTree = "<group>"; };
+		00EBA8FF235263AE00539A31 /* PopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
 		1FAC1B242322C01300304173 /* TheCampusApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TheCampusApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FAC1B272322C01300304173 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1FAC1B292322C01300304173 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -274,13 +278,15 @@
 			isa = PBXGroup;
 			children = (
 				00EBA8DC23506B1600539A31 /* SettingsViewController.swift */,
-				00EBA8D123506B1600539A31 /* SettingsSection.swift */,
-				00EBA8D423506B1600539A31 /* SettingsFooter.swift */,
+				00EBA8D123506B1600539A31 /* Settings Section.swift */,
+				00EBA8D423506B1600539A31 /* Settings Footer.swift */,
+				00EBA8FD2351ED4500539A31 /* Settings Handler.swift */,
 				00EBA8D523506B1600539A31 /* Settings Cell */,
 				00EBA8D223506B1600539A31 /* Settings Model.swift */,
 				00EBA8D323506B1600539A31 /* Settings Cell.swift */,
 				00EBA8CD23506B1600539A31 /* Accent Color Selector */,
 				00EBA8DD23506B1600539A31 /* Theme Selector */,
+				00EBA8FF235263AE00539A31 /* PopupViewController.swift */,
 			);
 			path = SettingsViewController;
 			sourceTree = "<group>";
@@ -630,7 +636,7 @@
 				00EBA8EB23506B1600539A31 /* PopupBaseClass.swift in Sources */,
 				00EBA808233D468300539A31 /* MainTabBarController.swift in Sources */,
 				00EBA810233DF16900539A31 /* HomeViewController.swift in Sources */,
-				00EBA8E823506B1600539A31 /* SettingsFooter.swift in Sources */,
+				00EBA8E823506B1600539A31 /* Settings Footer.swift in Sources */,
 				00EBA814233DF1AB00539A31 /* ProfileViewController.swift in Sources */,
 				00EBA8032337CBC700539A31 /* Constraints.swift in Sources */,
 				00EBA80D233DEB5C00539A31 /* UIImage.swift in Sources */,
@@ -640,12 +646,13 @@
 				00EBA8EF23506B1600539A31 /* SettingsViewController.swift in Sources */,
 				00EBA819233E986D00539A31 /* PostCell.swift in Sources */,
 				00EBA85223448AF600539A31 /* TextEditor.swift in Sources */,
-				00EBA8E523506B1600539A31 /* SettingsSection.swift in Sources */,
+				00EBA8E523506B1600539A31 /* Settings Section.swift in Sources */,
 				00EBA8F323506B1600539A31 /* Theme Selector Function.swift in Sources */,
 				00EBA7FF2337BA7400539A31 /* SignupViewController.swift in Sources */,
 				00EBA8E223506B1600539A31 /* Accent Color Function.swift in Sources */,
 				00EBA8F6235076DB00539A31 /* Theme.swift in Sources */,
 				00EBA88E2348ADBB00539A31 /* Keyboard Events.swift in Sources */,
+				00EBA900235263AE00539A31 /* PopupViewController.swift in Sources */,
 				00EBA8E723506B1600539A31 /* Settings Cell.swift in Sources */,
 				1FAC1B282322C01300304173 /* AppDelegate.swift in Sources */,
 				00EBA898234DB90200539A31 /* Image Picker.swift in Sources */,
@@ -654,6 +661,7 @@
 				00EBA8ED23506B1600539A31 /* SettingsColorCell.swift in Sources */,
 				00EBA8E423506B1600539A31 /* Accent Color Cell.swift in Sources */,
 				00EBA8942348C68100539A31 /* UIFont.swift in Sources */,
+				00EBA8FE2351ED4500539A31 /* Settings Handler.swift in Sources */,
 				00EBA82623406ECD00539A31 /* CustomToolBar.swift in Sources */,
 				00EBA812233DF18A00539A31 /* PostViewController.swift in Sources */,
 				00EBA8E623506B1600539A31 /* Settings Model.swift in Sources */,

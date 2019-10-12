@@ -9,10 +9,11 @@
 import UIKit
 import Photos
 
-let selectedColor = blueColorDark
-let unselectedColor: UIColor = .black
-
 class PostViewController: ColorThemeObservingViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIViewControllerTransitioningDelegate{
+    
+    var selectedColor = selectedAccentColor.primaryColor
+    var unselectedColor = selectedTheme.primaryTextColor
+    
     // MARK:- Overriden Members
     override var inputAccessoryView:UIView{
         get{ return self.toolbar }
@@ -25,9 +26,10 @@ class PostViewController: ColorThemeObservingViewController, UIImagePickerContro
     // MARK:- Main Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        UIApplication.shared.keyWindow?.backgroundColor = .white
         setupUI()
-        setupColors()
+        setupThemeColors()
+        setupAccentColors()
+        setupText()
         
         // Add Notification Observers for keyboard events
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -47,7 +49,6 @@ class PostViewController: ColorThemeObservingViewController, UIImagePickerContro
         let size = CGSize(width: 30, height: 30)
         let image = UIImage(named: "Cancel")?.resizeImage(size: size).withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
-        button.tintColor = .black
         button.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
         return button
     }()
@@ -79,12 +80,46 @@ class PostViewController: ColorThemeObservingViewController, UIImagePickerContro
         
     }
     
-    func setupColors() {
+    func setupThemeColors() {
         view.backgroundColor = selectedTheme.primaryColor
+        unselectedColor = selectedTheme.primaryTextColor
+        
+        margin.backgroundColor = .gray
+        toolbar.backgroundColor = selectedTheme.secondaryColor
+        
+        questionHeading.keyboardAppearance = selectedTheme.keyboardStyle
+        questionHeading.textColor = selectedTheme.primaryTextColor
+        
+        questionDescription.keyboardAppearance = selectedTheme.keyboardStyle
+        questionDescription.textColor = selectedTheme.primaryTextColor
+        
+        addImageButton.tintColor = self.unselectedColor
+        addLinkButton.tintColor = self.unselectedColor
+        textOptionsButton.tintColor = self.unselectedColor
+        textOptionsView.setupColors(self.unselectedColor)
     }
     
-    override func updateColors() {
-        setupColors()
+    func setupAccentColors(){
+        selectedColor = selectedAccentColor.primaryColor
+        cancelButton.tintColor = selectedAccentColor.primaryColor
+        askButton.backgroundColor = selectedAccentColor.secondaryColor
+        doneButton.backgroundColor = selectedAccentColor.primaryColor
+    }
+    
+    func setupText(){
+        tipsView.attributedText = tipAttributedString()
+        questionHeading.attributedPlaceholder = questionHeadingPlaceholderText()
+        questionDescription.attributedPlaceholder = questionDescriptionPlaceholderText()
+    }
+    
+    override func updateTheme(){
+        setupThemeColors()
+        setupText()
+    }
+    
+    override func updateAccentColor(){
+        setupAccentColors()
+        tipsView.attributedText = tipAttributedString()
     }
     
     deinit {
@@ -105,49 +140,52 @@ class PostViewController: ColorThemeObservingViewController, UIImagePickerContro
     
     let tipsView: UILabel = {
         let label = UILabel()
-        label.attributedText = tipAttributedString()
         label.numberOfLines = 0
         return label
     }()
     
-    let questionHeadingPlaceholderText: NSAttributedString = {
+    func questionHeadingPlaceholderText() -> NSAttributedString{
         let placeholder = "Start your question with \"What\", \"How\", \"Why\", etc"
-        return NSAttributedString(string: placeholder, attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .bold), .foregroundColor: UIColor.lightGray])
-    }()
+        return NSAttributedString(string: placeholder, attributes: [
+            .font: UIFont.systemFont(ofSize: 20, weight: .bold),
+            .foregroundColor: selectedTheme.secondaryPlaceholderColor
+        ])
+    }
     
-    let questionDescriptionPlaceholderText: NSAttributedString = {
+    func questionDescriptionPlaceholderText() -> NSAttributedString {
         let placeholder = "Optional : Provide some extra details, add images or links"
-        return NSAttributedString(string: placeholder, attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .medium), .foregroundColor: UIColor.lightGray])
-    }()
+        return NSAttributedString(string: placeholder, attributes: [
+            .font: UIFont.systemFont(ofSize: 18, weight: .medium),
+            .foregroundColor: selectedTheme.secondaryPlaceholderColor
+        ])
+    }
     
     lazy var questionHeading: PlaceholderTextView = {
         let textView = PlaceholderTextView()
         scrollView.addSubview(textView)
-        textView.attributedPlaceholder = questionHeadingPlaceholderText
+        textView.attributedPlaceholder = questionHeadingPlaceholderText()
         textView.constrainRight(to: self.view)
         textView.textContainerInset.bottom += 24
         textView.font = .systemFont(ofSize: 20, weight: .bold)
         textView.isScrollEnabled = false
         textView.becomeFirstResponder()
+        textView.backgroundColor = .clear
         return textView
     }()
     
     lazy var questionDescription: PlaceholderTextView = {
         let textView = PlaceholderTextView()
         scrollView.addSubview(textView)
-        textView.attributedPlaceholder = questionDescriptionPlaceholderText
+        textView.attributedPlaceholder = questionDescriptionPlaceholderText()
         textView.constrainRight(to: self.view)
         textView.textContainerInset.bottom += 24
         textView.font = .systemFont(ofSize: 16)
         textView.isScrollEnabled = false
+        textView.backgroundColor = .clear
         return textView
     }()
     
-    let margin: UIView = {
-        let view = UIView()
-        view.backgroundColor = .gray
-        return view
-    }()
+    let margin = UIView()
     
     // This fixes an issue of scrollView offset with keyboard
     let bottomMargin: UIView = {
@@ -159,7 +197,6 @@ class PostViewController: ColorThemeObservingViewController, UIImagePickerContro
     // MARK:- Tool Bar
     lazy var toolbar: CustomToolBar = {
         let bar = CustomToolBar()
-        bar.backgroundColor = .white
         bar.autoresizingMask = .flexibleHeight
         bar.toolSpacing = 35
         bar.edgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -180,14 +217,13 @@ class PostViewController: ColorThemeObservingViewController, UIImagePickerContro
         button.setTitle("Done", for: .normal)
         button.tintColor = .white
         button.layer.cornerRadius = 5;
-        button.backgroundColor = blueColorDark
         button.addTarget(self, action: #selector(handleDone), for: .touchUpInside)
         button.widthAnchor.constraint(equalToConstant: 80).isActive = true
         return button
     }()
     
     // Left Toolbar Buttons
-    let addImageButton: UIButton = {
+    let addImageButton: ToolBarButton = {
         let button = ToolBarButton(imageName: "AddImage")
         button.tag = 0
         button.addTarget(self, action: #selector(handleButtonColor), for: .touchUpInside)
@@ -201,7 +237,7 @@ class PostViewController: ColorThemeObservingViewController, UIImagePickerContro
         return picker
     }()
     
-    let addLinkButton: UIButton = {
+    let addLinkButton: ToolBarButton = {
         let button = ToolBarButton(imageName: "Link")
         button.tag = 1
         button.addTarget(self, action: #selector(handleButtonColor), for: .touchUpInside)
@@ -217,16 +253,14 @@ class PostViewController: ColorThemeObservingViewController, UIImagePickerContro
     }()
     
     // Text Options
-    let textOptionsView: TextFormatOptionsView = {
+    lazy var textOptionsView: TextFormatOptionsView = {
         let view = TextFormatOptionsView()
-        view.backgroundColor = .white
-        view.initialise()
+        view.backgroundColor = .clear
+        view.initialise(self.unselectedColor)
         return view
     }()
     
     func setupUI(){
-        view.backgroundColor = selectedTheme.primaryColor
-    
         // Add Subviews
         view.addSubview(scrollView)
         scrollView.addSubview(tipsView)

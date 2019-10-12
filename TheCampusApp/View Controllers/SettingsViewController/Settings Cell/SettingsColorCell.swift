@@ -22,7 +22,6 @@ class SettingsColorCell: UITableViewCell{
         view.heightAnchor.constraint(equalToConstant: size).isActive = true
         view.widthAnchor.constraint(equalToConstant: size).isActive = true
         view.layer.cornerRadius = size/2
-        view.backgroundColor = .red
         return view
     }()
     
@@ -39,20 +38,28 @@ class SettingsColorCell: UITableViewCell{
         addSubview(stack)
         stack.fillSuperView(padding: 16)
         
-        let name = Notification.Name(changeThemeKey)
-        NotificationCenter.default.addObserver(self, selector: #selector(didChangeColorTheme), name: name, object: nil)
+        var name = Notification.Name(changeThemeKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangeTheme), name: name, object: nil)
+        
+        name = Notification.Name(changeAccentColorKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangeAccentColorTheme), name: name, object: nil)
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
     
-    @objc func didChangeColorTheme(){
-        setupColors()
+    @objc func didChangeTheme(){
+        buttonLabel.textColor = selectedTheme.primaryTextColor
+    }
+    
+    @objc func didChangeAccentColorTheme(){
+        selectedColor.backgroundColor = selectedAccentColor.primaryColor
     }
     
     func setupColors(){
         buttonLabel.textColor = selectedTheme.primaryTextColor
+        selectedColor.backgroundColor = selectedAccentColor.primaryColor
     }
     
     required init?(coder aDecoder: NSCoder) {

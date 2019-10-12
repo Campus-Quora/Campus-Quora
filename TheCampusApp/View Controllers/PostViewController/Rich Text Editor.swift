@@ -20,7 +20,8 @@ class PlaceholderTextView: UITextView{
         }
     }
     func constrainRight(to view: UIView){
-        placeholderLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 5).isActive = true
+        placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
+        placeholderLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5).isActive = true
     }
 }
 
