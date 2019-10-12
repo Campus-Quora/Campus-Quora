@@ -11,7 +11,7 @@
 import UIKit
 import Firebase
 
-class ProfileViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout{
+class ProfileViewController: ColorThemeObservingCollectionViewController, UICollectionViewDelegateFlowLayout{
     let headerID = "progileHeaderID"
     let cellID = "profileCellID"
     var headerHeight: CGFloat = 0
@@ -19,12 +19,6 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     var maxAnswerSize: CGSize!
     var maxQuestionSize: CGSize!
     var estimatedWidth: CGFloat!
-    
-    func setupColors(){
-        settingsButton.tintColor = selectedAccentColor.primaryColor
-        navigationController?.navigationBar.tintColor = selectedTheme.primaryColor
-        collectionView.backgroundColor = selectedTheme.primaryColor
-    }
     
     lazy var settingsButton: UIButton = {
         let button = UIButton()
@@ -54,21 +48,24 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
         headerHeight = (UIScreen.main.nativeBounds.height/UIScreen.main.nativeScale) * 0.23
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setupNavigationBar()
-    }
-    
-    func setupNavigationBar(){
+    override func setupNavigationBar(){
+        super.setupNavigationBar()
         navigationItem.title = "Profile"
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: settingsButton)
-        guard let navBar = navigationController?.navigationBar else {return}
-        if #available(iOS 11.0, *) {
-            navBar.prefersLargeTitles = true
-        }
-        navBar.shadowImage = UIImage()
-        navBar.isTranslucent = false
-        navBar.tintColor = selectedTheme.primaryColor
+    }
+    
+    func setupColors(){
+        collectionView.backgroundColor = selectedTheme.primaryColor
+        settingsButton.tintColor = selectedAccentColor.primaryColor
+    }
+    
+    override func updateColors() {
+        setupColors()
+        UILabel.appearance().textColor = selectedTheme.primaryTextColor
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     @objc func launchSettings(){

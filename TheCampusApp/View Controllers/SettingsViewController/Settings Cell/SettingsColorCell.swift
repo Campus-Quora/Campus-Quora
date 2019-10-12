@@ -28,6 +28,9 @@ class SettingsColorCell: UITableViewCell{
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        backgroundColor = .clear
+        setupColors()
+        
         let stack = UIStackView(arrangedSubviews: [buttonLabel, selectedColor])
         stack.axis = .horizontal
         stack.distribution = .fillProportionally
@@ -35,6 +38,21 @@ class SettingsColorCell: UITableViewCell{
         selectedColor.rightAnchor.constraint(equalTo: stack.rightAnchor).isActive = true
         addSubview(stack)
         stack.fillSuperView(padding: 16)
+        
+        let name = Notification.Name(changeThemeKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangeColorTheme), name: name, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func didChangeColorTheme(){
+        setupColors()
+    }
+    
+    func setupColors(){
+        buttonLabel.textColor = selectedTheme.primaryTextColor
     }
     
     required init?(coder aDecoder: NSCoder) {

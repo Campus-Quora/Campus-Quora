@@ -51,6 +51,17 @@ class PostCell: UICollectionViewCell{
         super.init(frame: frame)
         setupColors()
         setupUI()
+        
+        let name = Notification.Name(changeThemeKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangeColorTheme), name: name, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func didChangeColorTheme(){
+        setupColors()
     }
     
     func setupColors(){

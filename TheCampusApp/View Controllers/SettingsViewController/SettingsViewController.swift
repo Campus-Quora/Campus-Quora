@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class SettingsViewController: UITableViewController{
+class SettingsViewController: ColorThemeObservingTableViewController{
     lazy var backButton: UIButton = {
         let button = UIButton()
         let size = CGSize(width: 30, height: 30)
@@ -31,6 +31,7 @@ class SettingsViewController: UITableViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupColors()
         
         // Register Cells
         tableView.register(SettingsButtonCell.self, forCellReuseIdentifier: SettingsViewController.settingsButtonCellID)
@@ -42,47 +43,21 @@ class SettingsViewController: UITableViewController{
         let footer = SettingsFooter()
         footer.setUp()
         tableView.setAndLayoutTableFooterView(footer: footer)
-
-//        let name = Notification.Name(changeThemeKey)
-//        NotificationCenter.default.addObserver(self, selector: #selector(updateColors), name: name, object: nil)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setupNavigationBar()
-    }
-    
-    func setupNavigationBar(){
+    override func setupNavigationBar(){
+        super.setupNavigationBar()
         navigationItem.title = "Settings"
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
-
-        guard let navBar = navigationController?.navigationBar else {return}
-        if #available(iOS 11.0, *) {
-            navBar.prefersLargeTitles = true
-        }
-        navBar.shadowImage = UIImage()
-        navBar.isTranslucent = false
-        navBar.tintColor = selectedTheme.primaryColor
+    }
+    
+    override func updateColors() {
+        setupColors()
     }
 
-    @objc func updateColors(){
-        view.backgroundColor = selectedTheme.primaryColor
-        if let navBar = navigationController?.navigationBar{
-            navBar.tintColor = selectedAccentColor.primaryColor
-            if #available(iOS 11.0, *) {
-                navBar.largeTitleTextAttributes?[NSAttributedString.Key.foregroundColor] = selectedTheme.primaryTextColor
-            }
-        }
-        if let tabBar = tabBarController?.tabBar{
-            tabBar.tintColor = selectedAccentColor.primaryColor
-            if #available(iOS 10.0, *) {
-                tabBar.unselectedItemTintColor = selectedTheme.secondaryColor
-            } else {
-//                for item in tabBarItems {
-//                    item.image = item.selectedImage!.with(color: unselectedColor).withRenderingMode(.alwaysOriginal)
-//                }
-            }
-        }
+    func setupColors(){
+        tableView.backgroundColor = selectedTheme.primaryColor
+        backButton.tintColor = selectedAccentColor.primaryColor
     }
     
     deinit {

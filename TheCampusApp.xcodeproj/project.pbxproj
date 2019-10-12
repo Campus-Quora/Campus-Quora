@@ -298,12 +298,12 @@
 		00EBA8D523506B1600539A31 /* Settings Cell */ = {
 			isa = PBXGroup;
 			children = (
-				00EBA8D623506B1600539A31 /* Theme Selector Cell.swift */,
-				00EBA8D723506B1600539A31 /* SettingsSelectorCell.swift */,
-				00EBA8D823506B1600539A31 /* PopupBaseClass.swift */,
-				00EBA8D923506B1600539A31 /* SettingsToggleCell.swift */,
-				00EBA8DA23506B1600539A31 /* SettingsColorCell.swift */,
 				00EBA8DB23506B1600539A31 /* SettingsButtonCell.swift */,
+				00EBA8D923506B1600539A31 /* SettingsToggleCell.swift */,
+				00EBA8D723506B1600539A31 /* SettingsSelectorCell.swift */,
+				00EBA8DA23506B1600539A31 /* SettingsColorCell.swift */,
+				00EBA8D823506B1600539A31 /* PopupBaseClass.swift */,
+				00EBA8D623506B1600539A31 /* Theme Selector Cell.swift */,
 			);
 			path = "Settings Cell";
 			sourceTree = "<group>";
@@ -312,7 +312,6 @@
 			isa = PBXGroup;
 			children = (
 				00EBA8DE23506B1600539A31 /* Theme Selector.swift */,
-				00EBA8DF23506B1600539A31 /* Apply Theme.swift */,
 				00EBA8E123506B1600539A31 /* Theme Selector Function.swift */,
 			);
 			path = "Theme Selector";
@@ -324,6 +323,7 @@
 				00EBA8F5235076DB00539A31 /* Theme.swift */,
 				00EBA8F7235078C100539A31 /* Dark Theme.swift */,
 				00EBA8F9235078D200539A31 /* Light Theme.swift */,
+				00EBA8DF23506B1600539A31 /* Apply Theme.swift */,
 				00EBA8FB235079C800539A31 /* Accent Colors.swift */,
 			);
 			path = Themes;
@@ -354,13 +354,13 @@
 		1FAC1B262322C01300304173 /* TheCampusApp */ = {
 			isa = PBXGroup;
 			children = (
-				00EBA8F42350768100539A31 /* Themes */,
 				00EBA8532344CAFA00539A31 /* API */,
 				00EBA84C23448ABE00539A31 /* Text Editor */,
 				00EBA8012337CBAD00539A31 /* Extensions */,
 				00EBA7FB2337BA2D00539A31 /* Login + Signup */,
 				00EBA806233D464200539A31 /* Tab Bar Controller */,
 				00EBA80E233DF10700539A31 /* View Controllers */,
+				00EBA8F42350768100539A31 /* Themes */,
 				00EBA809233DE9E700539A31 /* User Data */,
 				1FAC1B272322C01300304173 /* AppDelegate.swift */,
 				1FAC1B292322C01300304173 /* ViewController.swift */,

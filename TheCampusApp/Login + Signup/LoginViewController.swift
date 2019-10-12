@@ -172,6 +172,8 @@ class LoginViewController: UIViewController{
     func changeToSignUpController(signupEmail: String? = nil){
         emailTextField.text = ""
         passwordTextField.text = ""
+        loginButton.isEnabled = false;
+        loginButton.backgroundColor = selectedAccentColor.secondaryColor;
         let signUpVC = SignupViewController()
         if let email = signupEmail{
             signUpVC.emailTextField.text = email
@@ -255,7 +257,11 @@ class LoginViewController: UIViewController{
             var errorTitle: String = ""
             var errorMessage: String = ""
             
-            let defaultAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+            let defaultAction = UIAlertAction(title: "Ok", style: .cancel){ _ in
+                DispatchQueue.main.async {
+                    self.checkValidInput()
+                }
+            }
             
             var actions = [UIAlertAction]()
             switch(errorCode){

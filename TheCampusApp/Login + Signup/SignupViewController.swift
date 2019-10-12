@@ -172,21 +172,23 @@ class SignupViewController: UIViewController{
         changeToLogInController()
     }
     func changeToLogInController(loginEmail: String? = nil){
+        emailTextField.text = ""
+        passwordTextField.text = ""
+        nameTextField.text = ""
+        self.signupButton.isEnabled = false;
+        self.signupButton.backgroundColor = selectedAccentColor.secondaryColor
         if let email = loginEmail{
             if let loginVC = self.navigationController?.viewControllers.first as? LoginViewController{
                 loginVC.emailTextField.text = email
             }
         }
-        emailTextField.text = ""
-        passwordTextField.text = ""
-        nameTextField.text = ""
         navigationController?.popViewController(animated: true)
     }
     
     @objc func handleSignup(){
         view.endEditing(true)
         self.signupButton.isEnabled = false;
-        self.signupButton.backgroundColor = blueColorFaint
+        self.signupButton.backgroundColor = selectedAccentColor.secondaryColor
         
         guard let name = nameTextField.text             else {return}
         guard let email = emailTextField.text           else {return}

@@ -58,6 +58,6 @@ let changeThemeKey = "changeThemeKey"
 let glyphSize = CGSize(width: 30, height: 30)
 let iconSize = CGSize(width: 30, height: 30)
 
-var selectedTheme: Theme = lightTheme
+var selectedTheme: Theme = darkTheme
 var selectedAccentColor: AccentColor = blueAccentColor
 

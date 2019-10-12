@@ -64,6 +64,18 @@ class ProfileHeader: UICollectionViewCell{
         setupStats()
         setupEditProfileButton()
         addSeperator()
+        
+        let name = Notification.Name(changeThemeKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangeColorTheme), name: name, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func didChangeColorTheme(){
+        setupColors()
+        addStatsText()
     }
     
     // MARK:- Setup

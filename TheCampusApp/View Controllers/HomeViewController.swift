@@ -10,34 +10,50 @@ import UIKit
 import Down
 import Firebase
 
-class HomeViewController: UIViewController, UITextViewDelegate{
-    
-
+class HomeViewController: ColorThemeObservingViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavigationBar()
         setupUI()
         setupColors()
     }
     
-    func setupNavigationBar(){
+    override func setupNavigationBar(){
+        super.setupNavigationBar()
         navigationItem.title = "Home"
-        guard let navBar = navigationController?.navigationBar else{ return }
-        if #available(iOS 11.0, *) {
-            navBar.prefersLargeTitles = true
-        }
-        navBar.setBackgroundImage(UIImage(), for: .default)
-        navBar.shadowImage = UIImage()
-        navBar.tintColor = selectedTheme.primaryColor
-    }
-    
-    func setupUI(){
-        
     }
     
     func setupColors(){
         view.backgroundColor = selectedTheme.primaryColor
-        navigationController?.navigationBar.tintColor = selectedTheme.primaryColor
+        button.setTitleColor(selectedTheme.primaryTextColor, for: .normal)
+    }
+    
+    let button = UIButton()
+    func setupUI(){
+        button.frame = CGRect(x: 100, y: 400, width: 100, height: 50)
+        button.setTitle("Change", for: .normal)
+        button.addTarget(self, action: #selector(switchTheme), for: .touchUpInside)
+        view.addSubview(button)
+    }
+    
+    @objc func switchTheme(){
+        print("Changing", selectedTheme.name)
+        if(selectedTheme.name == "Light"){
+            selectedTheme = darkTheme
+        }
+        else{
+            selectedTheme = lightTheme
+        }
+        applyTheme()
+        let name = Notification.Name(changeThemeKey)
+        NotificationCenter.default.post(name: name, object: nil)
+    }
+    
+    override func updateColors() {
+        setupColors()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 

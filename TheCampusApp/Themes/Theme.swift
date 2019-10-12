@@ -8,6 +8,7 @@ struct Theme{
     var secondaryTextColor: UIColor
     var primaryPlaceholderColor: UIColor
     var unselectedTabBarItemColor: UIColor
+    var statusBarStyle: UIStatusBarStyle
 }
 
 struct AccentColor{

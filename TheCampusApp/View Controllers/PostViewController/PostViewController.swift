@@ -12,7 +12,7 @@ import Photos
 let selectedColor = blueColorDark
 let unselectedColor: UIColor = .black
 
-class PostViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIViewControllerTransitioningDelegate{
+class PostViewController: ColorThemeObservingViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIViewControllerTransitioningDelegate{
     // MARK:- Overriden Members
     override var inputAccessoryView:UIView{
         get{ return self.toolbar }
@@ -26,8 +26,8 @@ class PostViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     override func viewDidLoad() {
         super.viewDidLoad()
         UIApplication.shared.keyWindow?.backgroundColor = .white
-        setupNavigationBar()
         setupUI()
+        setupColors()
         
         // Add Notification Observers for keyboard events
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -64,28 +64,35 @@ class PostViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         return button
     }()
     
-    func setupNavigationBar(){
+    override func setupNavigationBar(){
+        super.setupNavigationBar()
         navigationItem.title = "Ask A Question"
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: cancelButton)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: askButton)
-        guard let navBar = navigationController?.navigationBar else {return}
+    
+        guard let navBar = navigationController?.navigationBar else{return}
         if #available(iOS 11.0, *) {
             // BUG:- Title doesn't return to being large when scrolled upto top
             // Setting large title causes some issues in handling scrollview offset with keyboard events
-            // navBar.prefersLargeTitles = true
+             navBar.prefersLargeTitles = false
         }
-        navBar.shadowImage = UIImage()
-        navBar.isTranslucent = false
-        navBar.tintColor = selectedTheme.primaryColor
         
     }
     
-    @objc func dismissVC(){
-        dismiss(animated: true, completion: nil)
+    func setupColors() {
+        view.backgroundColor = selectedTheme.primaryColor
+    }
+    
+    override func updateColors() {
+        setupColors()
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func dismissVC(){
+        dismiss(animated: true, completion: nil)
     }
     
     // MARK:- UI Elements

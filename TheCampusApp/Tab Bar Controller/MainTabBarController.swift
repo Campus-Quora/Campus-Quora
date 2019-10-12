@@ -49,12 +49,21 @@ class MainTabBarController: UITabBarController{
         }
         
         // MARK:- Customisizing Tab Bar
-        // Color of selected tab
-        tabBar.tintColor = selectedAccentColor.primaryColor
-        
         guard let tabBarItems = tabBar.items else{return}
+        setupColors()
         
-        // Color of unselected tab
+        for item in tabBarItems{
+            item.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+        }
+        
+        tabBar.shadowImage = UIImage()
+        tabBar.isTranslucent = false
+    }
+    
+    func setupColors(){
+        tabBar.barTintColor = selectedTheme.primaryColor
+        tabBar.tintColor = selectedAccentColor.primaryColor
+        guard let tabBarItems = tabBar.items else{return}
         if #available(iOS 10.0, *) {
             tabBar.unselectedItemTintColor = selectedTheme.unselectedTabBarItemColor
         }
@@ -63,15 +72,10 @@ class MainTabBarController: UITabBarController{
                 item.image = item.selectedImage!.with(color: selectedTheme.unselectedTabBarItemColor).withRenderingMode(.alwaysOriginal)
             }
         }
-        
-        for item in tabBarItems{
-            item.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
-        }
-        
-        // Color of TabBar
-        tabBar.shadowImage = UIImage()
-        tabBar.isTranslucent = false
-        tabBar.barTintColor = selectedTheme.primaryColor
+    }
+    
+    override func updateColors(){
+        setupColors()
     }
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
@@ -137,4 +141,3 @@ class TabTransition: NSObject, UIViewControllerAnimatedTransitioning {
         }
     }
 }
-
