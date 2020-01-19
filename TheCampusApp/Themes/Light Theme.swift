@@ -17,6 +17,7 @@ let lightTheme = Theme.init(
     primaryPlaceholderColor: UIColor(white: 0.15, alpha: 0.6),
     secondaryPlaceholderColor: UIColor.lightGray,
     unselectedTabBarItemColor: UIColor.gray,
+    toolbarColor: UIColor(white: 0.90, alpha: 1),
     statusBarStyle: UIStatusBarStyle.default,
     keyboardStyle: UIKeyboardAppearance.light
 )

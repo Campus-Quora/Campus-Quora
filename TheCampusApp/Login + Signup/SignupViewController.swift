@@ -10,6 +10,16 @@ import UIKit
 import Firebase
 import SVProgressHUD
 
+//            let userData: [String: Any] = [
+//                "name" : name,
+//                "profilePicURL": "",
+//                "followerCount": 0,
+//                "followingCount": 0,
+//                "likesCount" : 0,
+//                "questionsCount": 0,
+//                "answersCount": 0,
+//            ]
+
 class SignupViewController: UIViewController{
     // MARK:- Constants
     
@@ -205,23 +215,23 @@ class SignupViewController: UIViewController{
                 self.handleSignupError(error)
                 return;
             }
-            
+
             guard let user = user?.user else{
                 print("Signup Error #2 : \n\n")
                 return;
             }
-            
-            let userData = ["userid" : user.uid,
-                            "name" : name]
-            
-            self.db.collection("userInfo").addDocument(data: userData){ error in
+
+            UserData.shared.setData(user)
+            UserData.shared.name = name
+            let userData = try! UserData.shared.asDictionary()
+
+            APIService.userInfoCollection.document(UserData.shared.uid!).setData(userData){ error in
                 print("Saving UserInfo")
                 if let error = error{
                     print("Signup ERROR #3 : \n\n", error)
                     return;
                 }
-                
-                UserData.shared.setData(user)
+
                 // Go to Main Tab Bar Controller
                 DispatchQueue.main.async {
                     SVProgressHUD.dismiss()
@@ -232,7 +242,6 @@ class SignupViewController: UIViewController{
                 }
             }
         }
-        
     }
     
     func handleSignupError(_ error: Error){

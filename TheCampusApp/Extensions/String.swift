@@ -18,4 +18,14 @@ extension String{
         let rect = NSString(string: " ").boundingRect(with: CGSize(width: width, height: 1000), options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
         return rect.height
     }
+    
+    static func uniqueFilename(withPrefix prefix: String? = nil) -> String {
+        let uniqueString = ProcessInfo.processInfo.globallyUniqueString
+        
+        if prefix != nil {
+            return "\(prefix!)-\(uniqueString)"
+        }
+        
+        return uniqueString
+    }
 }

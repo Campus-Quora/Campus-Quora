@@ -9,6 +9,7 @@ struct Theme{
     var primaryPlaceholderColor: UIColor
     var secondaryPlaceholderColor: UIColor
     var unselectedTabBarItemColor: UIColor
+    var toolbarColor: UIColor
     var statusBarStyle: UIStatusBarStyle
     var keyboardStyle: UIKeyboardAppearance
 }

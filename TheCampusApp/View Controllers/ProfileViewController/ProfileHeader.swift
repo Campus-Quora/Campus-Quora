@@ -8,27 +8,12 @@
 
 import UIKit
 
-class ProfileHeader: UICollectionViewCell{
-    // Constants
-    var height: CGFloat = 0
-    
+class ProfileHeader: UITableViewHeaderFooterView{
     // MARK:- UI Elements
+    static var profilePicSize = CGSize(width: 100, height: 100)
+    let profilePic = RoundImageView()
+    let nameLabel = UILabel()
     
-    // User
-    let profilePic: RoundImageView = {
-        let imageView = RoundImageView()
-        imageView.image = UIImage(named: "Avatar")
-        return imageView
-    }()
-    let nameLabel: UILabel = {
-        let label = UILabel()
-        label.text = UserData.shared.name ?? ""
-        label.font = .systemFont(ofSize: 16, weight: .medium)
-        label.numberOfLines = 2
-        return label
-    }()
-    
-    // Stats
     let followingStatLabel = UILabel()
     let followersStatLabel = UILabel()
     let likesStatLabel = UILabel()
@@ -36,82 +21,51 @@ class ProfileHeader: UICollectionViewCell{
     let answersStatLabel = UILabel()
     let somethingStatLabel = UILabel()
     
-    // Stack
     var statStack1: UIStackView!
     var statStack2: UIStackView!
+    var statStack: UIStackView!
     
-    // Settings
-    let editProfileButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Edit Profile", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
-        button.layer.cornerRadius = 10
-        button.layer.borderWidth = 1
-        return button
-    }()
+    let editProfileButton = UIButton()
+    
+    weak var controller: ProfileViewController?
+    
+    @objc func setupData(){
+        nameLabel.text = UserData.shared.name ?? "Anonymous"
+        addStatsText()
+    }
     
     // Seperator
     let headerSeperator = UIView()
     
     // MARK:- Initializers
     
-    override init(frame: CGRect){
-        super.init(frame: frame)
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
+        setupUI()
+        setupConstraints()
         setupColors()
-        addStatsText()
-        setupProfilePic()
-        setupNameLabel()
-        setupStats()
-        setupEditProfileButton()
-        addSeperator()
+        setupData()
         
-        let name = Notification.Name(changeThemeKey)
+        var name = Notification.Name(changeThemeKey)
         NotificationCenter.default.addObserver(self, selector: #selector(didChangeColorTheme), name: name, object: nil)
+        
+        name = Notification.Name(updateUserDataKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(setupData), name: name, object: nil)
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    @objc func didChangeColorTheme(){
-        setupColors()
-        addStatsText()
-    }
-    
-    // MARK:- Setup
-    func setupColors(){
-        editProfileButton.tintColor = selectedTheme.primaryTextColor
-        editProfileButton.layer.borderColor = selectedTheme.primaryTextColor.cgColor
-        nameLabel.textColor = selectedTheme.primaryTextColor
-        headerSeperator.backgroundColor = selectedTheme.secondaryTextColor
-    }
-    
-    func addStatsText(){
-        let data = UserData.shared
-        followingStatLabel.attributedText = getAttributedText(for: "Following", with: data.followingCount ?? 0)
-        followersStatLabel.attributedText = getAttributedText(for: "Followers", with: data.followerCount ?? 0)
-        likesStatLabel.attributedText = getAttributedText(for: "Likes", with: data.likesCount ?? 0)
-        questionsStatLabel.attributedText = getAttributedText(for: "Questions", with: data.questionsCount ?? 0)
-        answersStatLabel.attributedText = getAttributedText(for: "Answers", with: data.answersCount ?? 0)
-        somethingStatLabel.attributedText = getAttributedText(for: "Something", with: 0)
-    }
-    
-    func setupProfilePic(){
-        let imagePadding = frame.height * 0.08
-        addSubview(profilePic)
-        profilePic.anchor(top: topAnchor, left: leadingAnchor, paddingTop: imagePadding, paddingLeft: imagePadding)
-        profilePic.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.60).isActive = true
-        profilePic.widthAnchor.constraint(equalTo: profilePic.heightAnchor, multiplier: 1).isActive = true
-    }
-    
-    func setupNameLabel(){
-        addSubview(nameLabel)
-        nameLabel.centerX(profilePic.centerXAnchor)
-        nameLabel.anchor(top: profilePic.bottomAnchor, bottom: bottomAnchor)
-    }
-    
-    func setupStats(){
-        let padding: CGFloat = 10
+    func setupUI(){
+        profilePic.image = UIImage(named: "Avatar")?.resizeImage(size: ProfileHeader.profilePicSize)
+        profilePic.contentMode = .scaleAspectFit
+        
+        nameLabel.font = .systemFont(ofSize: 16, weight: .medium)
+        nameLabel.numberOfLines = 2
+        nameLabel.textAlignment = .center
+        
+        editProfileButton.setTitle("Edit Profile", for: .normal)
+        editProfileButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
+        editProfileButton.addTarget(self, action: #selector(handleEditProfile), for: .touchUpInside)
+        editProfileButton.layer.cornerRadius = 10
+//        editProfileButton.layer.borderWidth = 2
         
         [followingStatLabel, followersStatLabel, likesStatLabel, questionsStatLabel, answersStatLabel, somethingStatLabel].forEach { (label) in
             label.textAlignment = .center
@@ -122,26 +76,68 @@ class ProfileHeader: UICollectionViewCell{
         statStack1 = UIStackView(arrangedSubviews: [followingStatLabel, followersStatLabel, likesStatLabel])
         statStack1.axis = .horizontal
         statStack1.distribution = .fillEqually
-        addSubview(statStack1)
-        statStack1.anchor(top: profilePic.topAnchor, left: profilePic.trailingAnchor, right: trailingAnchor, paddingTop: padding, paddingRight: 5)
         
         // StatStack2
         statStack2 = UIStackView(arrangedSubviews: [questionsStatLabel, answersStatLabel, somethingStatLabel])
         statStack2.axis = .horizontal
         statStack2.distribution = .fillEqually
-        addSubview(statStack2)
-        statStack2.anchor(bottom: profilePic.bottomAnchor, left: profilePic.trailingAnchor, right: trailingAnchor, paddingBottom: padding, paddingRight: 5)
+        
+        statStack = UIStackView(arrangedSubviews: [statStack1, statStack2])
+        statStack.axis = .vertical
+        statStack.distribution = .fillEqually
     }
     
-    func setupEditProfileButton(){
-        addSubview(editProfileButton)
-        editProfileButton.centerY(nameLabel.centerYAnchor)
-        editProfileButton.anchor(left: nameLabel.trailingAnchor, right: trailingAnchor, paddingLeft: 20, paddingRight: 20)
-    }
-    
-    func addSeperator(){
+    func setupConstraints(){
+        let stack1 = UIStackView(arrangedSubviews: [profilePic, nameLabel])
+        stack1.axis = .vertical
+        stack1.distribution = .fillProportionally
+        stack1.spacing = 10
+        
+        let stack2 = UIStackView(arrangedSubviews: [statStack, editProfileButton])
+        stack2.axis = .vertical
+        stack2.distribution = .fillProportionally
+        stack2.spacing = 10
+        
+        let stack = UIStackView(arrangedSubviews: [stack1, stack2])
+        stack.axis = .horizontal
+        stack.distribution = .fillProportionally
+        stack.spacing = 10
+        
+        addSubview(stack)
         addSubview(headerSeperator)
-        headerSeperator.anchor(bottom: bottomAnchor, left: leadingAnchor, right: trailingAnchor, paddingBottom: 0, height: 2)
+        profilePic.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        profilePic.heightAnchor.constraint(equalTo: profilePic.widthAnchor, multiplier: 1).isActive = true
+        editProfileButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        stack.fillSuperView(padding: 10)
+        
+        headerSeperator.anchor(bottom: bottomAnchor, left: leadingAnchor, right: trailingAnchor, height: 2)
+    }
+    
+    @objc func didChangeColorTheme(){
+        setupColors()
+        addStatsText()
+    }
+    
+    // MARK:- Setup
+    func setupColors(){
+//        editProfileButton.setTitleColor(selectedAccentColor.primaryColor, for: .normal)
+//        editProfileButton.layer.borderColor = selectedAccentColor.primaryColor.cgColor
+        
+        editProfileButton.setTitleColor(selectedTheme.primaryColor, for: .normal)
+        editProfileButton.backgroundColor = selectedAccentColor.primaryColor
+        
+        nameLabel.textColor = selectedTheme.primaryTextColor
+        headerSeperator.backgroundColor = selectedTheme.secondaryTextColor
+    }
+    
+    func addStatsText(){
+        let data = UserData.shared
+        followingStatLabel.attributedText = getAttributedText(for: "Following", with: data.followingCount)
+        followersStatLabel.attributedText = getAttributedText(for: "Followers", with: data.followerCount)
+        likesStatLabel.attributedText = getAttributedText(for: "Likes", with: data.likesCount)
+        questionsStatLabel.attributedText = getAttributedText(for: "Questions", with: data.questionsCount)
+        answersStatLabel.attributedText = getAttributedText(for: "Answers", with: data.answersCount)
+        somethingStatLabel.attributedText = getAttributedText(for: "Something", with: 0)
     }
     
     private func getAttributedText(for stat: String, with count: Int) -> NSMutableAttributedString{
@@ -156,6 +152,14 @@ class ProfileHeader: UICollectionViewCell{
             ]))
         
         return attributedText
+    }
+    
+    @objc func handleEditProfile(){
+        controller?.handleEditProfile()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -177,6 +181,49 @@ class RoundImageView: UIImageView{
     }
     
     required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+
+class ProfileCell: UITableViewCell{
+    let label = UILabel()
+    let iconView = UIImageView()
+    lazy var stackView = UIStackView(arrangedSubviews: [iconView, label])
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupUI()
+        setupConstraints()
+        setupColors()
+    }
+    
+    func setupUI(){
+        label.font = .systemFont(ofSize: 14, weight: .medium)
+        iconView.contentMode = .scaleAspectFit
+        stackView.axis = .horizontal
+        stackView.distribution = .fillProportionally
+        stackView.spacing = 10
+    }
+    
+    func setupConstraints(){
+        addSubview(stackView)
+        iconView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        stackView.fillSuperView(padding: 7)
+    }
+    func setupColors(){
+        label.textColor = selectedTheme.primaryTextColor
+    }
+    
+    static var imageSize = CGSize(width: 24, height: 24)
+    func setupData(_ text: String, _ imageName: String){
+        let image = UIImage(named: imageName)?.resizeImage(size: ProfileCell.imageSize).withRenderingMode(.alwaysTemplate)
+        iconView.image = image
+        iconView.tintColor = selectedTheme.secondaryPlaceholderColor
+        label.text = text
+    }
+    
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }

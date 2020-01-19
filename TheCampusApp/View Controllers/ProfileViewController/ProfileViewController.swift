@@ -11,42 +11,32 @@
 import UIKit
 import Firebase
 
-class ProfileViewController: ColorThemeObservingCollectionViewController, UICollectionViewDelegateFlowLayout{
-    let headerID = "progileHeaderID"
+class ProfileViewController: ColorThemeObservingViewController{
+    let headerID = "profileHeaderID"
     let cellID = "profileCellID"
-    var headerHeight: CGFloat = 0
+    
+    let iconNames = ["Q", "A", "Bookmark", "Like"]
+    let titles = ["My Questions", "My Answers", "Bookmarks", "Liked Posts"]
     
     var maxAnswerSize: CGSize!
     var maxQuestionSize: CGSize!
     var estimatedWidth: CGFloat!
-    
-    lazy var settingsButton: UIButton = {
-        let button = UIButton()
-        let size = CGSize(width: 30, height: 30)
-        let image = UIImage(named: "Settings")?.resizeImage(size: size).withRenderingMode(.alwaysTemplate)
-        button.setImage(image, for: .normal)
-        button.addTarget(self, action: #selector(ProfileViewController.launchSettings), for: .touchUpInside)
-        return button
-    }()
+    let profileTableView = UITableView(frame: .zero, style: .grouped)
+    let settingsButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupData()
-        estimateSize()
         setupUI()
         updateAccentColor()
         updateTheme()
         
         // This is used to force collectionView to stick to safe layout
-        if #available(iOS 11.0, *) {
-            collectionView?.contentInsetAdjustmentBehavior = .always
-        }
-        
-        collectionView.register(ProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerID)
-        
-        collectionView.register(PostCell.self, forCellWithReuseIdentifier: cellID)
-        
-        headerHeight = (UIScreen.main.nativeBounds.height/UIScreen.main.nativeScale) * 0.23
+        profileTableView.delegate = self
+        profileTableView.dataSource = self
+        profileTableView.contentInsetAdjustmentBehavior = .always
+        profileTableView.register(ProfileHeader.self, forHeaderFooterViewReuseIdentifier: headerID)
+        profileTableView.register(ProfileCell.self, forCellReuseIdentifier: cellID)
+        profileTableView.estimatedSectionHeaderHeight = 300
     }
     
     override func setupNavigationBar(){
@@ -60,7 +50,7 @@ class ProfileViewController: ColorThemeObservingCollectionViewController, UIColl
     }
     
     override func updateTheme() {
-        collectionView.backgroundColor = selectedTheme.primaryColor
+        profileTableView.backgroundColor = selectedTheme.primaryColor
     }
     
     deinit {
@@ -73,99 +63,37 @@ class ProfileViewController: ColorThemeObservingCollectionViewController, UIColl
     }
     
     func setupUI(){
+        let size = CGSize(width: 30, height: 30)
+        let image = UIImage(named: "Settings")?.resizeImage(size: size).withRenderingMode(.alwaysTemplate)
+        settingsButton.setImage(image, for: .normal)
+        settingsButton.addTarget(self, action: #selector(launchSettings), for: .touchUpInside)
         
+        view.addSubview(profileTableView)
+        profileTableView.fillSuperView()
     }
     
-    var postsData: [PostData] = []
-    func setupData(){
-        var postData1 = PostData()
-        postData1.question = "This is a simple Question"
-        postData1.answer = "This is a simple Answer. Click This cell to expand it"
-        postData1.personWhoAnswered = "Harsh Motwani"
-        postData1.date = "Nov 21"
-        
-        var postData2 = PostData()
-        postData2.question = "This is a simple Question. Can Anyone Please answer it"
-        postData2.answer = "This is a complex Answer such that it can occupy more space. Click This cell to expand it"
-        postData2.personWhoAnswered = "Yogesh Kumar"
-        postData2.date = "Nov 21"
-        
-        var postData3 = PostData()
-        postData3.question = "This is a simple Question. Can Anyone Please answer it"
-        postData3.answer = "This is a complex Answer such that it can occupy more space. But This thime I have increased it such that it can occupy three lines. Click This cell to expand it"
-        postData3.personWhoAnswered = "Yogesh Kumar"
-        postData3.date = "Nov 21"
-        
-        var postData4 = PostData()
-        postData4.question = "This is a complex Question. It occupies three lines so it must be cut to two lines followed by ... Can Anyone Please answer it"
-        postData4.answer = "This is a complex Answer such that it can occupy more space. But This thime I have increased it such that it can occupy four lines. It must be cut to two lines followed by ... Click This cell to expand it"
-        postData4.personWhoAnswered = "Yogesh Kumar"
-        postData4.date = "Nov 21"
-        
-        postsData.append(postData1)
-        postsData.append(postData2)
-        postsData.append(postData3)
-        postsData.append(postData4)
+    @objc func handleEditProfile(){
+        let editProfileVC = EditProfileViewController()
+        navigationController?.pushViewController(editProfileVC, animated: true)
     }
 }
 
-// MARK:- Extension #2
-// This is for collectionViewHeader
-extension ProfileViewController{
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-
-        let width = collectionView.frame.width
-        return CGSize(width: width, height: headerHeight)
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID, for: indexPath)
-        return header
-    }
-}
-
-// MARK:- Extension #2
-// This is for collectionViewcells
-extension ProfileViewController{
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return postsData.count
+extension ProfileViewController: UITableViewDelegate, UITableViewDataSource{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return titles.count
     }
     
-    func estimateSize(){
-        estimatedWidth = view.frame.width - 2 * postCellSidePadding
-        let maxAnswerHeight = CGFloat(numberOfLinesInAnswer) * String.findSingleLineHeight(width: estimatedWidth, attributes: [.font: answerFont])
-        let maxQuestionHeight = CGFloat(numberOfLinesInQuestion) * String.findSingleLineHeight(width: estimatedWidth, attributes: [.font: questionFont])
-        maxAnswerSize = CGSize(width: estimatedWidth, height: maxAnswerHeight)
-        maxQuestionSize = CGSize(width: estimatedWidth, height: maxQuestionHeight)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let data = postsData[indexPath.item]
-        
-        let estimatedAnswerFrame = NSString(string: data.answer ?? "").boundingRect(with: maxAnswerSize, options: .usesLineFragmentOrigin, attributes: [.font : answerFont], context: nil)
-        let estimatedQuestionFrame = NSString(string: data.question ?? "").boundingRect(with: maxQuestionSize, options: .usesLineFragmentOrigin, attributes: [.font : questionFont], context: nil)
-        let estimatedHeight = estimatedAnswerFrame.height + estimatedQuestionFrame.height + 50 + 35 + 15
-        return CGSize(width: estimatedWidth, height: estimatedHeight)
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath)
-        
-        if let cell = cell as? PostCell{
-            cell.postData = postsData[indexPath.item]
-            if(indexPath.item) == 0{
-                cell.seperator.alpha = 0
-            }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath)
+        if let profileCell = cell as? ProfileCell{
+            profileCell.setupData(titles[indexPath.row], iconNames[indexPath.row])
         }
-        
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerID) as? ProfileHeader else {return UITableViewHeaderFooterView()}
+        header.controller = self
+        return header
     }
-
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-//        return 0
-//    }
 }

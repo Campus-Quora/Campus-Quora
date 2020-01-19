@@ -19,6 +19,7 @@ func applyTheme(){
     navBarApperance.titleTextAttributes = [.foregroundColor : selectedTheme.primaryTextColor]
     navBarApperance.tintColor = selectedTheme.primaryColor
     navBarApperance.barTintColor = selectedTheme.primaryColor
+    navBarApperance.isTranslucent = false
     if #available(iOS 11.0, *) {
         navBarApperance.largeTitleTextAttributes = [.foregroundColor : selectedTheme.primaryTextColor]
     }
@@ -60,6 +61,7 @@ extension UIViewController{
         navBar.titleTextAttributes = [.foregroundColor : selectedTheme.primaryTextColor]
         navBar.tintColor = selectedTheme.primaryColor
         navBar.barTintColor = selectedTheme.primaryColor
+        navigationController?.view.backgroundColor = selectedTheme.primaryColor
         if #available(iOS 11.0, *) {
             navBar.largeTitleTextAttributes = [.foregroundColor : selectedTheme.primaryTextColor]
         }

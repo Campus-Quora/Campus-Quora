@@ -60,6 +60,7 @@ func tipAttributedString()->NSMutableAttributedString{
 
 let changeThemeKey = "changeThemeKey"
 let changeAccentColorKey = "changeAccentColorKey"
+let updateUserDataKey = "updateUserDataKey"
 let glyphSize = CGSize(width: 30, height: 30)
 let iconSize = CGSize(width: 30, height: 30)
 

@@ -16,11 +16,15 @@ class MainTabBarController: UITabBarController{
         if Auth.auth().currentUser == nil {
             DispatchQueue.main.async {
                 let navController = UINavigationController(rootViewController: LoginViewController())
+                navController.modalPresentationStyle = .overCurrentContext
                 self.present(navController, animated: true, completion: nil)
             }
             return
         }
         else{
+            DispatchQueue.main.async{
+                APIService.getUserInfo()
+            }
             setupViewControllers()
         }
         
@@ -37,11 +41,11 @@ class MainTabBarController: UITabBarController{
         let homeVC = UINavigationController(rootViewController: HomeViewController())
         let postVC = UINavigationController(rootViewController: PostViewController())
         
-        let profileVCFlowLayout = UICollectionViewFlowLayout()
-        profileVCFlowLayout.sectionInset = UIEdgeInsets(top: postSectionVerticalPadding, left: postCellSidePadding, bottom: postSectionVerticalPadding, right: postCellSidePadding)
-        let profileCVC = ProfileViewController(collectionViewLayout: profileVCFlowLayout)
-        let profileVC = UINavigationController(rootViewController: profileCVC)
-        
+//        let profileVCFlowLayout = UICollectionViewFlowLayout()
+//        profileVCFlowLayout.sectionInset = UIEdgeInsets(top: postSectionVerticalPadding, left: postCellSidePadding, bottom: postSectionVerticalPadding, right: postCellSidePadding)
+//        let profileCVC = ProfileViewController(collectionViewLayout: profileVCFlowLayout)
+//        let profileVC = UINavigationController(rootViewController: profileCVC)
+        let profileVC = UINavigationController(rootViewController: ProfileViewController())
         viewControllers = [homeVC, postVC, profileVC]
         
         // MARK:- Setting Image for tabBarItem

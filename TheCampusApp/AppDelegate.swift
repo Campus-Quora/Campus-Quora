@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import IQKeyboardManagerSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,9 +22,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         applyTheme()
         applyAccentColor()
         FirebaseApp.configure()
+        IQKeyboardManager.shared.enable = true
+        IQKeyboardManager.shared.enableAutoToolbar = true
+        IQKeyboardManager.shared.toolbarTintColor = selectedAccentColor.primaryColor
+        IQKeyboardManager.shared.disabledDistanceHandlingClasses = [LoginViewController.self, SignupViewController.self]
+        IQKeyboardManager.shared.disabledToolbarClasses = [LoginViewController.self, SignupViewController.self]
+        
+//        let navController = UINavigationController(rootViewController: ReauthenticateViewController())
+//        window?.rootViewController = navController
         window?.rootViewController = MainTabBarController()
-//        let postVC = UINavigationController(rootViewController: PostViewController())
-//        window?.rootViewController = postVC
         return true
     }
 

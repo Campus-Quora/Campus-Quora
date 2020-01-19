@@ -9,6 +9,9 @@ target 'TheCampusApp' do
 	pod 'Firebase/Core'
 	pod 'Firebase/Auth'
 	pod 'Firebase/Firestore'
+  pod 'Firebase/Storage'
 	pod 'Down', '~> 0.4.2'
 	pod 'SVProgressHUD'
+  pod 'IQKeyboardManagerSwift'
+  pod 'SDWebImage'
 end
