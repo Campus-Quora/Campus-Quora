@@ -334,33 +334,56 @@ class APIService{
         }
     }
     
-    static func updatePostApprType(for postID: String?, apprType: AppreciationType){
+    static func updatePostApprType(for postID: String?, apprType: AppreciationType, bookmark: Bool){
         guard let postID = postID,
               let uid = UserData.shared.uid
         else{return}
         
         let data = [
             "state" : apprType.rawValue,
+            "bookmark" : bookmark,
             "profilePicURL": UserData.shared.profilePicURL ?? ""
         ] as [String : Any]
         
-        let collection = postsCollection.document(postID).collection("Like").document(uid)
-        switch(apprType){
-            case .none:     collection.delete()
-            default:        collection.setData(data)
+        let document = postsCollection.document(postID).collection("Like").document(uid)
+        if(apprType == .none && bookmark == false){
+            document.delete()
+        }
+        else{
+            document.setData(data)
         }
     }
     
-    static func getApprType(for postID: String?, callback: @escaping (AppreciationType)->Void){
+    static func updateBookmark(for postID: String?, bookmark: Bool, callback: @escaping (Bool)->Void){
+        guard let postID = postID,
+              let uid = UserData.shared.uid
+        else{return}
+
+        let document = userInfoCollection.document(uid).collection("Bookmarks").document(postID)
+        if(bookmark){
+            document.setData(["state": true]){(error) in
+                callback(error == nil)
+            }
+        }
+        else{
+            document.delete(){ (error) in
+                callback(error == nil)
+            }
+        }
+    }
+    
+    static func getApprType(for postID: String?, callback: @escaping (AppreciationType, Bool)->Void){
         guard let postID = postID,
               let uid = UserData.shared.uid
         else{return}
         
-        let collection = postsCollection.document(postID).collection("Like").document(uid)
-        collection.getDocument { (document, error) in
-            let state = document?.data()?["state"] as? Int
+        let document = postsCollection.document(postID).collection("Like").document(uid)
+        document.getDocument { (doc, error) in
+            let data = doc?.data()
+            let state = data?["state"] as? Int
+            let bookmark = (data?["bookmark"] as? Bool) ?? false
             let apprType = AppreciationType(rawValue: state ?? 0) ?? .none
-            callback(apprType)
+            callback(apprType, bookmark)
         }
     }
 }

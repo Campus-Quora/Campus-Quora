@@ -64,6 +64,7 @@ class PostDetailQuestionView: UITableViewHeaderFooterView{
             loadDescription(forceLoad: false)
             loadApprType(forceLoad: false)
             apprType = data?.apprType ?? .none
+            bookmark = data?.bookmark ?? false
         }
     }
     
@@ -84,10 +85,25 @@ class PostDetailQuestionView: UITableViewHeaderFooterView{
         }
     }
     
+    var bookmark: Bool = false{
+        didSet{
+            if(bookmark){
+                bookmarkButton.tintColor = selectedAccentColor.primaryColor
+            }
+            else{
+                bookmarkButton.tintColor = selectedTheme.secondaryPlaceholderColor
+            }
+        }
+    }
+    
     func updateApprType(){
-        if(apprType != data?.apprType){
-            APIService.updatePostApprType(for: data?.postID, apprType: apprType)
+        if((apprType != data?.apprType) || (bookmark != data?.bookmark)){
+            APIService.updatePostApprType(for: data?.postID, apprType: apprType, bookmark: bookmark)
             data?.apprType = apprType
+        }
+        if(bookmark != data?.bookmark){
+            APIService.updateBookmark(for: data?.postID, bookmark: bookmark){_ in }
+            data?.bookmark = bookmark
         }
     }
     
@@ -217,14 +233,19 @@ class PostDetailQuestionView: UITableViewHeaderFooterView{
     }
     
     func loadApprType(forceLoad: Bool = false){
-        if(data?.apprType == nil || forceLoad){
+        if((data?.apprType == nil) || (data?.bookmark == nil) || forceLoad){
             APIService.getApprType(for: data?.postID){
-                [weak self] (apprType) in
-                self?.apprType = apprType
+                [weak self] (apprType, bookmark) in
+                guard let self = self else {return}
+                self.apprType = apprType
+                self.bookmark = bookmark
+                self.data?.apprType = apprType
+                self.data?.bookmark = bookmark
             }
         }
         else{
             self.apprType = (data?.apprType)!
+            self.bookmark = (data?.bookmark)!
         }
     }
     
@@ -266,7 +287,7 @@ class PostDetailQuestionView: UITableViewHeaderFooterView{
     }
     
     @objc func handleBookmark(){
-        print("Bookmarked")
+        bookmark = !bookmark
     }
     
     func updateAccentColor() {
@@ -274,6 +295,9 @@ class PostDetailQuestionView: UITableViewHeaderFooterView{
             case .none: break
             case .like: upvoteButton.tintColor = selectedAccentColor.primaryColor
             case .dislike: downvoteButton.tintColor = selectedAccentColor.primaryColor
+        }
+        if(bookmark){
+            bookmarkButton.tintColor = selectedAccentColor.primaryColor
         }
     }
 }

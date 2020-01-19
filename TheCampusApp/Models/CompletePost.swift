@@ -26,6 +26,7 @@ class CompletePost: Codable{
     var dateAsked: Date?
     var description: NSAttributedString?
     var apprType: AppreciationType?
+    var bookmark: Bool?
     
     enum CodingKeys: String, CodingKey{
         case question
