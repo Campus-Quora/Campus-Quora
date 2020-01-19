@@ -43,6 +43,7 @@ class APIService{
     static var postsCollection = databaseRef.collection("posts")
     static var questionsCollection = storageRef.child("questions")
     static var answersCollection = storageRef.child("answers")
+    static var apprCollection = databaseRef.collection("Likes")
     
     static func getUserInfo(){
         let uid = (Auth.auth().currentUser?.uid)!
@@ -330,6 +331,36 @@ class APIService{
         guard let newEmail = newEmail else{return}
         Auth.auth().currentUser?.updateEmail(to: newEmail) { (error) in
             callback(error == nil)
+        }
+    }
+    
+    static func updatePostApprType(for postID: String?, apprType: AppreciationType){
+        guard let postID = postID,
+              let uid = UserData.shared.uid
+        else{return}
+        
+        let data = [
+            "state" : apprType.rawValue,
+            "profilePicURL": UserData.shared.profilePicURL ?? ""
+        ] as [String : Any]
+        
+        let collection = postsCollection.document(postID).collection("Like").document(uid)
+        switch(apprType){
+            case .none:     collection.delete()
+            default:        collection.setData(data)
+        }
+    }
+    
+    static func getApprType(for postID: String?, callback: @escaping (AppreciationType)->Void){
+        guard let postID = postID,
+              let uid = UserData.shared.uid
+        else{return}
+        
+        let collection = postsCollection.document(postID).collection("Like").document(uid)
+        collection.getDocument { (document, error) in
+            let state = document?.data()?["state"] as? Int
+            let apprType = AppreciationType(rawValue: state ?? 0) ?? .none
+            callback(apprType)
         }
     }
 }

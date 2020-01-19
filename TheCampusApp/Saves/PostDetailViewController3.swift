@@ -6,14 +6,36 @@
 ////  Copyright © 2020 Harsh Motwani. All rights reserved.
 ////
 //
-import UIKit
+//import UIKit
 //import Firebase
 //
-enum AppreciationType{
-    case none
-    case like
-    case dislike
-}
+
+
+//func loadData(){
+//    answers = []
+//    data?.answers = []
+//    let str1 = NSAttributedString(string: "This is a very very long answer. Why even bother reading it, just focus on programming. Beta 1.\nBet2\nBet3.\nSttill Here!!! Okay No Problem.\n")
+//    let str2 = NSAttributedString(string: "This is a very very long answer. Why even bother reading it, just focus on programming")
+//    answers.append(str1)
+//    answers.append(str2)
+//    answers.append(str1)
+//    answers.append(str2)
+//    answers.append(str1)
+//    answers.append(str2)
+//
+//    let newAnswer1 = Answers(userID: "1234", userName: "Tanishka", userProfilePicURLString: "", answerURLString: "")
+//    newAnswer1.dateAnswered = Date()
+//    let newAnswer2 = Answers(userID: "1234", userName: "Yogesh", userProfilePicURLString: "", answerURLString: "")
+//    newAnswer2.dateAnswered = Date()
+//
+//    data?.answers?.append(newAnswer1)
+//    data?.answers?.append(newAnswer2)
+//    data?.answers?.append(newAnswer1)
+//    data?.answers?.append(newAnswer2)
+//    data?.answers?.append(newAnswer1)
+//    data?.answers?.append(newAnswer2)
+//}
+
 
 //protocol OverflowDelegate: class {
 //    func onOverflowEnded()

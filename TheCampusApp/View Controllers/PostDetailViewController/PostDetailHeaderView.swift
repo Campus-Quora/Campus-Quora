@@ -62,7 +62,8 @@ class PostDetailQuestionView: UITableViewHeaderFooterView{
             askerPictureView.name = data!.askerName
             askerPictureView.date = data!.dateAsked?.userReadableDate()
             loadDescription(forceLoad: false)
-            // loadAnswers(forceLoad: false)
+            loadApprType(forceLoad: false)
+            apprType = data?.apprType ?? .none
         }
     }
     
@@ -80,6 +81,13 @@ class PostDetailQuestionView: UITableViewHeaderFooterView{
                 case .like: upvoteButton.tintColor = selectedAccentColor.primaryColor
                 case .dislike: downvoteButton.tintColor = selectedAccentColor.primaryColor
             }
+        }
+    }
+    
+    func updateApprType(){
+        if(apprType != data?.apprType){
+            APIService.updatePostApprType(for: data?.postID, apprType: apprType)
+            data?.apprType = apprType
         }
     }
     
@@ -129,7 +137,7 @@ class PostDetailQuestionView: UITableViewHeaderFooterView{
         // Upvote Button
         let upvoteImage = UIImage(named: "Like")?.resizeImage(size: size).withRenderingMode(.alwaysTemplate)
         upvoteButton.setImage(upvoteImage, for: .normal)
-        upvoteButton.setTitle("12.4K", for: .normal)
+        upvoteButton.setTitle("Like", for: .normal)
         upvoteButton.titleLabel?.font = .systemFont(ofSize: 12, weight: .bold)
         upvoteButton.addTarget(self, action: #selector(handleUpvote), for: .touchUpInside)
         upvoteButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
@@ -137,7 +145,7 @@ class PostDetailQuestionView: UITableViewHeaderFooterView{
         // Downvote Button
         let downvoteImage = UIImage(named: "Dislike")?.resizeImage(size: size).withRenderingMode(.alwaysTemplate)
         downvoteButton.setImage(downvoteImage, for: .normal)
-        downvoteButton.setTitle("203", for: .normal)
+        downvoteButton.setTitle("Dislike", for: .normal)
         downvoteButton.titleLabel?.font = .systemFont(ofSize: 12, weight: .bold)
         downvoteButton.addTarget(self, action: #selector(handleDownvote), for: .touchUpInside)
         downvoteButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
@@ -205,6 +213,18 @@ class PostDetailQuestionView: UITableViewHeaderFooterView{
         }
         else{
             self.descriptionLabel.attributedText = data?.description
+        }
+    }
+    
+    func loadApprType(forceLoad: Bool = false){
+        if(data?.apprType == nil || forceLoad){
+            APIService.getApprType(for: data?.postID){
+                [weak self] (apprType) in
+                self?.apprType = apprType
+            }
+        }
+        else{
+            self.apprType = (data?.apprType)!
         }
     }
     

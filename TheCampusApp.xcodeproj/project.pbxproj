@@ -244,14 +244,7 @@
 				00EBA80F233DF16900539A31 /* HomeViewController.swift */,
 				008353FE23D2CF0E008B9088 /* HomeViewControllerTags.swift */,
 				00EBA818233E986D00539A31 /* PostCell.swift */,
-				005C36CB23CAEA8D00390628 /* PostDetailViewController.swift */,
-				005C36D923CCA0E300390628 /* PostDetailHeaderView.swift */,
 				005C36DB23CF2CA000390628 /* LoadingFooterView.swift */,
-				00E339EC23C9FDCC00186488 /* AnswerCell.swift */,
-				005C36D623CC95BB00390628 /* AnswerViewController.swift */,
-				007A975723C8D1F0006E2C93 /* PostDetailViewController3.swift */,
-				005C36DF23D0C02D00390628 /* Haeder_Save.swift */,
-				008353FC23D2CCE9008B9088 /* PostCell-save.swift */,
 			);
 			path = HomeViewController;
 			sourceTree = "<group>";
@@ -265,6 +258,35 @@
 				007A976023C9B7CF006E2C93 /* CompletePost.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		0083540823D46014008B9088 /* PostDetailViewController */ = {
+			isa = PBXGroup;
+			children = (
+				005C36CB23CAEA8D00390628 /* PostDetailViewController.swift */,
+				005C36D923CCA0E300390628 /* PostDetailHeaderView.swift */,
+				00E339EC23C9FDCC00186488 /* AnswerCell.swift */,
+				005C36D623CC95BB00390628 /* AnswerViewController.swift */,
+			);
+			path = PostDetailViewController;
+			sourceTree = "<group>";
+		};
+		0083540923D46062008B9088 /* Saves */ = {
+			isa = PBXGroup;
+			children = (
+				0083540023D2DAA7008B9088 /* ProfileViewController-save.swift */,
+				0083540423D327AA008B9088 /* Edit-save.swift */,
+				00EBA811233DF18A00539A31 /* PostViewController3.swift */,
+				00EBA88B2348AD8900539A31 /* EventHandlers.swift */,
+				00EBA88D2348ADBB00539A31 /* Keyboard Events.swift */,
+				00EBA88F2348ADD900539A31 /* Ask Button.swift */,
+				007A975723C8D1F0006E2C93 /* PostDetailViewController3.swift */,
+				005C36DF23D0C02D00390628 /* Haeder_Save.swift */,
+				008353FC23D2CCE9008B9088 /* PostCell-save.swift */,
+				00EBA8912348ADFE00539A31 /* Rich Text Editor.swift */,
+				005C36C523CA53E300390628 /* ScrollingStackContainer */,
+			);
+			path = Saves;
 			sourceTree = "<group>";
 		};
 		00EBA7FB2337BA2D00539A31 /* Login + Signup */ = {
@@ -312,8 +334,8 @@
 		00EBA80E233DF10700539A31 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				0083540823D46014008B9088 /* PostDetailViewController */,
 				005C36D323CC808900390628 /* TextEditorViewController */,
-				005C36C523CA53E300390628 /* ScrollingStackContainer */,
 				007A975623C8CD03006E2C93 /* HomeViewController */,
 				00EBA82423406EA600539A31 /* PostViewController */,
 				00EBA815233E215E00539A31 /* ProfileViewController */,
@@ -327,9 +349,7 @@
 			children = (
 				00EBA813233DF1AB00539A31 /* ProfileViewController.swift */,
 				00EBA816233E217E00539A31 /* ProfileHeader.swift */,
-				0083540023D2DAA7008B9088 /* ProfileViewController-save.swift */,
 				0083540223D2F036008B9088 /* EditProfileViewController.swift */,
-				0083540423D327AA008B9088 /* Edit-save.swift */,
 			);
 			path = ProfileViewController;
 			sourceTree = "<group>";
@@ -338,11 +358,6 @@
 			isa = PBXGroup;
 			children = (
 				005C36DD23CF883300390628 /* PostViewController.swift */,
-				00EBA811233DF18A00539A31 /* PostViewController3.swift */,
-				00EBA88B2348AD8900539A31 /* EventHandlers.swift */,
-				00EBA88D2348ADBB00539A31 /* Keyboard Events.swift */,
-				00EBA88F2348ADD900539A31 /* Ask Button.swift */,
-				00EBA8912348ADFE00539A31 /* Rich Text Editor.swift */,
 			);
 			path = PostViewController;
 			sourceTree = "<group>";
@@ -437,6 +452,7 @@
 		1FAC1B262322C01300304173 /* TheCampusApp */ = {
 			isa = PBXGroup;
 			children = (
+				0083540923D46062008B9088 /* Saves */,
 				005C36D823CC9D4F00390628 /* Tasks.md */,
 				007A975B23C99139006E2C93 /* Models */,
 				00EBA8532344CAFA00539A31 /* API */,
