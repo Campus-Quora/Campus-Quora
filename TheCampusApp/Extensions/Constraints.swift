@@ -48,6 +48,18 @@ extension UIView{
         }
     }
     
+    func fillSafeLayout(){
+        if let view = superview?.safeAreaLayoutGuide{
+            anchor(top: view.topAnchor, bottom: view.bottomAnchor, left: view.leadingAnchor, right: view.trailingAnchor)
+        }
+    }
+    
+    func fillSafeLayout(padding: CGFloat){
+        if let view = superview?.safeAreaLayoutGuide{
+            anchor(top: view.topAnchor, bottom: view.bottomAnchor, left: view.leadingAnchor, right: view.trailingAnchor, paddingTop: padding, paddingBottom: padding, paddingLeft: padding, paddingRight: padding)
+        }
+    }
+    
     func fillSuperView(padding: CGFloat){
         if let superview = superview{
             anchor(top: superview.topAnchor, bottom: superview.bottomAnchor, left: superview.leadingAnchor, right: superview.trailingAnchor, paddingTop: padding, paddingBottom: padding, paddingLeft: padding, paddingRight: padding)

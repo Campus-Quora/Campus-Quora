@@ -33,6 +33,12 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         size.height += 15
         return size
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.
+        let cell = collectionView.cellForItem(at: indexPath)
+        cell?.backgroundColor =
+    }
 }
 
 class TagCell: UICollectionViewCell{

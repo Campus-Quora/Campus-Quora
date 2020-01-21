@@ -28,7 +28,8 @@ class HomeViewController: ColorThemeObservingViewController{
         return cv
     }()
     
-    let tags = ["All", "General", "CSEA", "Coding Club", "CSE Department", "CSE 2022"]
+    var tags = [String]()
+    var selectedTag: String?
     let tagCellID = "tagCellID"
     lazy var footer = LoadingFooterView()
     
@@ -69,9 +70,17 @@ class HomeViewController: ColorThemeObservingViewController{
         tagsCollectionView.dataSource = self
         tagsCollectionView.register(TagCell.self, forCellWithReuseIdentifier: tagCellID)
         
-        setupData()
         setupUI()
         setupColors()
+        
+        let name = Notification.Name(updateUserDataKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(setupTags), name: name, object: nil)
+    }
+    
+    @objc func setupTags(){
+        self.tags = UserData.shared.tags ?? ["All"]
+        tagsCollectionView.reloadData()
+        setupData()
     }
     
     func setupData(){

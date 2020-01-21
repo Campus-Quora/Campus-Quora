@@ -44,6 +44,7 @@ class APIService{
     static var questionsCollection = storageRef.child("questions")
     static var answersCollection = storageRef.child("answers")
     static var apprCollection = databaseRef.collection("Likes")
+    static var tagsDocument = databaseRef.collection("tags").document("tags")
     
     static func getUserInfo(){
         let uid = (Auth.auth().currentUser?.uid)!
@@ -93,13 +94,13 @@ class APIService{
         })
     }
     
-    static func postQuestion(question: String, description: Data, callback: @escaping (String)->Void){
+    static func post(question: String, description: Data, tags: [String], callback: @escaping (String)->Void){
         let baseString = String.uniqueFilename()
         let descriptionFileName = "Ques_\(baseString)"
         let postID = "Post_\(baseString)"
         
         let fileRef = questionsCollection.child(descriptionFileName)
-        let postData = CompletePost(question: question, description: descriptionFileName)
+        let postData = CompletePost(question: question, description: descriptionFileName, tags: tags)
         let postsDictionary = try! postData.asDictionary()
         
         let dispatchGroup = DispatchGroup()
@@ -384,6 +385,16 @@ class APIService{
             let bookmark = (data?["bookmark"] as? Bool) ?? false
             let apprType = AppreciationType(rawValue: state ?? 0) ?? .none
             callback(apprType, bookmark)
+        }
+    }
+    
+    static func getTags(){
+        tagsDocument.getDocument { (document, error) in
+            if(error != nil || document == nil){
+                print("Error Fetching Tags")
+                return
+            }
+            allowedTags = document?.data()?["tags"] as! [String]
         }
     }
 }

@@ -25,6 +25,7 @@ class CompletePost: Codable{
     var dateAnswered: Date?
     var dateAsked: Date?
     var description: NSAttributedString?
+    var tags: [String]?
     var apprType: AppreciationType?
     var bookmark: Bool?
     
@@ -41,6 +42,7 @@ class CompletePost: Codable{
         case dateAnswered
         case dateAsked
         case answers
+        case tags
     }
     
     init(){
@@ -49,9 +51,10 @@ class CompletePost: Codable{
         self.askerProfilePicURLString = UserData.shared.profilePicURL
     }
     
-    init(question: String, description: String) {
+    init(question: String, description: String, tags: [String]) {
         self.question = question
         self.descriptionURLString = description
+        self.tags = tags
         self.askerName = UserData.shared.name
         self.askerID = UserData.shared.uid
         self.askerProfilePicURLString = UserData.shared.profilePicURL

@@ -32,6 +32,8 @@
 		0083540323D2F036008B9088 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0083540223D2F036008B9088 /* EditProfileViewController.swift */; };
 		0083540523D327AA008B9088 /* Edit-save.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0083540423D327AA008B9088 /* Edit-save.swift */; };
 		0083540723D43FE3008B9088 /* ReauthenicateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0083540623D43FE3008B9088 /* ReauthenicateController.swift */; };
+		0083540B23D48D15008B9088 /* TagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0083540A23D48D15008B9088 /* TagsViewController.swift */; };
+		0083540D23D4B6E2008B9088 /* TagStripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0083540C23D4B6E2008B9088 /* TagStripView.swift */; };
 		00E339ED23C9FDCC00186488 /* AnswerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E339EC23C9FDCC00186488 /* AnswerCell.swift */; };
 		00EBA7FD2337BA5A00539A31 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA7FC2337BA5A00539A31 /* LoginViewController.swift */; };
 		00EBA7FF2337BA7400539A31 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EBA7FE2337BA7400539A31 /* SignupViewController.swift */; };
@@ -130,6 +132,8 @@
 		0083540223D2F036008B9088 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		0083540423D327AA008B9088 /* Edit-save.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Edit-save.swift"; sourceTree = "<group>"; };
 		0083540623D43FE3008B9088 /* ReauthenicateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReauthenicateController.swift; sourceTree = "<group>"; };
+		0083540A23D48D15008B9088 /* TagsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsViewController.swift; sourceTree = "<group>"; };
+		0083540C23D4B6E2008B9088 /* TagStripView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagStripView.swift; sourceTree = "<group>"; };
 		00E339EC23C9FDCC00186488 /* AnswerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerCell.swift; sourceTree = "<group>"; };
 		00EBA7FC2337BA5A00539A31 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		00EBA7FE2337BA7400539A31 /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
@@ -358,6 +362,8 @@
 			isa = PBXGroup;
 			children = (
 				005C36DD23CF883300390628 /* PostViewController.swift */,
+				0083540A23D48D15008B9088 /* TagsViewController.swift */,
+				0083540C23D4B6E2008B9088 /* TagStripView.swift */,
 			);
 			path = PostViewController;
 			sourceTree = "<group>";
@@ -692,6 +698,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				00EBA805233CBFF400539A31 /* Dismiss.swift in Sources */,
+				0083540B23D48D15008B9088 /* TagsViewController.swift in Sources */,
 				00EBA8FC235079C800539A31 /* Accent Colors.swift in Sources */,
 				00EBA8EC23506B1600539A31 /* Settings Toggle Cell.swift in Sources */,
 				00E339ED23C9FDCC00186488 /* AnswerCell.swift in Sources */,
@@ -702,6 +709,7 @@
 				00EBA7FD2337BA5A00539A31 /* LoginViewController.swift in Sources */,
 				00EBA80B233DEA0000539A31 /* UserData.swift in Sources */,
 				00EBA8FA235078D300539A31 /* Light Theme.swift in Sources */,
+				0083540D23D4B6E2008B9088 /* TagStripView.swift in Sources */,
 				00EBA8EA23506B1600539A31 /* Settings Selector Cell.swift in Sources */,
 				1FAC1B2A2322C01300304173 /* ViewController.swift in Sources */,
 				00EBA8922348ADFE00539A31 /* Rich Text Editor.swift in Sources */,

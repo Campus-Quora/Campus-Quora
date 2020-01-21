@@ -35,13 +35,15 @@ class PostDetailQuestionView: UITableViewHeaderFooterView{
     let shareButton = VerticalButton()
     let expandButton = UIButton()
     let seperator = UIView()
+    let tagView = TagStripView()
     
     var askerDetailsStack: UIStackView!
     var optionsStack: UIStackView!
     var controlStack: UIStackView!
+    var expandStack: UIStackView!
     
     var isExpanded = false
-    var descriptionViewBottomConstraint: NSLayoutConstraint!
+    var expandStackBottomConstraint: NSLayoutConstraint!
     var currentURL: String?
     
     override init(reuseIdentifier: String?) {
@@ -57,14 +59,17 @@ class PostDetailQuestionView: UITableViewHeaderFooterView{
     
     var data: CompletePost?{
         didSet{
-            questionLabel.text = data!.question
-            descriptionLabel.attributedText = data!.description
-            askerPictureView.name = data!.askerName
-            askerPictureView.date = data!.dateAsked?.userReadableDate()
+            guard let data = data else{return}
+            questionLabel.text = data.question
+            descriptionLabel.attributedText = data.description
+            askerPictureView.name = data.askerName
+            askerPictureView.date = data.dateAsked?.userReadableDate()
             loadDescription(forceLoad: false)
             loadApprType(forceLoad: false)
-            apprType = data?.apprType ?? .none
-            bookmark = data?.bookmark ?? false
+            apprType = data.apprType ?? .none
+            bookmark = data.bookmark ?? false
+            tagView.data = data.tags ?? []
+            tagView.collectionView.reloadData()
         }
     }
     
@@ -126,20 +131,28 @@ class PostDetailQuestionView: UITableViewHeaderFooterView{
         addSubview(questionLabel)
         addSubview(seperator)
         addSubview(controlStack)
-        addSubview(descriptionLabel)
+        addSubview(expandStack)
         
         backgroundView?.fillSuperView()
     
         questionLabel.anchor(top: topAnchor, left: leadingAnchor, right: trailingAnchor, paddingLeft: 10, paddingRight: 10)
         
         controlStack.anchor(top: questionLabel.bottomAnchor, left: leadingAnchor, right: trailingAnchor, paddingTop: 15, paddingLeft: 10, paddingRight: 15)
-//        expandButton.anchor(bottom: controlStack.bottomAnchor, paddingBottom: 25)
         
         // Description Label
-        descriptionLabel.anchor(top: controlStack.bottomAnchor, left: leadingAnchor, right: trailingAnchor, paddingLeft: 10, paddingRight: 10)
+        expandStack.anchor(top: controlStack.bottomAnchor, left: leadingAnchor, right: trailingAnchor)
+        let constraints = [
+            descriptionLabel.leadingAnchor.constraint(equalTo: expandStack.leadingAnchor, constant: 10),
+            descriptionLabel.trailingAnchor.constraint(equalTo: expandStack.trailingAnchor, constant: -10)
+        ]
+        
+        constraints.forEach { (constraint) in
+            constraint.priority = .defaultHigh
+            constraint.isActive = true
+        }
 
-        descriptionViewBottomConstraint = descriptionLabel.bottomAnchor.constraint(equalTo: descriptionLabel.topAnchor)
-        descriptionViewBottomConstraint.isActive = true
+        expandStackBottomConstraint = expandStack.bottomAnchor.constraint(equalTo: expandStack.topAnchor)
+        expandStackBottomConstraint.isActive = true
         
         // Seperator
         seperator.anchor(top: descriptionLabel.bottomAnchor, bottom: bottomAnchor, left: leadingAnchor, right: trailingAnchor, paddingTop: 10, height: 2)
@@ -212,6 +225,11 @@ class PostDetailQuestionView: UITableViewHeaderFooterView{
         descriptionLabel.font = UIFont.systemFont(ofSize: 15)
         descriptionLabel.numberOfLines = 0
         descriptionLabel.inset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+        
+        // Expand Stack
+        expandStack = UIStackView(arrangedSubviews: [tagView, descriptionLabel])
+        expandStack.axis = .vertical
+        expandStack.distribution = .fillProportionally
     }
     
     func loadDescription(forceLoad: Bool = false){
@@ -251,7 +269,7 @@ class PostDetailQuestionView: UITableViewHeaderFooterView{
     
     @objc func handleDescription(){
         if(isExpanded){
-            self.descriptionViewBottomConstraint.isActive = true
+            self.expandStackBottomConstraint.isActive = true
 
             UIView.animate(withDuration: 0.2) {
                 self.descriptionLabel.alpha = 0
@@ -264,7 +282,7 @@ class PostDetailQuestionView: UITableViewHeaderFooterView{
             })
         }
         else{
-            self.descriptionViewBottomConstraint.isActive = false
+            self.expandStackBottomConstraint.isActive = false
             UIView.animate(withDuration: 0.2, delay: 0.3, options: .curveLinear, animations: {
                 self.descriptionLabel.alpha = 1
             }, completion: nil)

@@ -9,6 +9,8 @@
 import UIKit
 import Firebase
 
+var allowedTags = [String]()
+
 class UserData: NSObject, Codable{
     // Properties
     var uid: String?
@@ -25,6 +27,7 @@ class UserData: NSObject, Codable{
     var department: String?
     var programme: String?
     var year: String?
+    var tags: [String]?
     
     // Shared Instance
     static var shared = UserData()
@@ -67,6 +70,7 @@ class UserData: NSObject, Codable{
         case department
         case programme
         case year
+        case tags
     }
     
 //    required init(from decoder: Decoder) throws {
@@ -97,4 +101,3 @@ class UserData: NSObject, Codable{
 //        try container.encode(year, forKey: .year)
 //    }
 }
-

@@ -211,6 +211,12 @@ class PostViewController: TextEditorViewController{
     @objc func handleAsk(){
         askButton.isEnabled = false
         view.endEditing(true)
+        let tagVC = TagsViewController()
+        tagVC.completionHandler = submitQuestion
+        navigationController?.pushViewController(tagVC, animated: true)
+    }
+    
+    func submitQuestion(tags: [String]){
         let alert = UIAlertController(title: nil, message: "Please Wait ...", preferredStyle: .alert)
         let loadingIndicator = UIActivityIndicatorView(style: .gray)
         loadingIndicator.hidesWhenStopped = true
@@ -221,13 +227,14 @@ class PostViewController: TextEditorViewController{
         present(alert, animated: true, completion: nil)
         
         guard let descData = descriptionTextView.attributedText.toData() else{return}
-        APIService.postQuestion(question: questionTextView.text, description: descData){(postID) in
+        APIService.post(question: questionTextView.text, description: descData, tags: tags){(postID) in
             self.askButton.isEnabled = true
             self.dismiss(animated: true){
                 self.dismiss(animated: true)
             }
         }
     }
+
     
     @objc func handleCancel(){
         dismiss(animated: true, completion: nil)
