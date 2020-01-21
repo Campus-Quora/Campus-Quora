@@ -201,17 +201,17 @@ class APIService{
         }
     }
     
-    static func fetchUserFeed(initialSize: Int, callback: @escaping (Bool, [CompletePost], DocumentSnapshot?)->Void){
-        postsCollection.limit(to: initialSize).getDocuments { (snapshot, error) in
+    static func fetchUserFeed(initialSize: Int, tag: String, callback: @escaping (String, Bool, [CompletePost], DocumentSnapshot?)->Void){
+        postsCollection.whereField("tags", arrayContains: tag).limit(to: initialSize).getDocuments { (snapshot, error) in
             if(error != nil){
                 print("#1 Error Fetching User Feed")
-                callback(false, [], nil)
+                callback(tag, false, [], nil)
                 return
             }
             
             guard let snapshot = snapshot else{
                 print("#2 Snapshot is nil")
-                callback(false, [], nil)
+                callback(tag, false, [], nil)
                 return
             }
             
@@ -219,23 +219,23 @@ class APIService{
             for i in 0 ..< feed.count{
                 feed[i].postID = snapshot.documents[i].documentID
             }
-            callback(true, feed, snapshot.documents.last)
+            callback(tag, true, feed, snapshot.documents.last)
         }
     }
     
-    static func paginateUserFeed(after last: DocumentSnapshot?, batchSize: Int, callback: @escaping (Bool, [CompletePost], DocumentSnapshot?)->Void){
+    static func paginateUserFeed(after last: DocumentSnapshot?, batchSize: Int, tag: String, callback: @escaping (String, Bool, [CompletePost], DocumentSnapshot?)->Void){
         if let last = last{
-            let query = postsCollection.start(afterDocument: last).limit(to: batchSize)
+            let query = postsCollection.whereField("tags", arrayContains: tag).start(afterDocument: last).limit(to: batchSize)
             query.getDocuments { (snapshot, error) in
                 if(error != nil){
                     print("#1 Error Fetching User Feed")
-                    callback(false, [], nil)
+                    callback(tag, false, [], nil)
                     return
                 }
                 
                 guard let snapshot = snapshot else{
                     print("#2 Snapshot is nil")
-                    callback(false, [], nil)
+                    callback(tag, false, [], nil)
                     return
                 }
                 
@@ -243,11 +243,11 @@ class APIService{
                 for i in 0 ..< feed.count{
                     feed[i].postID = snapshot.documents[i].documentID
                 }
-                callback(true, feed, snapshot.documents.last)
+                callback(tag, true, feed, snapshot.documents.last)
             }
         }
         else{
-            fetchUserFeed(initialSize: batchSize, callback: callback)
+            fetchUserFeed(initialSize: batchSize, tag: tag, callback: callback)
         }
     }
     

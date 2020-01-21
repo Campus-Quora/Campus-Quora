@@ -29,13 +29,14 @@ class HomeViewController: ColorThemeObservingViewController{
     }()
     
     var tags = [String]()
-    var selectedTag: String?
+    var selectedTag: String!
+    var selectedTagIndex: Int!
     let tagCellID = "tagCellID"
     lazy var footer = LoadingFooterView()
     
-    var fetchingFeed: Bool = false
-    var allFetched: Bool = false
-    var lastDoc: DocumentSnapshot? = nil
+    var fetchingFeed = [String: Bool]()
+    var allFetched = [String: Bool]()
+    var lastDoc = [String: DocumentSnapshot]()
     var batchSize: Int = 4
     var count: Int = 0
     var initialDataSize: Int = 6
@@ -49,7 +50,7 @@ class HomeViewController: ColorThemeObservingViewController{
 //    }()
     
     var detailVCFirstLoad = true
-    var postsData: [CompletePost] = []
+    var postsData = [String: [CompletePost]]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,29 +80,43 @@ class HomeViewController: ColorThemeObservingViewController{
     
     @objc func setupTags(){
         self.tags = UserData.shared.tags ?? ["All"]
+        let indexPath = IndexPath(item: 0, section: 0)
+        self.selectedTag = self.tags[indexPath.item]
+        self.selectedTagIndex = indexPath.item
         tagsCollectionView.reloadData()
+        tagsCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: .left)
         setupData()
     }
     
     func setupData(){
-        lastDoc = nil
-        if(fetchingFeed){
+        lastDoc[selectedTag] = nil
+        allFetched[selectedTag] = false
+        if((fetchingFeed[selectedTag] ?? false) == true){
 //            self.refreshView.endRefreshing()
             return
         }
-        fetchingFeed = true
+        if(postsData[selectedTag] != nil){
+            fetchingFeed[selectedTag] = false
+            allFetched[selectedTag] = true
+            self.postsTableView.reloadData()
+            self.footer.fetchingMore = false
+            return
+        }
+        fetchingFeed[selectedTag] = true
+        self.postsTableView.reloadData()
         self.footer.fetchingMore = true
-        APIService.fetchUserFeed(initialSize: initialDataSize){(success, feed, lastDoc) in
-            self.fetchingFeed = false
+        APIService.fetchUserFeed(initialSize: initialDataSize, tag: self.selectedTag){(tag, success, feed, lastDoc) in
+            self.fetchingFeed[self.selectedTag] = false
             if(success){
                 print("Fetched Feed")
-                self.postsData = feed
-                self.lastDoc = lastDoc
+                self.postsData[self.selectedTag] = feed
+                self.lastDoc[self.selectedTag] = lastDoc
+                if(tag != self.selectedTag){return}
                 DispatchQueue.main.async{
 //                    self.refreshView.endRefreshing()
                     self.postsTableView.reloadData()
                     if(feed.count == 0){
-                        self.allFetched = true
+                        self.allFetched[self.selectedTag] = true
                         self.footer.fetchingMore = false
                     }
                     else{
@@ -118,15 +133,16 @@ class HomeViewController: ColorThemeObservingViewController{
         }
     }
     func paginateData(){
-        fetchingFeed = true
+        fetchingFeed[selectedTag] = true
         self.footer.fetchingMore = true
-        APIService.paginateUserFeed(after: lastDoc, batchSize: batchSize) { (success, feed, lastDoc) in
-            self.fetchingFeed = false
+        APIService.paginateUserFeed(after: lastDoc[selectedTag], batchSize: batchSize, tag: self.selectedTag){ (tag, success, feed, lastDoc) in
+            self.fetchingFeed[self.selectedTag] = false
             if(success){
                 print("Paginated Feed")
                 let oldcount = self.postsData.count
-                self.postsData.append(contentsOf: feed)
-                self.lastDoc = lastDoc
+                self.postsData[self.selectedTag]?.append(contentsOf: feed)
+                self.lastDoc[self.selectedTag] = lastDoc
+                if(tag != self.selectedTag){return}
                 DispatchQueue.main.async{
 //                    self.refreshView.endRefreshing()
                     var indexPaths = [IndexPath]()
@@ -136,7 +152,7 @@ class HomeViewController: ColorThemeObservingViewController{
                     }
                     self.postsTableView.insertRows(at: indexPaths, with: .fade)
                     if(feed.count == 0){
-                        self.allFetched = true
+                        self.allFetched[self.selectedTag] = true
                         self.footer.fetchingMore = false
                     }
                     else{
@@ -194,19 +210,22 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource{
     func scrollViewDidScroll(_ scrollView: UIScrollView){
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
-        if(!(fetchingFeed || allFetched) && (offsetY > contentHeight - scrollView.frame.height)){
+        let fetching = self.fetchingFeed[selectedTag] ?? false
+        let alldone = self.allFetched[selectedTag] ?? false
+        if(!(fetching || alldone) && (offsetY > contentHeight - scrollView.frame.height)){
             paginateData()
         }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return postsData.count
+        if(self.selectedTag == nil){return 0}
+        return postsData[self.selectedTag]?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if(postsData[indexPath.row].topAnswer == nil){
+        if(postsData[self.selectedTag]?[indexPath.row].topAnswer == nil){
             let cell = tableView.dequeueReusableCell(withIdentifier: unansweredCellID) as! UnansweredPostCell
-            cell.postData = postsData[indexPath.row]
+            cell.postData = postsData[self.selectedTag]?[indexPath.row]
             if(indexPath.row) == 0{
                 cell.seperator.alpha = 0
             }
@@ -214,7 +233,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource{
         }
         else{
             let cell = tableView.dequeueReusableCell(withIdentifier: answeredCellID) as! AnsweredPostCell
-            cell.postData = postsData[indexPath.row]
+            cell.postData = postsData[self.selectedTag]?[indexPath.row]
             if(indexPath.row) == 0{
                 cell.seperator.alpha = 0
             }
@@ -224,7 +243,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailVC = PostDetailViewController(style: .grouped)
-        detailVC.data = postsData[indexPath.item]
+        detailVC.data = postsData[self.selectedTag]?[indexPath.item]
         self.navigationController?.pushViewController(detailVC, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }

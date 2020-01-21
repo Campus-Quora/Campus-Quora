@@ -18,6 +18,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         if let tagCell = cell as? TagCell{
             tagCell.tagLabel.text = tags[indexPath.item]
+            tagCell.isSelected = (indexPath.item == selectedTagIndex)
         }
         return cell
     }
@@ -35,15 +36,29 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.
-        let cell = collectionView.cellForItem(at: indexPath)
-        cell?.backgroundColor =
+        if(self.selectedTagIndex == indexPath.item){ return }
+        self.selectedTag = self.tags[indexPath.item]
+        self.selectedTagIndex = indexPath.item
+        setupData()
     }
 }
 
 class TagCell: UICollectionViewCell{
     let tagLabel = UILabel()
 
+    override var isSelected: Bool{
+        didSet{
+            if(isSelected){
+                tagLabel.backgroundColor = selectedAccentColor.primaryColor
+                tagLabel.textColor = .white
+            }
+            else{
+                tagLabel.backgroundColor = selectedTheme.secondaryPlaceholderColor.withAlphaComponent(0.3)
+                tagLabel.textColor = selectedTheme.primaryTextColor
+            }
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
