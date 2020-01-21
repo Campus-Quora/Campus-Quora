@@ -98,7 +98,9 @@ class HomeViewController: ColorThemeObservingViewController{
         if(postsData[selectedTag] != nil){
             fetchingFeed[selectedTag] = false
             allFetched[selectedTag] = true
-            self.postsTableView.reloadData()
+            UIView.performWithoutAnimation {
+                self.postsTableView.reloadData()
+            }
             self.footer.fetchingMore = false
             return
         }
@@ -106,11 +108,11 @@ class HomeViewController: ColorThemeObservingViewController{
         self.postsTableView.reloadData()
         self.footer.fetchingMore = true
         APIService.fetchUserFeed(initialSize: initialDataSize, tag: self.selectedTag){(tag, success, feed, lastDoc) in
-            self.fetchingFeed[self.selectedTag] = false
+            self.fetchingFeed[tag] = false
             if(success){
                 print("Fetched Feed")
-                self.postsData[self.selectedTag] = feed
-                self.lastDoc[self.selectedTag] = lastDoc
+                self.postsData[tag] = feed
+                self.lastDoc[tag] = lastDoc
                 if(tag != self.selectedTag){return}
                 DispatchQueue.main.async{
 //                    self.refreshView.endRefreshing()
@@ -136,12 +138,12 @@ class HomeViewController: ColorThemeObservingViewController{
         fetchingFeed[selectedTag] = true
         self.footer.fetchingMore = true
         APIService.paginateUserFeed(after: lastDoc[selectedTag], batchSize: batchSize, tag: self.selectedTag){ (tag, success, feed, lastDoc) in
-            self.fetchingFeed[self.selectedTag] = false
+            self.fetchingFeed[tag] = false
             if(success){
                 print("Paginated Feed")
                 let oldcount = self.postsData.count
-                self.postsData[self.selectedTag]?.append(contentsOf: feed)
-                self.lastDoc[self.selectedTag] = lastDoc
+                self.postsData[tag]?.append(contentsOf: feed)
+                self.lastDoc[tag] = lastDoc
                 if(tag != self.selectedTag){return}
                 DispatchQueue.main.async{
 //                    self.refreshView.endRefreshing()
