@@ -212,6 +212,7 @@ class LoginViewController: UIViewController{
             DispatchQueue.main.async {
                 SVProgressHUD.dismiss()
                 if let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController{
+                    APIService.getUserInfo()
                     mainTabBarController.setupViewControllers()
                     self.dismiss(animated: true, completion: nil)
                 }

@@ -19,12 +19,9 @@ class MainTabBarController: UITabBarController{
                 navController.modalPresentationStyle = .overCurrentContext
                 self.present(navController, animated: true, completion: nil)
             }
-            return
         }
         else{
-            DispatchQueue.main.async{
-                APIService.getUserInfo()
-            }
+            APIService.getUserInfo()
             setupViewControllers()
         }
         
@@ -40,11 +37,6 @@ class MainTabBarController: UITabBarController{
         // List Of Component View Controlllers
         let homeVC = UINavigationController(rootViewController: HomeViewController())
         let postVC = UINavigationController(rootViewController: PostViewController())
-        
-//        let profileVCFlowLayout = UICollectionViewFlowLayout()
-//        profileVCFlowLayout.sectionInset = UIEdgeInsets(top: postSectionVerticalPadding, left: postCellSidePadding, bottom: postSectionVerticalPadding, right: postCellSidePadding)
-//        let profileCVC = ProfileViewController(collectionViewLayout: profileVCFlowLayout)
-//        let profileVC = UINavigationController(rootViewController: profileCVC)
         let profileVC = UINavigationController(rootViewController: ProfileViewController())
         viewControllers = [homeVC, postVC, profileVC]
         

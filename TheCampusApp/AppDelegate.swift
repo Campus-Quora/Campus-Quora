@@ -28,10 +28,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.disabledDistanceHandlingClasses = [LoginViewController.self, SignupViewController.self]
         IQKeyboardManager.shared.disabledToolbarClasses = [LoginViewController.self, SignupViewController.self]
         
-//        let navController = UINavigationController(rootViewController: TagsViewController())
-//        window?.rootViewController = navController
+//        let vc = SignupTourViewController()
+//        window?.rootViewController = vc//UINavigationController(rootViewController: vc2)
         window?.rootViewController = MainTabBarController()
-        APIService.getTags()
+        APIService.getTags(vc: nil)
         return true
     }
 

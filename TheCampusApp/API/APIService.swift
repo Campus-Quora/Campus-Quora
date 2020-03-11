@@ -388,13 +388,14 @@ class APIService{
         }
     }
     
-    static func getTags(){
+    static func getTags(vc :InterestViewController? = nil){
         tagsDocument.getDocument { (document, error) in
             if(error != nil || document == nil){
                 print("Error Fetching Tags")
                 return
             }
             allowedTags = document?.data()?["tags"] as! [String]
+            vc?.collectionView.reloadData()
         }
     }
 }

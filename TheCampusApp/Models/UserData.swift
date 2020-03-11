@@ -59,6 +59,23 @@ class UserData: NSObject, Codable{
         self.answersCount = stats["answersCount"]!
     }
     
+    func cleanUP(){
+        uid = nil
+        name = nil
+        email = nil
+        username = nil
+        profilePicURL = nil
+        followerCount = 0
+        followingCount = 0
+        likesCount = 0
+        questionsCount = 0
+        answersCount = 0
+        department = nil
+        programme = nil
+        year = nil
+        tags = nil
+    }
+    
     enum CodingKeys: String, CodingKey {
         case name
         case profilePicURL

@@ -60,6 +60,7 @@ class SettingsFooter: UIView{
                 if let tabBarController = rootViewController as? UITabBarController {
                     tabBarController.selectedIndex = 0
                 }
+                UserData.shared = UserData()
                 rootViewController?.present(navController, animated: true, completion: nil)
             } catch let signOutError {
                 print("Failed to Sign Out: ", signOutError)

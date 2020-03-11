@@ -9,6 +9,10 @@
 import UIKit
 import Photos
 
+protocol HandleProfilePicProtocol{
+    func handleProfiePic(imageCell: EditDetailsImageCell)
+}
+
 class EditDetailsTextCell: UITableViewCell, UITextFieldDelegate{
     let textField = UITextField()
     var type1: InfoOptions?
@@ -59,7 +63,7 @@ class EditDetailsTextCell: UITableViewCell, UITextFieldDelegate{
 
 class EditDetailsImageCell: UITableViewCell{
     let profileImage = RoundImageView()
-    weak var controller: EditProfileViewController?
+    var controller: HandleProfilePicProtocol?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?){
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -291,7 +295,7 @@ class EditProfileViewController: UIViewController{
     }
 }
 
-extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+extension EditProfileViewController: HandleProfilePicProtocol, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     // This is event handler for pressing image selection button on toolbar
     @objc func handleProfiePic(imageCell: EditDetailsImageCell){
         self.profileImageCell = imageCell
@@ -596,6 +600,7 @@ enum InfoOptions: Int, CaseIterable, EditDetailsCellProtocol{
 
 class EditHandler{
     static var delegate: EditDepartmentCallbackProtocol?
+    static var rootViewController: UIViewController?
     
     static func validateUsername(_ username: String?)->(Bool, String){
         return (true, "")
@@ -637,9 +642,11 @@ class EditHandler{
     }
 
     static func addPopup(viewController childVC: UIViewController){
-        var rootViewController = UIApplication.shared.keyWindow?.rootViewController
-        if let navigationController = rootViewController as? UINavigationController {
-            rootViewController = navigationController.viewControllers.last
+        if(rootViewController == nil){
+            rootViewController = UIApplication.shared.keyWindow?.rootViewController
+            if let navigationController = rootViewController as? UINavigationController {
+                rootViewController = navigationController.viewControllers.last
+            }
         }
 
         if let parentVC = rootViewController{
@@ -650,8 +657,7 @@ class EditHandler{
                 let finalFrame = popupVC.popupView.frame
                 let finalAlpha = popupVC.dismissView.alpha
 
-                let dy : CGFloat = popupVC.height + 50//(UIScreen.main.bounds.height + popupVC.height + 50)/2
-
+                let dy : CGFloat = popupVC.height + 50
                 popupVC.popupView.frame = popupVC.popupView.frame.offsetBy(dx: 0, dy: dy)
                 popupVC.popupView.alpha = 0
                 popupVC.dismissView.alpha = 0

@@ -49,7 +49,6 @@ class HomeViewController: ColorThemeObservingViewController{
 //        return control
 //    }()
     
-    var detailVCFirstLoad = true
     var postsData = [String: [CompletePost]]()
     
     override func viewDidLoad() {
@@ -206,6 +205,15 @@ class HomeViewController: ColorThemeObservingViewController{
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
+    
+    // Called when user signs out
+    func cleanUP(){
+        fetchingFeed = [String: Bool]()
+        allFetched = [String: Bool]()
+        lastDoc = [String: DocumentSnapshot]()
+        tags = [String]()
+        postsData = [String: [CompletePost]]()
+    }
 }
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource{
@@ -254,92 +262,3 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource{
         return footer
     }
 }
-
-//        APIService.postsCollection.addSnapshotListener { (snapshot, error) in
-//            if(error != nil){
-//                print("#1 Error listening snapshot")
-//                return
-//            }
-//
-//            guard let snapshot = snapshot else{return}
-//            do{
-//                let newEntrys: [CompletePost] = try snapshot.decoded()
-//                let oldCount = self.postsData.count
-//                self.postsData += newEntrys
-//                let newCount = self.postsData.count
-//                let indexPaths = Array(oldCount ..< newCount).map { IndexPath(item: $0, section: 0)}
-//                DispatchQueue.main.async {
-//                    self.postsTableView.insertItems(at: indexPaths)
-//                }
-//            }
-//            catch{
-//                print("#2 Error decoding listened snapshot")
-//            }
-//        }
-
-
-//        let postData1 = CompletePost()
-//        postData1.question = "This is a simple Question"
-//        postData1.topAnswer = "This is a simple Answer. Click This cell to expand it"
-//        postData1.topAnswerUserName = "Harsh Motwani"
-//        postData1.dateAnswered = Date()
-//
-//        let postData2 = CompletePost()
-//        postData2.question = "This is a simple Question. Can Anyone Please answer it"
-//        postData2.topAnswer = "This is a complex Answer such that it can occupy more space. Click This cell to expand it"
-//        postData2.topAnswerUserName = "Yogesh Kumar"
-//        postData2.dateAnswered = Date()
-//
-//        let postData3 = CompletePost()
-//        postData3.question = "This is a simple Question. Can Anyone Please answer it"
-//        postData3.topAnswer = "This is a complex Answer such that it can occupy more space. But This thime I have increased it such that it can occupy three lines. Click This cell to expand it"
-//        postData3.topAnswerUserName = "Yogesh Kumar"
-//        postData3.dateAnswered = Date()
-//
-//        let postData4 = CompletePost()
-//        postData4.question = "This is a complex Question. It occupies three lines so it must be cut to two lines followed by ... Can Anyone Please answer it"
-//        postData4.topAnswer = "This is a complex Answer such that it can occupy more space. But This thime I have increased it such that it can occupy four lines. It must be cut to two lines followed by ... Click This cell to expand it"
-//        postData4.topAnswerUserName = "Yogesh Kumar"
-//        postData4.dateAnswered = Date()
-//
-//        postsData.append(postData1)
-//        postsData.append(postData2)
-//        postsData.append(postData3)
-//        postsData.append(postData4)
-//    }
-
-
-//fetchingFeed = true
-//DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//    self.fetchingFeed = false
-//    var indexPaths = [IndexPath]()
-//    for i in self.count ..< self.count + self.batchSize {
-//        indexPaths.append(IndexPath(row: i, section: 0))
-//    }
-//    self.count += self.batchSize
-//    self.postsTableView.insertRows(at: indexPaths, with: .fade)
-//    if(self.count >= 14){
-//        self.allFetched = true
-//        self.footer.fetchingMore = false
-//    }
-//    self.scrollViewDidScroll(self.postsTableView)
-//}
-
-//if(fetchingFeed || allFetched){ return }
-//        fetchingFeed = true
-//        self.footer.fetchingMore = true
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//            self.fetchingFeed = false
-//            self.count = self.initialDataSize
-////            var indexPaths = [IndexPath]()
-////            for i in 0 ..< self.count{
-////                indexPaths.append(IndexPath(row: i, section: 0))
-////            }
-////            self.postsTableView.insertRows(at: indexPaths, with: .fade)
-//            self.postsTableView.reloadData()
-//            if(self.count >= 20){
-//                self.allFetched = true
-//                self.footer.fetchingMore = false
-//            }
-//            self.scrollViewDidScroll(self.postsTableView)
-//        }

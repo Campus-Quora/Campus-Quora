@@ -106,10 +106,6 @@ class SignupViewController: UIViewController{
         super.viewDidLoad()
         view.backgroundColor = selectedTheme.primaryColor
         navigationController?.isNavigationBarHidden = true
-//        if #available(iOS 13, *){
-//            self.isModalInPresentation = true
-//            self.modalPresentationStyle = .fullScreen
-//        }
         
         // Set Constants
         stackHeight = inputHeight * 4 + inputPadding * 3
@@ -223,23 +219,11 @@ class SignupViewController: UIViewController{
 
             UserData.shared.setData(user)
             UserData.shared.name = name
-            let userData = try! UserData.shared.asDictionary()
 
-            APIService.userInfoCollection.document(UserData.shared.uid!).setData(userData){ error in
-                print("Saving UserInfo")
-                if let error = error{
-                    print("Signup ERROR #3 : \n\n", error)
-                    return;
-                }
-
-                // Go to Main Tab Bar Controller
-                DispatchQueue.main.async {
-                    SVProgressHUD.dismiss()
-                    if let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController{
-                        mainTabBarController.setupViewControllers()
-                        self.dismiss(animated: true, completion: nil)
-                    }
-                }
+            DispatchQueue.main.async {
+                SVProgressHUD.dismiss()
+                let tourVC = SignupTourViewController()
+                self.navigationController?.pushViewController(tourVC, animated: true)
             }
         }
     }
